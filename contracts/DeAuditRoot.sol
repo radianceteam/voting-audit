@@ -7,7 +7,7 @@ pragma AbiHeader pubkey;
 // which has additional specific functionality described in this specification.
 // ATSC represents AT and could be a root for several DeAudit smart contracts.
 // Details of its deployment are presented below.
-contract DeAuditRoot.sol {
+contract DeAuditRoot {
 
 	uint256 static public soUINT;
 	TvmCell static public codeParticipant;
@@ -19,8 +19,6 @@ contract DeAuditRoot.sol {
 	mapping(address => uint256) public memberActionTeam;
 
 	mapping(address => uint128) public balanceOf;
-
-
 
 	// Grams constants
 	uint128 constant public GRAMS_CREATE_PARTICIPANT = 1 ton;
@@ -47,9 +45,10 @@ contract DeAuditRoot.sol {
 
 	// Init function.
 	constructor() public {
-		require(msg.pubkey() != 0, 101);
-		require(msg.pubkey() == tvm.pubkey(), 102);
+		uint256 creatorPubKey = msg.pubkey();
+		require(creatorPubKey != 0 && creatorPubKey == tvm.pubkey(), 103);
 		tvm.accept();
+		memberActionTeam[computeParticipantAddress(creatorPubKey)] = creatorPubKey;
 	}
 
 	// Function to transfers plain transfers.
