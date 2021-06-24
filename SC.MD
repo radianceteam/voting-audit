@@ -1,14 +1,13 @@
-# PostVoting DeAudit Platform
+# PostVoting DeAudit Platform smart contracts 12 - 20 дней
 
-## DeAuditRoot.sol
+## DeAuditRoot.sol 1-2 дня
 
-* function deployParticipant(uint256 pubkey) external;
+ * function deployParticipant(uint256 pubkey);
 
-OnlyActionTeamMember DeAuditRoot interface
- * function initVoteAddMemberAT(address participantAddr) external;
- * function initVoteRemoveMemberAT(address participantAddr) external;
- * function deployLoVC() external;
- * function deployLoC() external;
+ * function initVoteAddMemberAT(address participantAddr) OnlyActionTeamMember;
+ * function initVoteRemoveMemberAT(address participantAddr) OnlyActionTeamMember;
+ * function deployLoVC() OnlyActionTeamMember;
+ * function deployLoC() OnlyActionTeamMember;
  * function initVoteLaunchDeAudut(
       uint256 timeStart,
       address loc,
@@ -19,18 +18,22 @@ OnlyActionTeamMember DeAuditRoot interface
       uint256 valStake,
       uint256 colRwd,
       uint256 valRwd
-    ) external;
-  * function resultVote(uint256 voteId) external;
-  * function sendTrigger(address act4Addr, uint8 triggerType) external;
-  * function voteFor(uint256 voteId) external;
-  * function voteAgainst(uint256 voteId) external;
+    ) OnlyActionTeamMember;
 
-  OnlyActionTeamMember DeAuditRoot interface
-  * function deployDeAudit() external;
+  * function voteFor(uint256 voteId) OnlyActionTeamMember;
+  * function voteAgainst(uint256 voteId) OnlyActionTeamMember;
 
-## Participant.sol
+  * function resultVote(uint256 voteId) OnlyActionTeamMember;
 
-* function getWallets() external;
+  * function addMemberAT() internal;
+  * function removeMemberAT() internal;
+  * function deployDeAudit() internal;
+
+  * function sendTrigger(address act4Addr, uint8 triggerType) OnlyActionTeamMember;
+
+## Participant.sol 2-3 дня
+
+ * function getWallets() external;
 
  DeAudit interfaces
 
@@ -73,7 +76,7 @@ OnlyActionTeamMember DeAuditRoot interface
   * function voteAgainst(uint256 voteId) external;
 
 
-## DeAudit.sol
+## DeAudit.sol 2-3 дня
 
 * function createVotingMatrix() external;
 * function callbackCreateVotingMatrix(TvmCell votingMatrix) external;
@@ -90,39 +93,39 @@ OnlyActionTeamMember DeAuditRoot interface
 * function setValidatorToAct4(uint256 votingTableId, address validatorAddr) external;
 * function mintDCforStake(address validatorAddr) external;
 
-## Act4.sol
+## Act4.sol 2-3 дня
 
-OnlyOwner
-* function setValidator(address validatorAddr) external;
+* function setValidator(address validatorAddr) OnlyDeAudit;
 
-OnlyCollator
-* function addCollatorAct4Photo(uint256 photoId) external;
-* function candidateVotes(uint256 candidateId, uint256 votesQty) external;
-* function insertAllCandidatesVotesData(TvmCell votingMatrix) external;
-* function sendVotingMatrix(TvmCell votingMatrix) external;
+* function addCollatorAct4Photo(uint256 photoId) OnlyCollator;
+* function candidateVotes(uint256 candidateId, uint256 votesQty) OnlyCollator;
+* function insertAllCandidatesVotesData(TvmCell votingMatrix) OnlyCollator;
+* function sendVotingMatrix(TvmCell votingMatrix) OnlyCollator;
 
-OnlyValidator
-* function confirmCollatedData() external;
-* function rejectCollatedData() external;
+* function confirmCollatedData() OnlyValidator;
+* function rejectCollatedData() OnlyValidator;
 
 * function addPhotoForValidator(address act4Addr, uint256 photoId) external;
 
-## DeAuditData.sol
+## DeAuditData.sol 3-5 дня
 
-### ListOfVotingCenters.sol
+### ListOfVotingCenters.sol 1-2 дня
 
-* function createVotingTable(bytes name, bytes location, uint256 coordinates) external;
-* function setCollator(uint256 votingTableId, address collatorAddr) external;
-* function setValidator(address validatorAddr) external;
+* function createVotingTable(bytes name, bytes location, uint256 coordinates) OnlyActionTeamMember;
+* function setDeAudit(address deAuditAddr) OnlyDeAuditRoot;
+* function setCollator(uint256 votingTableId, address collatorAddr) OnlyDeAudit;
+* function setAct4forVotingTable(address act4Addr) OnlyDeAudit;
+* function setValidator(address validatorAddr) OnlyDeAudit;
 
 * >20000 voting tables in 1000 voting centers in 340 municipal bodies in 23 districts
 
-### ListOfCandidates.sol
+### ListOfCandidates.sol 2-3 дня
 
-* function createCandidate(bytes name) external;
-* function createVotingMatrix() external;
-* function addCollation(uint256 votingTableId, TvmCell votingMatrix) external;
-* function addValidation(uint256 votingTableId, TvmCell votingMatrixYes, TvmCell votingMatrixNo) external;
+* function createCandidate(bytes name) OnlyActionTeamMember;
+* function setDeAudit(address deAuditAddr) OnlyDeAuditRoot;
+* function createVotingMatrix() OnlyDeAudit;
+* function addCollation(uint256 votingTableId, TvmCell votingMatrix) OnlyVtCollator;
+* function addValidation(uint256 votingTableId, bool result) OnlyVtValidator;
 
-## RootTokenContract.sol
-## TONTokenWallet.sol
+## RootTokenContract.sol 1-2 дня
+## TONTokenWallet.sol 1-2 дня
