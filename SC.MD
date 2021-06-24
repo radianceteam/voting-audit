@@ -3,6 +3,7 @@
 ## DeAuditRoot.sol 1-2 дня
 
  * function deployParticipant(uint256 pubkey);
+ * function deployDeAuditData(uint256 pubkey);
 
  * function initVoteAddMemberAT(address participantAddr) OnlyActionTeamMember;
  * function initVoteRemoveMemberAT(address participantAddr) OnlyActionTeamMember;
@@ -33,33 +34,23 @@
 
 ## Participant.sol 2-3 дня
 
- * function getWallets() external;
+ * IDeAudit.stakeForCollation(address deAuditAddr, uint256 votingTableId, uint128 value) onlyOwner;
+ * IDeAudit.stakeForValidation(address deAuditAddr, uint128 value) onlyOwner;
 
- DeAudit interfaces
+ * IAct4.addPhotoAsCollator(address act4Addr, uint256 photoId) onlyOwner;
+ * IAct4.candidateVotes(uint256 candidateId, uint256 votesQty) onlyOwner;
+ * IAct4.insertAllCandidatesVotesData(TvmCell votingMatrix) onlyOwner;
+ * IAct4.sendVotingMatrix() external;
+ * IAct4.confirmCollatedData(address act4Addr) onlyOwner;
+ * IAct4.rejectCollatedData(address act4Addr) onlyOwner;
+ * IAct4.addPhotoForValidator(address act4Addr, uint256 photoId) onlyOwner;
 
- * function stakeForCollation(address deAuditAddr, uint256 votingTableId, uint128 value) external;
- * function stakeForValidation(address deAuditAddr, uint128 value) external;
-
- Act4 interfaces Only as Collator
- * function addPhotoAsCollator(address act4Addr, uint256 photoId) external;
- * function candidateVotes(uint256 candidateId, uint256 votesQty) external;
- * function insertAllCandidatesVotesData(TvmCell votingMatrix) external;
- * function sendVotingMatrix() external;
-
- Act4 interfaces Only as Validator
- * function confirmCollatedData(address act4Addr) external;
- * function rejectCollatedData(address act4Addr) external;
-
- Act4 interfaces
- * function addPhotoForValidator(address act4Addr, uint256 photoId) external;
-
-
- DeAuditRoot interface OnlyActionTeamMember
- * function initVoteAddMemberAT(address participantAddr) external;
- * function initVoteRemoveMemberAT(address participantAddr) external;
- * function deployLoVC() external;
- * function deployLoC() external;
- * function initVoteLaunchDeAudut(
+ * IDeAuditRoot.deployDeAuditData(uint256 pubkey) onlyOwner;
+ * IDeAuditRoot.initVoteAddMemberAT(address participantAddr) onlyOwner;
+ * IDeAuditRoot.initVoteRemoveMemberAT(address participantAddr) onlyOwner;
+ * IDeAuditRoot.deployLoVC() onlyOwner;
+ * IDeAuditRoot.deployLoC() onlyOwner;
+ * IDeAuditRoot.initVoteLaunchDeAudut(
       uint256 timeStart,
       address loc,
       address lov,
@@ -69,29 +60,30 @@
       uint256 valStake,
       uint256 colRwd,
       uint256 valRwd
-    ) external;
-  * function resultVote(uint256 voteId) external;
-  * function sendTrigger(address act4Addr, uint8 triggerType) external;
-  * function voteFor(uint256 voteId) external;
-  * function voteAgainst(uint256 voteId) external;
+    ) onlyOwner;
+  * IDeAuditRoot.resultVote(uint256 voteId) onlyOwner;
+  * IDeAuditRoot.sendTrigger(address act4Addr, uint8 triggerType) onlyOwner;
+  * IDeAuditRoot.voteFor(uint256 voteId) onlyOwner;
+  * IDeAuditRoot.voteAgainst(uint256 voteId) onlyOwner;
 
+  * function getWallets() external;
 
 ## DeAudit.sol 2-3 дня
 
-* function createVotingMatrix() external;
+* IDeAuditData.createVotingMatrix() external;
 * function callbackCreateVotingMatrix(TvmCell votingMatrix) external;
 
-* function setCollator(uint256 votingTableId, address collatorAddr) external;
+* IDeAuditData.setCollator(uint256 votingTableId, address collatorAddr) external;
 * function callbackSetCollator() external;
 
 * function deployAct4(uint256 votingTableId, address collatorAddr, TvmCell votingMatrix) external;
-* function mintDCforStake(address collatorAddr) external;
+* IRootToken.mintDCforStake(address collatorAddr) external;
 
-* function setValidator(address validatorAddr) external;
+* IDeAuditData.setValidator(address validatorAddr) external;
 * function callbackSetValidator() external;
 
-* function setValidatorToAct4(uint256 votingTableId, address validatorAddr) external;
-* function mintDCforStake(address validatorAddr) external;
+* IAct4.setValidatorToAct4(uint256 votingTableId, address validatorAddr) external;
+* IRootToken.mintDCforStake(address validatorAddr) external;
 
 ## Act4.sol 2-3 дня
 
