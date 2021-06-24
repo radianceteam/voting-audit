@@ -5,6 +5,8 @@ pragma AbiHeader pubkey;
 
 import "./Participant.sol";
 import "./interfaces/IDeAuditRoot.sol";
+import "./interfaces/IAct4.sol";
+
 
 // AT smart contract (ATSC) – an SMV-based smart contract system (see link 1to the reference implementation),
 // which has additional specific functionality described in this specification.
@@ -22,7 +24,7 @@ contract DeAuditRoot is IDeAuditRoot {
 	TvmCell public codeVotingCentre;
 
 	mapping(address => uint256) public memberActionTeam;
-	uint256 votersTotal;
+	uint32 votersTotal;
 
 	mapping(address => uint128) public balanceOf;
 	mapping(uint256 => address) public giverFor;
@@ -40,12 +42,11 @@ contract DeAuditRoot is IDeAuditRoot {
 		uint256 startTime;
 		uint256 duration;
 		uint8 vcmc;
-		address[] yes;
-		address[] no;
-		address participant
-		uint8 type;
+		mapping(address => uint8) yes;
+		mapping(address => uint8) no;
+		TvmCell data;
+		uint8 actionType;
 		bool completed;
-
 	}
 
 	mapping(uint256 => Vote) public vote;
@@ -219,11 +220,14 @@ contract DeAuditRoot is IDeAuditRoot {
 		cv.startTime = uint256(now);
 		cv.duration = votingDuration;
 		cv.vcmc = voteCountModel;
-		cv.participant = participantAddr;
-		cv.type = ADD_MEMBER_ACTION_TEAM;
+		TvmBuilder builder;
+		builder.store(participantAddr);
+    cv.data = builder.toCell();
+		cv.actionType = ADD_MEMBER_ACTION_TEAM;
 		cv.completed = false;
 		votes[voteId] = cv;
 		voteKeys.push(voteId);
+		memberActionTeam[member] ++;
 		member.transfer({ value: 0, flag: 128});
 	}
 
@@ -237,39 +241,58 @@ contract DeAuditRoot is IDeAuditRoot {
 		cv.startTime = uint256(now);
 		cv.duration = votingDuration;
 		cv.vcmc = voteCountModel;
+		TvmBuilder builder;
+		builder.store(participantAddr);
+    cv.data = builder.toCell();
 		cv.participant = participantAddr;
-		cv.type = REMOVE_MEMBER_ACTION_TEAM;
+		cv.actionType = REMOVE_MEMBER_ACTION_TEAM;
 		cv.completed = false;
 		votes[voteId] = cv;
 		voteKeys.push(voteId);
+		memberActionTeam[member] ++;
 		member.transfer({ value: 0, flag: 128});
 	}
 
 	function initVoteLaunchDeAudut(
 		uint256 timeStart,
-		address loc,
-		address lov,
+		address loC,
+		address loVC,
 		uint256 colPeriod,
-		uint256 valPeriod.
+		uint256 valPeriod,
 		uint256 colStake,
 		uint256 valStake,
 		uint256 colRwd,
-		uint256 valRwd,
+		uint256 valRwd
 	) public override OnlyActionTeamMember {
 		require(!(msg.value < GRAMS_INIT_VOTE), 106);
-
-
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+		address member = msg.sender;
+		uint256 voteId = createVoteId();
+		Vote cv = votes[voteId];
+		cv.initiator = member;
+		cv.startTime = uint256(now);
+		cv.duration = votingDuration;
+		cv.vcmc = voteCountModel;
+		TvmBuilder builder;
+		builder.store(timeStart,loC,loVC,colPeriod,valPeriod,colStake,valStake,colRwd,valRwd);
+    cv.data = builder.toCell();
+		cv.actionType = LAUNCH_DE_AUDIT;
+		cv.completed = false;
+		votes[voteId] = cv;
+		voteKeys.push(voteId);
+		memberActionTeam[member] ++;
+		member.transfer({ value: 0, flag: 128});
 	}
 
 	function isTimeUp(uint256 arg0) private inline  pure returns (bool) {
-		return !((uint256(now) - arg0) < votingDuration)
+		return !((uint256(now) - arg0) < votingDuration);
 	}
 
 	// Vote count model selector
 	// Majority = 0;
 	// SoftMajority = 1;
 	// SuperMajority = 2;
-	function calculateVotes(uint256 yes, uint256 no, uint256 total, uint8 selector) private inline pure returns (bool) {
+	function calculateVotes(uint32 yes, uint32 no, uint32 total, uint8 selector) private inline pure returns (bool) {
 		bool passed = false;
 		if (selector == VOTE_COUNT_MODEL_MAJORITY) {
 			passed = (yes > no);
@@ -283,6 +306,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		return passed;
 	}
 
+
 	function resultVote(uint256 voteId) public override OnlyActionTeamMember {
 		require(!(msg.value < GRAMS_INIT_VOTE) && votes.exists(voteId), 107);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
@@ -290,21 +314,25 @@ contract DeAuditRoot is IDeAuditRoot {
 		Vote cv = votes[voteId];
 		require(cv.completed == false, 108);
 		if (isTimeUp(cv.startTime)){
-			bool voteResult = calculateVotes(cv.yes.length, cv.no.length, votersTotal, cv.vcmc);
+			optional(address, uint32) yesMax = cv.yes.max();
+			(, uint32 yesVotes) = yesMax.hasValue() ? yesMax.get() : 0;
+			optional(address, uint32) noMax = cv.no.max();
+			(, uint32 noVotes) = noMax.hasValue() ? noMax.get() : 0;
+			bool voteResult = calculateVotes(yesVotes, noVotes, votersTotal, cv.vcmc);
 			if (voteResult){
-				if (cv.type == ADD_MEMBER_ACTION_TEAM) {
+				if (cv.actionType == ADD_MEMBER_ACTION_TEAM) {
 					memberActionTeam[cv.participant] = 1;
 					votersTotal ++;
 					cv.completed = true;
 					votes[voteId] = cv;
 					member.transfer({ value: 0, flag: 128});
-				} else if (cv.type == REMOVE_MEMBER_ACTION_TEAM) {
+				} else if (cv.actionType == REMOVE_MEMBER_ACTION_TEAM) {
 					delete memberActionTeam[cv.participant];
 					votersTotal --;
 					cv.completed = true;
 					votes[voteId] = cv;
 					member.transfer({ value: 0, flag: 128});
-				} else if (cv.type == LAUNCH_DE_AUDIT) {
+				} else if (cv.actionType == LAUNCH_DE_AUDIT) {
 
 				} else {
 					member.transfer({ value: 0, flag: 128});
@@ -317,5 +345,41 @@ contract DeAuditRoot is IDeAuditRoot {
 		}
 	}
 
+	function voteFor(uint256 voteId) public override OnlyActionTeamMember {
+		require(!(msg.value < GRAMS_INIT_VOTE), 109);
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+		address member = msg.sender;
+		Vote cv = votes[voteId];
+		require(cv.completed == false && !(cv.yes.exit(member)) && !(cv.no.exit(member)), 110);
+		optional(address, uint32) yesMax = cv.yes.max();
+		(, uint32 yesVotes) = yesMax.hasValue() ? yesMax.get() : 0;
+    cv.yes[member] = yesVotes + 1;
+		votes[voteId] = cv;
+		member.transfer({ value: 0, flag: 128});
+	}
+
+	function voteAgainst(uint256 voteId) public override OnlyActionTeamMember {
+		require(!(msg.value < GRAMS_INIT_VOTE), 109);
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+		address member = msg.sender;
+		Vote cv = votes[voteId];
+		require(cv.completed == false && !(cv.yes.exit(member)) && !(cv.no.exit(member)), 110);
+		optional(address, uint32) noMax = cv.no.max();
+		(, uint32 noVotes) = noMax.hasValue() ? noMax.get() : 0;
+		cv.no[member] = noVotes + 1;
+		votes[voteId] = cv;
+		member.transfer({ value: 0, flag: 128});
+	}
+
+	function sendTrigger(address act4Addr, uint8 triggerType) public override OnlyActionTeamMember {
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+		address member = msg.sender;
+		TvmBuilder builder;
+		builder.store(triggerType);
+		TvmCell payload = builder.toCell();
+		TvmCell body = tvm.encodeBody(IAct4(act4Addr).trigger, payload);
+		act4Addr.transfer({value: GRAMS_SWAP, bounce:true, body:body});
+	  member.transfer({ value: 0, flag: 128});
+}
 
 }

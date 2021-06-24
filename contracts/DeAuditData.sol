@@ -3,9 +3,8 @@ pragma AbiHeader expire;
 pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
-import "./interfaces/IDeAuditRoot.sol";
 
-contract Participant {
+contract DeAuditData {
 
 	address static public rootDeAudit;
 
@@ -34,6 +33,7 @@ contract Participant {
 	// Function to receive plain transfers.
 	receive() external {
 	}
+
 
 
 	// Function for get this contract TON gramms balance

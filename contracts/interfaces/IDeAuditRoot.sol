@@ -11,12 +11,13 @@ interface IDeAuditRoot {
     address loc,
     address lov,
     uint256 colPeriod,
-    uint256 valPeriod.
+    uint256 valPeriod,
     uint256 colStake,
     uint256 valStake,
     uint256 colRwd,
-    uint256 valRwd,
+    uint256 valRwd
   ) external;
   function resultVote(uint256 voteId) external;
+  function sendTrigger(address act4Addr, uint8 triggerType) external;
 
 }
