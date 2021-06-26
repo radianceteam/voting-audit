@@ -11,6 +11,7 @@ import "./interfaces/IParticipant.sol";
 
 contract DeAuditData is IDeAuditData {
 
+  uint256 static public idDeAuditData;
 	address static public rootDeAudit;
 	address static public initiator;
 	bytes static public name;
@@ -68,8 +69,8 @@ contract DeAuditData is IDeAuditData {
 	}
 
 	// Init function.
-	constructor(address initiatorAddr) public checkDeAuditRootAndAccept {
-    initiator = initiatorAddr;
+	constructor() public checkDeAuditRootAndAccept {
+    
 	}
 
 	// Function to transfers plain transfers.

@@ -34,7 +34,6 @@ contract DeAudit is IDeAudit {
 		_;
 	}
 
-
 	// Init function.
 	constructor() public {
 	}

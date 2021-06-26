@@ -8,6 +8,10 @@ import "./interfaces/IDeAuditRoot.sol";
 import "./interfaces/IDeAudit.sol";
 import "./interfaces/IAct4.sol";
 import "./interfaces/IParticipant.sol";
+import "./Participant.sol";
+import "./DeAuditData.sol";
+import "./DeAudit.sol";
+
 
 contract DeAuditRoot is IDeAuditRoot {
 
@@ -17,10 +21,8 @@ contract DeAuditRoot is IDeAuditRoot {
 	TvmCell public codeDeAudit;
 	TvmCell public codeDeAuditData;
 	TvmCell public codeAct4;
-	TvmCell public codeVotingCentre;
 	TvmCell public codeRootTokenContract;
 	TvmCell public codeTONTokenWallet;
-
 
 	mapping(address => uint256) public actionTeam;
 	uint256 public actionTeamMembers;
@@ -31,6 +33,9 @@ contract DeAuditRoot is IDeAuditRoot {
 	mapping(uint256 => address) public participantAddr;
 	mapping(address => uint256) public participantPubKey;
 	address[] public participantArr;
+
+	mapping(address => address[]) public arrDeAuditData;
+	uint256 public countDeAuditData;
 
 	mapping(address => uint256) public launchedDeAudit;
 
@@ -56,7 +61,7 @@ contract DeAuditRoot is IDeAuditRoot {
 	uint256[] voteKeys;
 
 	// Grams constants
-	uint128 constant public GRAMS_CREATE_PARTICIPANT = 1 ton;
+	uint128 constant public GRAMS_CREATE = 1 ton;
 	uint128 constant public GRAMS_INIT_VOTE = 0.5 ton;
 	uint128 constant public GRAMS_TRIGGER = 1.5 ton;
 
@@ -106,7 +111,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		require(creatorPubKey != 0 && creatorPubKey == tvm.pubkey(), 103);
 		tvm.accept();
 		codeParticipant = code0;
-		address creatorAddr = createParticipant(creatorPubKey, 0, false, GRAMS_CREATE_PARTICIPANT);
+		address creatorAddr = createParticipant(creatorPubKey, 0, false, GRAMS_CREATE);
 		actionTeam[creatorAddr] = 1;
 	  actionTeamMembers ++;
 		require(arg0 = 0 || arg0 = 1 || arg0 = 2, 108);
@@ -207,7 +212,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		statusDeploy = false;
 		deployedAddress = address(0);
 		uint128 prepay = balanceOf[giverFor[pubkey]];
-		require (!participantAddr.exists(pubkey) && !(prepay < GRAMS_CREATE_DEX_CLIENT), 104);
+		require (!participantAddr.exists(pubkey) && !(prepay < GRAMS_CREATE), 104);
 		prepay -= deployFee;
 		deployedAddress = createParticipant(pubkey, 0, false, prepay);
 		if (deployedAddr != address(0)) {
@@ -226,29 +231,45 @@ contract DeAuditRoot is IDeAuditRoot {
 		return { value: 0, bounce: false, flag: 64 } thisBalance();
 	}
 
-	function createDeAuditData(bytes deAuditDataName) public override OnlyActionTeamMember {
-		require(!(msg.value < GRAMS_INIT_VOTE), 106);
-		tvm.rawReserve(address(this).balance - msg.value, 2);
-		address member = msg.sender;
-
-
-
-
-
-
-		actionTeam[member] ++;
-		member.transfer({ value: 0, flag: 128});
+	function getDeAuditDataId() private inline  pure returns (uint256) {
+		return countDeAuditData + 1;
 	}
 
+	function getDeAuditId() private inline  pure returns (uint256) {
+		return countDeAudit + 1;
+	}
 
-
-
-
-
-
-
-
-
+	function createDeAuditData(bytes nameDeAuditData) public override OnlyActionTeamMember {
+		require(!(msg.value < GRAMS_CREATE), 106);
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+		address member = msg.sender;
+		address deployedAddress = address(0);
+		TvmCell stateInit = tvm.buildStateInit({
+			contr: DeAuditData,
+			varInit: {
+				idDeAuditData: getDeAuditDataId(),
+				rootDeAudit: address(this),
+				initiator: member,
+				name: nameDeAuditData
+			},
+			code: codeDeAuditData,
+			pubkey: tvm.pubkey()
+		});
+		deployedAddress = new DeAuditData{
+			stateInit: stateInit,
+			flag: 0,
+			bounce : false,
+			value : GRAMS_CREATE
+		}();
+    if (deployedAddress != address(0)) {
+			arrDeAuditData[member].push(deployedAddress);
+			countDeAuditData++;
+			actionTeam[member] ++;
+			member.transfer({ value: 0, flag: 128});
+		} else {
+			member.transfer({ value: 0, flag: 128});
+		}
+	}
 
 	function createVoteId() private inline  pure returns (uint256) {
 		rnd.shuffle();
