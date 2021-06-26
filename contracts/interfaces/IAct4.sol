@@ -4,5 +4,5 @@ pragma AbiHeader pubkey;
 pragma AbiHeader time;
 
 interface IAct4 {
-  function trigger(TvmCell triggerData) external;
+  function trigger(address member) external;
 }

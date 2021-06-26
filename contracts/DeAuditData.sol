@@ -12,24 +12,42 @@ import "./interfaces/IParticipant.sol";
 contract DeAuditData is IDeAuditData {
 
 	address static public rootDeAudit;
+	address static public initiator;
+	bytes static public name;
 
-	address public initiator;
+	mapping(address => address) public act4;
 
-	struct VotingTable {
+	struct VotingCenter {
 		bytes name;
 		bytes location;
 	}
+
+	struct VotingPool {
+		bytes name;
+		uint256[] votingCentersArr;
+	}
+
+	struct MunicipalBody {
+		bytes name;
+		uint256[] votingPoolsArr;
+	}
+
+	struct District {
+		bytes name;
+		uint256[] municipalBodiesArr;
+	}
+
+	mapping (uint256 => VotingCenter) votingCenter;
+	mapping (uint256 => VotingPool) votingPool;
+	mapping (uint256 => MunicipalBody) municipalBody;
+	mapping (uint256 => District) district;
 
 	struct Candidate {
 		bytes name;
 		uint256 votes;
 	}
 
-
-	mapping (uint256 => uint256[]) voting;
-	mapping (uint256 => VotingTable) votingPoint;
 	mapping (uint256 => Candidate) candidate;
-
 
 	// Modifier that allows public function to accept external calls always.
 	modifier alwaysAccept {
@@ -37,20 +55,17 @@ contract DeAuditData is IDeAuditData {
 		_;
 	}
 
-	// Modifier that allows public function to accept external calls only from the contract owner.
-	modifier checkDeAuditRootAndAccept {
+	// Modifier that allows to accept external calls only from the DeAuditRoot.
+	modifier checkDeAuditRoot {
 		require(msg.sender == rootDeAudit, 102);
-		tvm.accept();
 		_;
 	}
 
 	// Modifier that allows public function to accept external calls only from the contract owner.
-	modifier checkInitiatorAndAccept {
+	modifier checkInitiator {
 		require(msg.sender == initiator, 103);
-		tvm.accept();
 		_;
 	}
-
 
 	// Init function.
 	constructor(address initiatorAddr) public checkDeAuditRootAndAccept {
@@ -66,6 +81,15 @@ contract DeAuditData is IDeAuditData {
 	receive() external {
 	}
 
+	function triggerToAct4(address addrAct4, address member) public override checkDeAuditRoot {
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+		if (act4.exists(addrAct4)) {
+			TvmCell body = tvm.encodeBody(IAct4(addrAct4).trigger, member);
+			addrAct4.transfer({value: 0, flag: 128, bounce:true, body:body});
+		} else {
+			member.transfer({value: 0, flag: 128, bounce:true});
+		}
+}
 
 
 	// Function for get this contract TON gramms balance

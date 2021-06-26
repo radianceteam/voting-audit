@@ -12,6 +12,8 @@ import "./interfaces/IParticipant.sol";
 contract DeAudit is IDeAudit {
 
 	address static public rootDeAudit;
+	address static public dataDeAudit;
+	address static public tokenDeAudit;
 
 	// Modifier that allows public function to accept external calls always.
 	modifier alwaysAccept {
@@ -26,6 +28,13 @@ contract DeAudit is IDeAudit {
 		_;
 	}
 
+	// Modifier that allows to accept external calls only from the DeAuditRoot.
+	modifier checkDeAuditRoot {
+		require(msg.sender == rootDeAudit, 102);
+		_;
+	}
+
+
 	// Init function.
 	constructor() public {
 	}
@@ -38,6 +47,12 @@ contract DeAudit is IDeAudit {
 	// Function to receive plain transfers.
 	receive() external {
 	}
+
+	function triggerToDeAuditData(address addrAct4, address member) public override checkDeAuditRoot {
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+		TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).triggerToAct4, addrAct4, member);
+		dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
+}
 
 
 

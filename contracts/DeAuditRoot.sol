@@ -23,7 +23,7 @@ contract DeAuditRoot is IDeAuditRoot {
 
 
 	mapping(address => uint256) public actionTeam;
-	uint256 actionTeamMembers;
+	uint256 public actionTeamMembers;
 
 	mapping(address => uint128) public balanceOf;
 	mapping(uint256 => address) public giverFor;
@@ -31,6 +31,8 @@ contract DeAuditRoot is IDeAuditRoot {
 	mapping(uint256 => address) public participantAddr;
 	mapping(address => uint256) public participantPubKey;
 	address[] public participantArr;
+
+	mapping(address => uint256) public launchedDeAudit;
 
 	uint128 public deployFee;
 	uint256 public votingDuration;
@@ -55,7 +57,9 @@ contract DeAuditRoot is IDeAuditRoot {
 
 	// Grams constants
 	uint128 constant public GRAMS_CREATE_PARTICIPANT = 1 ton;
-	uint128 constant public GRAMS_INIT_VOTE = 1 ton;
+	uint128 constant public GRAMS_INIT_VOTE = 0.5 ton;
+	uint128 constant public GRAMS_TRIGGER = 1.5 ton;
+
 
 	// Vote count model selector
 	// Majority = 0;
@@ -222,6 +226,30 @@ contract DeAuditRoot is IDeAuditRoot {
 		return { value: 0, bounce: false, flag: 64 } thisBalance();
 	}
 
+	function createDeAuditData(bytes deAuditDataName) public override OnlyActionTeamMember {
+		require(!(msg.value < GRAMS_INIT_VOTE), 106);
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+		address member = msg.sender;
+
+
+
+
+
+
+		actionTeam[member] ++;
+		member.transfer({ value: 0, flag: 128});
+	}
+
+
+
+
+
+
+
+
+
+
+
 	function createVoteId() private inline  pure returns (uint256) {
 		rnd.shuffle();
 		return rnd.getSeed();
@@ -270,7 +298,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		member.transfer({ value: 0, flag: 128});
 	}
 
-	function initVoteLaunchDeAudut(
+	function initVoteDeAudut(
 		uint256 timeStart,
 		address dataDeAudit,
 		uint256 colPeriod,
@@ -381,16 +409,13 @@ contract DeAuditRoot is IDeAuditRoot {
 		member.transfer({ value: 0, flag: 128});
 	}
 
-	function sendTrigger(address act4Addr, uint8 triggerType) public override OnlyActionTeamMember {
+	function sendTrigger(address addrDeAudit, address addrAct4) public override OnlyActionTeamMember {
+		require(launchedDeAudit.exists(addrDeAudit) && !(msg.value < GRAMS_TRIGGER), 110);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address member = msg.sender;
-		TvmBuilder builder;
-		builder.store(triggerType);
-		TvmCell payload = builder.toCell();
-		TvmCell body = tvm.encodeBody(IAct4(act4Addr).trigger, payload);
-		act4Addr.transfer({value: GRAMS_SWAP, bounce:true, body:body});
+		TvmCell body = tvm.encodeBody(IDeAudit(addrDeAudit).triggerToDeAudit, addrAct4, member);
 		actionTeam[member] ++;
-	  member.transfer({ value: 0, flag: 128});
+		addrDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
 }
 
 }

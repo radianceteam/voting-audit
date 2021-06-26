@@ -4,5 +4,6 @@ pragma AbiHeader pubkey;
 pragma AbiHeader time;
 
 interface IDeAudit {
+  function triggerToDeAuditData(address addrAct4, address member) external;
 
 }

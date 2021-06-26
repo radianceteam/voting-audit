@@ -12,6 +12,13 @@ import "./interfaces/IParticipant.sol";
 contract Act4 is IAct4 {
 
 	address static public rootDeAudit;
+	address static public dataDeAudit;
+	address static public collator;
+
+	mapping(address => bool) public validator;
+	uint256 public countValidators;
+	uint256 public countValidationsFor;
+	uint256 public countValidationsAgainst;
 
 	// Modifier that allows public function to accept external calls always.
 	modifier alwaysAccept {
@@ -20,9 +27,8 @@ contract Act4 is IAct4 {
 	}
 
 	// Modifier that allows public function to accept external calls only from the contract owner.
-	modifier checkOwnerAndAccept {
-		require(msg.pubkey() == tvm.pubkey(), 102);
-		tvm.accept();
+	modifier checkDeAuditData {
+		require(msg.sender == dataDeAudit, 101);
 		_;
 	}
 
@@ -31,13 +37,23 @@ contract Act4 is IAct4 {
 	}
 
 	// Function to transfers plain transfers.
-	function sendTransfer(address dest, uint128 value, bool bounce) public pure checkOwnerAndAccept {
+	function sendTransfer(address dest, uint128 value, bool bounce) public pure checkDeAuditData {
 		dest.transfer(value, bounce, 0);
 	}
 
 	// Function to receive plain transfers.
 	receive() external {
 	}
+
+	function trigger(address member) public override checkDeAuditData {
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+	// Here logic for cancel Act4 by Action Team
+	// 1)  send msg to DeAuditData for delete collator
+	// 2)  send msg to DeAuditData for burn collator's tokens
+	// 2)  send msg to DeAuditData for burn valaidator's tokens and return stacke
+		member.transfer({value: 0, flag: 128, bounce:true});
+	}
+
 
 	// Function for get this contract TON gramms balance
   function thisBalance() private inline  pure returns (uint128) {
