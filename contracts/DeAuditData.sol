@@ -3,10 +3,33 @@ pragma AbiHeader expire;
 pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
+import "./interfaces/IDeAuditData.sol";
+import "./interfaces/IDeAuditRoot.sol";
+import "./interfaces/IDeAudit.sol";
+import "./interfaces/IAct4.sol";
+import "./interfaces/IParticipant.sol";
 
-contract DeAuditData {
+contract DeAuditData is IDeAuditData {
 
 	address static public rootDeAudit;
+
+	address public initiator;
+
+	struct VotingTable {
+		bytes name;
+		bytes location;
+	}
+
+	struct Candidate {
+		bytes name;
+		uint256 votes;
+	}
+
+
+	mapping (uint256 => uint256[]) voting;
+	mapping (uint256 => VotingTable) votingPoint;
+	mapping (uint256 => Candidate) candidate;
+
 
 	// Modifier that allows public function to accept external calls always.
 	modifier alwaysAccept {
@@ -15,18 +38,27 @@ contract DeAuditData {
 	}
 
 	// Modifier that allows public function to accept external calls only from the contract owner.
-	modifier checkOwnerAndAccept {
-		require(msg.pubkey() == tvm.pubkey(), 102);
+	modifier checkDeAuditRootAndAccept {
+		require(msg.sender == rootDeAudit, 102);
 		tvm.accept();
 		_;
 	}
 
+	// Modifier that allows public function to accept external calls only from the contract owner.
+	modifier checkInitiatorAndAccept {
+		require(msg.sender == initiator, 103);
+		tvm.accept();
+		_;
+	}
+
+
 	// Init function.
-	constructor() public {
+	constructor(address initiatorAddr) public checkDeAuditRootAndAccept {
+    initiator = initiatorAddr;
 	}
 
 	// Function to transfers plain transfers.
-	function sendTransfer(address dest, uint128 value, bool bounce) public pure checkOwnerAndAccept {
+	function sendTransfer(address dest, uint128 value, bool bounce) public pure checkDeAuditRootAndAccept {
 		dest.transfer(value, bounce, 0);
 	}
 

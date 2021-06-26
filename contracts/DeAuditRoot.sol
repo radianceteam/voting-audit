@@ -3,28 +3,27 @@ pragma AbiHeader expire;
 pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
-import "./Participant.sol";
+import "./interfaces/IDeAuditData.sol";
 import "./interfaces/IDeAuditRoot.sol";
+import "./interfaces/IDeAudit.sol";
 import "./interfaces/IAct4.sol";
+import "./interfaces/IParticipant.sol";
 
-
-// AT smart contract (ATSC) – an SMV-based smart contract system (see link 1to the reference implementation),
-// which has additional specific functionality described in this specification.
-// ATSC represents AT and could be a root for several DeAudit smart contracts.
-// Details of its deployment are presented below.
 contract DeAuditRoot is IDeAuditRoot {
 
 	uint256 static public soUINT;
-	TvmCell static public codeParticipant;
 
-	TvmCell public codeListOfCandidates;
-	TvmCell public codeListOfVotingCenters;
+	TvmCell public codeParticipant;
 	TvmCell public codeDeAudit;
-	TvmCell public codeAct4Collation;
+	TvmCell public codeDeAuditData;
+	TvmCell public codeAct4;
 	TvmCell public codeVotingCentre;
+	TvmCell public codeRootTokenContract;
+	TvmCell public codeTONTokenWallet;
 
-	mapping(address => uint256) public memberActionTeam;
-	uint32 votersTotal;
+
+	mapping(address => uint256) public actionTeam;
+	uint256 actionTeamMembers;
 
 	mapping(address => uint128) public balanceOf;
 	mapping(uint256 => address) public giverFor;
@@ -44,6 +43,8 @@ contract DeAuditRoot is IDeAuditRoot {
 		uint8 vcmc;
 		mapping(address => uint8) yes;
 		mapping(address => uint8) no;
+		uint256 yesCount;
+		uint256 noCount;
 		TvmCell data;
 		uint8 actionType;
 		bool completed;
@@ -91,18 +92,19 @@ contract DeAuditRoot is IDeAuditRoot {
 
 	// Modifier that allows public function to accept external calls only from the contract owner.
 	modifier OnlyActionTeamMember {
-		require(memberActionTeam.exists(msg.sender), 105);
+		require(actionTeam.exists(msg.sender), 105);
 		_;
 	}
 
 	// Init function.
-	constructor(uint8 arg0) public {
+	constructor(uint8 arg0, TvmCell code0) public {
 		uint256 creatorPubKey = msg.pubkey();
 		require(creatorPubKey != 0 && creatorPubKey == tvm.pubkey(), 103);
 		tvm.accept();
+		codeParticipant = code0;
 		address creatorAddr = createParticipant(creatorPubKey, 0, false, GRAMS_CREATE_PARTICIPANT);
-		memberActionTeam[creatorAddr] = 1;
-	  votersTotal ++;
+		actionTeam[creatorAddr] = 1;
+	  actionTeamMembers ++;
 		require(arg0 = 0 || arg0 = 1 || arg0 = 2, 108);
 		voteCountModel = arg0;
 	}
@@ -115,30 +117,45 @@ contract DeAuditRoot is IDeAuditRoot {
 	// Function to receive plain transfers.
 	receive() external {
 		balanceOf[msg.sender] += msg.value;
+
+	function setCodePaticipant(TvmCell code) public checkOwnerAndAccept {
+		codeParticipant = code;
 	}
 
-	function setCodeListOfCandidates(TvmCell code) public checkOwnerAndAccept {
-		codeListOfCandidates = code;
-	}
-
-	function setCodeListOfVotingCenters(TvmCell code) public checkOwnerAndAccept {
-		codeListOfVotingCenters = code;
+	function setCodeDeAuditData(TvmCell code) public checkOwnerAndAccept {
+		codeDeAuditData = code;
 	}
 
 	function setCodeDeAudit(TvmCell code) public checkOwnerAndAccept {
 		codeDeAudit = code;
 	}
 
-	function setCodeAct4Collation(TvmCell code) public checkOwnerAndAccept {
-		codeAct4Collation = code;
+	function setCodeAct4(TvmCell code) public checkOwnerAndAccept {
+		codeAct4 = code;
 	}
 
-	function setCodeVotingCentre(TvmCell code) public checkOwnerAndAccept {
-		codeVotingCentre = code;
+	function setCodeRootTokenContract(TvmCell code) public checkOwnerAndAccept {
+		codeRootTokenContract = code;
+	}
+
+	function setCodeTONTokenWallet(TvmCell code) public checkOwnerAndAccept {
+		codeTONTokenWallet = code;
 	}
 
 	function setDeployFee(uint128 arg0) public checkOwnerAndAccept {
 		deployFee = arg0;
+	}
+
+	function selectMajority() public checkOwnerAndAccept {
+		voteCountModel = VOTE_COUNT_MODEL_MAJORITY;
+	}
+
+	function selectSoftMajority() public checkOwnerAndAccept {
+		voteCountModel = VOTE_COUNT_MODEL_SOFT_MAJORITY;
+	}
+
+	function selectSuperMajority() public checkOwnerAndAccept {
+		voteCountModel = VOTE_COUNT_MODEL_SUPER_MAJORITY;
 	}
 
 	function setVotingDuration(uint128 arg0) public checkOwnerAndAccept {
@@ -210,7 +227,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		return rnd.getSeed();
 	}
 
-	function initVoteAddMemberAT(address participantAddr) public override OnlyActionTeamMember {
+	function initVoteAddActionTeamMember(address participantAddr) public override OnlyActionTeamMember {
 		require(!(msg.value < GRAMS_INIT_VOTE), 106);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address member = msg.sender;
@@ -227,11 +244,11 @@ contract DeAuditRoot is IDeAuditRoot {
 		cv.completed = false;
 		votes[voteId] = cv;
 		voteKeys.push(voteId);
-		memberActionTeam[member] ++;
+		actionTeam[member] ++;
 		member.transfer({ value: 0, flag: 128});
 	}
 
-	function initVoteRemoveMemberAT(address participantAddr) public override OnlyActionTeamMember {
+	function initVoteRemoveActionTeamMember(address participantAddr) public override OnlyActionTeamMember {
 		require(!(msg.value < GRAMS_INIT_VOTE), 106);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address member = msg.sender;
@@ -249,14 +266,13 @@ contract DeAuditRoot is IDeAuditRoot {
 		cv.completed = false;
 		votes[voteId] = cv;
 		voteKeys.push(voteId);
-		memberActionTeam[member] ++;
+		actionTeam[member] ++;
 		member.transfer({ value: 0, flag: 128});
 	}
 
 	function initVoteLaunchDeAudut(
 		uint256 timeStart,
-		address loC,
-		address loVC,
+		address dataDeAudit,
 		uint256 colPeriod,
 		uint256 valPeriod,
 		uint256 colStake,
@@ -274,13 +290,13 @@ contract DeAuditRoot is IDeAuditRoot {
 		cv.duration = votingDuration;
 		cv.vcmc = voteCountModel;
 		TvmBuilder builder;
-		builder.store(timeStart,loC,loVC,colPeriod,valPeriod,colStake,valStake,colRwd,valRwd);
+		builder.store(timeStart,dataDeAudit,colPeriod,valPeriod,colStake,valStake,colRwd,valRwd);
     cv.data = builder.toCell();
 		cv.actionType = LAUNCH_DE_AUDIT;
 		cv.completed = false;
 		votes[voteId] = cv;
 		voteKeys.push(voteId);
-		memberActionTeam[member] ++;
+		actionTeam[member] ++;
 		member.transfer({ value: 0, flag: 128});
 	}
 
@@ -300,12 +316,9 @@ contract DeAuditRoot is IDeAuditRoot {
 			passed = (yes * total * 10 >= total * total + no * (8 * total  + 20));
 		} else if (selector == VOTE_COUNT_MODEL_SUPER_MAJORITY) {
 			passed = (yes * total * 3 >= total * total + no * (total + 6));
-		} else  {
-			passed = false;
 		}
 		return passed;
 	}
-
 
 	function resultVote(uint256 voteId) public override OnlyActionTeamMember {
 		require(!(msg.value < GRAMS_INIT_VOTE) && votes.exists(voteId), 107);
@@ -314,26 +327,23 @@ contract DeAuditRoot is IDeAuditRoot {
 		Vote cv = votes[voteId];
 		require(cv.completed == false, 108);
 		if (isTimeUp(cv.startTime)){
-			optional(address, uint32) yesMax = cv.yes.max();
-			(, uint32 yesVotes) = yesMax.hasValue() ? yesMax.get() : 0;
-			optional(address, uint32) noMax = cv.no.max();
-			(, uint32 noVotes) = noMax.hasValue() ? noMax.get() : 0;
-			bool voteResult = calculateVotes(yesVotes, noVotes, votersTotal, cv.vcmc);
+			actionTeam[member] ++;
+			bool voteResult = calculateVotes(yesCount, noCount, actionTeamMembers, cv.vcmc);
 			if (voteResult){
 				if (cv.actionType == ADD_MEMBER_ACTION_TEAM) {
-					memberActionTeam[cv.participant] = 1;
-					votersTotal ++;
+					actionTeam[cv.participant] = 1;
+					actionTeamMembers ++;
 					cv.completed = true;
 					votes[voteId] = cv;
 					member.transfer({ value: 0, flag: 128});
 				} else if (cv.actionType == REMOVE_MEMBER_ACTION_TEAM) {
-					delete memberActionTeam[cv.participant];
-					votersTotal --;
+					delete actionTeam[cv.participant];
+					actionTeamMembers --;
 					cv.completed = true;
 					votes[voteId] = cv;
 					member.transfer({ value: 0, flag: 128});
 				} else if (cv.actionType == LAUNCH_DE_AUDIT) {
-
+				//  Here to launch
 				} else {
 					member.transfer({ value: 0, flag: 128});
 				}
@@ -351,10 +361,10 @@ contract DeAuditRoot is IDeAuditRoot {
 		address member = msg.sender;
 		Vote cv = votes[voteId];
 		require(cv.completed == false && !(cv.yes.exit(member)) && !(cv.no.exit(member)), 110);
-		optional(address, uint32) yesMax = cv.yes.max();
-		(, uint32 yesVotes) = yesMax.hasValue() ? yesMax.get() : 0;
-    cv.yes[member] = yesVotes + 1;
+		yesCount ++;
+    cv.yes[member] = yesCount;
 		votes[voteId] = cv;
+		actionTeam[member] ++;
 		member.transfer({ value: 0, flag: 128});
 	}
 
@@ -364,10 +374,10 @@ contract DeAuditRoot is IDeAuditRoot {
 		address member = msg.sender;
 		Vote cv = votes[voteId];
 		require(cv.completed == false && !(cv.yes.exit(member)) && !(cv.no.exit(member)), 110);
-		optional(address, uint32) noMax = cv.no.max();
-		(, uint32 noVotes) = noMax.hasValue() ? noMax.get() : 0;
-		cv.no[member] = noVotes + 1;
+		noCount ++;
+		cv.no[member] = noCount;
 		votes[voteId] = cv;
+		actionTeam[member] ++;
 		member.transfer({ value: 0, flag: 128});
 	}
 
@@ -379,6 +389,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		TvmCell payload = builder.toCell();
 		TvmCell body = tvm.encodeBody(IAct4(act4Addr).trigger, payload);
 		act4Addr.transfer({value: GRAMS_SWAP, bounce:true, body:body});
+		actionTeam[member] ++;
 	  member.transfer({ value: 0, flag: 128});
 }
 

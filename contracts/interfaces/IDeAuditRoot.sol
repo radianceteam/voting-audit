@@ -4,12 +4,12 @@ pragma AbiHeader pubkey;
 pragma AbiHeader time;
 
 interface IDeAuditRoot {
-  function initVoteAddMemberAT(address participantAddr) external;
-  function initVoteRemoveMemberAT(address participantAddr) external;
+  function initVoteAddActionTeamMember(address participantAddr) external;
+  function initVoteRemoveActionTeamMember(address participantAddr) external;
+  function createDeAuditData() external;
   function initVoteLaunchDeAudut(
     uint256 timeStart,
-    address loc,
-    address lov,
+    address dataDeAudit,
     uint256 colPeriod,
     uint256 valPeriod,
     uint256 colStake,
@@ -19,5 +19,4 @@ interface IDeAuditRoot {
   ) external;
   function resultVote(uint256 voteId) external;
   function sendTrigger(address act4Addr, uint8 triggerType) external;
-
 }

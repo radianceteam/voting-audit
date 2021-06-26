@@ -3,9 +3,13 @@ pragma AbiHeader expire;
 pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
+import "./interfaces/IDeAuditData.sol";
 import "./interfaces/IDeAuditRoot.sol";
+import "./interfaces/IDeAudit.sol";
+import "./interfaces/IAct4.sol";
+import "./interfaces/IParticipant.sol";
 
-contract Participant {
+contract Participant is IParticipant {
 
 	address static public rootDeAudit;
 
@@ -34,7 +38,6 @@ contract Participant {
 	// Function to receive plain transfers.
 	receive() external {
 	}
-
 
 	// Function for get this contract TON gramms balance
   function thisBalance() private inline  pure returns (uint128) {

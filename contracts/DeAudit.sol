@@ -3,10 +3,13 @@ pragma AbiHeader expire;
 pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
+import "./interfaces/IDeAuditData.sol";
 import "./interfaces/IDeAuditRoot.sol";
+import "./interfaces/IDeAudit.sol";
 import "./interfaces/IAct4.sol";
+import "./interfaces/IParticipant.sol";
 
-contract DeAudit {
+contract DeAudit is IDeAudit {
 
 	address static public rootDeAudit;
 
