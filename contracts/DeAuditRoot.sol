@@ -47,7 +47,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		address initiator;
 		uint256 startTime;
 		uint256 duration;
-		uint8 vcmc;
+		uint8 vcms;
 		mapping(address => uint8) yes;
 		mapping(address => uint8) no;
 		uint256 yesCount;
@@ -285,7 +285,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		cv.initiator = member;
 		cv.startTime = uint256(now);
 		cv.duration = votingDuration;
-		cv.vcmc = voteCountModel;
+		cv.vcms = voteCountModel;
 		TvmBuilder builder;
 		builder.store(participantAddr);
     cv.data = builder.toCell();
@@ -306,7 +306,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		cv.initiator = member;
 		cv.startTime = uint256(now);
 		cv.duration = votingDuration;
-		cv.vcmc = voteCountModel;
+		cv.vcms = voteCountModel;
 		TvmBuilder builder;
 		builder.store(participantAddr);
     cv.data = builder.toCell();
@@ -337,7 +337,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		cv.initiator = member;
 		cv.startTime = uint256(now);
 		cv.duration = votingDuration;
-		cv.vcmc = voteCountModel;
+		cv.vcms = voteCountModel;
 		TvmBuilder builder;
 		builder.store(timeStart,dataDeAudit,colPeriod,valPeriod,colStake,valStake,colRwd,valRwd);
     cv.data = builder.toCell();
@@ -377,7 +377,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		require(cv.completed == false, 108);
 		if (isTimeUp(cv.startTime)){
 			actionTeam[member] ++;
-			bool voteResult = calculateVotes(yesCount, noCount, actionTeamMembers, cv.vcmc);
+			bool voteResult = calculateVotes(yesCount, noCount, actionTeamMembers, cv.vcms);
 			if (voteResult){
 				if (cv.actionType == ADD_MEMBER_ACTION_TEAM) {
 					actionTeam[cv.participant] = 1;
