@@ -19,7 +19,7 @@ abstract contract Debot {
      */
 
     /// @notice DeBot entry point.
-    function start() public virtual;
+    function start() public functionID(0x01) virtual;
 
     /// @notice Returns DeBot metadata.
     /// @return name String with name of debot, e.g. "DePool".
