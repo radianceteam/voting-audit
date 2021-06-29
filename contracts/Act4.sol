@@ -13,9 +13,11 @@ contract Act4 is IAct4 {
 
 	address static public rootDeAudit;
 	address static public dataDeAudit;
+	uint256 static public idVotingCenter;
 	address static public collator;
 	uint256 static public vcms;
 
+	mapping(address => uint256) public candidateVotes;
 	mapping(address => bool) public validator;
 	uint256 public countValidators;
 	uint256 public countValidationsFor;
