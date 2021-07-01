@@ -8,10 +8,15 @@ import "./interfaces/IDeAuditRoot.sol";
 import "./interfaces/IDeAudit.sol";
 import "./interfaces/IAct4.sol";
 import "./interfaces/IParticipant.sol";
+import "./interfaces/IRootTokenContract.sol";
+import "./interfaces/ITONTokenWallet.sol";
+import "./interfaces/ITokensReceivedCallback.sol";
 
 contract Participant is IParticipant {
 
 	address static public rootDeAudit;
+
+	mapping(address => uint256) public initiatedDeAuditData;
 
 	// Modifier that allows public function to accept external calls always.
 	modifier alwaysAccept {
@@ -23,6 +28,12 @@ contract Participant is IParticipant {
 	modifier checkOwnerAndAccept {
 		require(msg.pubkey() == tvm.pubkey(), 102);
 		tvm.accept();
+		_;
+	}
+
+	// Modifier that allows to accept external calls only from the DeAuditRoot.
+	modifier onlyDeAuditRoot {
+		require(msg.sender == rootDeAudit, 102);
 		_;
 	}
 
@@ -39,8 +50,115 @@ contract Participant is IParticipant {
 	receive() external {
 	}
 
+	function initVoteAddActionTeamMember(address participantAddr, uint128 grams)  public view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).initVoteAddActionTeamMember, participantAddr);
+		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+	function initVoteRemoveActionTeamMember(address participantAddr, uint128 grams) public view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).initVoteRemoveActionTeamMember, participantAddr);
+		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+	function createDeAuditData(bytes deAuditDataName, uint128 grams) public view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).createDeAuditData, deAuditDataName);
+		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+	function initVoteDeAudut(
+    uint256 timeStart,
+    address dataDeAudit,
+    uint256 colPeriod,
+    uint256 valPeriod,
+    uint256 colStake,
+    uint256 valStake,
+    uint256 colRwd,
+    uint256 valRwd,
+		uint128 grams
+  )  public  view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).initVoteDeAudut, timeStart, dataDeAudit, colPeriod, valPeriod, colStake, valStake, colRwd, valRwd);
+		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+  function voteFor(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).voteFor, voteId);
+		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+  function voteAgainst(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).voteAgainst, voteId);
+		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+  function resultVote(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).resultVote, voteId);
+		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+  function sendTrigger(address addrDeAudit, address addrAct4, uint128 grams)  public view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).sendTrigger, addrDeAudit, addrAct4);
+		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+	function setCreatedDeAuditData(address addressDeAuditData) public override onlyDeAuditRoot {
+		tvm.accept();
+		initiatedDeAuditData[addressDeAuditData] = uint256(now);
+	}
+
+	function addDistrict(address addressDeAuditData, bytes nameDistrict, uint128 grams)  public view checkOwnerAndAccept {
+		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
+		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addDistrict, nameDistrict);
+		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+	function addMunicipalBody(
+		address addressDeAuditData,
+		bytes nameMunicipalBody,
+		uint indexDistrict,
+		uint128 grams
+	)  public view checkOwnerAndAccept {
+		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
+		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addMunicipalBody, nameMunicipalBody, indexDistrict);
+		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+	function addVotingPool(
+		address addressDeAuditData,
+		bytes nameVotingPool,
+		uint indexDistrict,
+		uint indexMunicipalBody,
+		uint128 grams
+	)  public  view checkOwnerAndAccept {
+		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
+		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addVotingPool, nameVotingPool, indexDistrict, indexMunicipalBody);
+		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+	function addVotingCenter(
+		address addressDeAuditData,
+		bytes nameVotingCenter,
+		bytes location,
+		uint indexDistrict,
+		uint indexMunicipalBody,
+		uint indexVotingPool,
+		uint128 grams
+	)   public  view checkOwnerAndAccept {
+		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
+		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addVotingCenter, nameVotingCenter, location, indexDistrict, indexMunicipalBody, indexVotingPool);
+		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+	function addCandidate(
+		address addressDeAuditData,
+		bytes nameCandidate,
+		uint128 grams
+	) public pure checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addCandidate, nameCandidate);
+		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
 	// Function for get this contract TON gramms balance
-  function thisBalance() private inline  pure returns (uint128) {
+  function thisBalance() private inline pure returns (uint128) {
     return address(this).balance;
   }
 

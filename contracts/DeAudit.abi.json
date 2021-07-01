@@ -1,0 +1,134 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "triggerToDeAuditData",
+			"inputs": [
+				{"name":"addrAct4","type":"address"},
+				{"name":"member","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getBalance",
+			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "sequentialNumber",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"sequentialNumber","type":"uint32"}
+			]
+		},
+		{
+			"name": "rootDeAudit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"rootDeAudit","type":"address"}
+			]
+		},
+		{
+			"name": "dataDeAudit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"dataDeAudit","type":"address"}
+			]
+		},
+		{
+			"name": "tokenDeAudit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"tokenDeAudit","type":"address"}
+			]
+		},
+		{
+			"name": "timeStart",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"timeStart","type":"uint256"}
+			]
+		},
+		{
+			"name": "colPeriod",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"colPeriod","type":"uint256"}
+			]
+		},
+		{
+			"name": "valPeriod",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"valPeriod","type":"uint256"}
+			]
+		},
+		{
+			"name": "colStake",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"colStake","type":"uint256"}
+			]
+		},
+		{
+			"name": "valStake",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"valStake","type":"uint256"}
+			]
+		},
+		{
+			"name": "colRwd",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"colRwd","type":"uint256"}
+			]
+		},
+		{
+			"name": "valRwd",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"valRwd","type":"uint256"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"sequentialNumber","type":"uint32"},
+		{"key":2,"name":"rootDeAudit","type":"address"},
+		{"key":3,"name":"dataDeAudit","type":"address"},
+		{"key":4,"name":"tokenDeAudit","type":"address"},
+		{"key":5,"name":"timeStart","type":"uint256"},
+		{"key":6,"name":"colPeriod","type":"uint256"},
+		{"key":7,"name":"valPeriod","type":"uint256"},
+		{"key":8,"name":"colStake","type":"uint256"},
+		{"key":9,"name":"valStake","type":"uint256"},
+		{"key":10,"name":"colRwd","type":"uint256"},
+		{"key":11,"name":"valRwd","type":"uint256"}
+	],
+	"events": [
+	]
+}
