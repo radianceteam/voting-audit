@@ -3,7 +3,7 @@
 set -e
 
 
-tos=./tonos-cli
+tos=./tonos-cli.exe
 if test -f "$tos"; then
     echo "$tos exists."
 else
