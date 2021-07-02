@@ -1,0 +1,166 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addCandidate",
+			"inputs": [
+				{"name":"nameCandidate","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addDistrict",
+			"inputs": [
+				{"name":"nameDistrict","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addMunicipalBody",
+			"inputs": [
+				{"name":"nameMunicipalBody","type":"bytes"},
+				{"name":"indexDistrict","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addVotingPool",
+			"inputs": [
+				{"name":"nameVotingPool","type":"bytes"},
+				{"name":"indexDistrict","type":"uint256"},
+				{"name":"indexMunicipalBody","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addVotingCenter",
+			"inputs": [
+				{"name":"nameVotingCenter","type":"bytes"},
+				{"name":"location","type":"bytes"},
+				{"name":"indexDistrict","type":"uint256"},
+				{"name":"indexMunicipalBody","type":"uint256"},
+				{"name":"indexVotingPool","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "triggerToAct4",
+			"inputs": [
+				{"name":"addrAct4","type":"address"},
+				{"name":"member","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getBalance",
+			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "idDeAuditData",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"idDeAuditData","type":"uint256"}
+			]
+		},
+		{
+			"name": "rootDeAudit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"rootDeAudit","type":"address"}
+			]
+		},
+		{
+			"name": "initiator",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"initiator","type":"address"}
+			]
+		},
+		{
+			"name": "name",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"name","type":"bytes"}
+			]
+		},
+		{
+			"name": "pathVotingCenterForAct4",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"d","type":"uint256"},{"name":"mb","type":"uint256"},{"name":"vp","type":"uint256"},{"name":"vc","type":"uint256"}],"name":"pathVotingCenterForAct4","type":"map(address,tuple)"}
+			]
+		},
+		{
+			"name": "pathVotingCenterForIndex",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"d","type":"uint256"},{"name":"mb","type":"uint256"},{"name":"vp","type":"uint256"},{"name":"vc","type":"uint256"}],"name":"pathVotingCenterForIndex","type":"map(uint256,tuple)"}
+			]
+		},
+		{
+			"name": "countVotingCenteres",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"countVotingCenteres","type":"uint256"}
+			]
+		},
+		{
+			"name": "arrayDistricts",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"location","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"collator","type":"address"},{"name":"collatorWallet","type":"address"},{"name":"collatorPhotoIndex","type":"bytes"}],"name":"arrayVotingCenteres","type":"tuple[]"}],"name":"arrayVotingPools","type":"tuple[]"}],"name":"arrayMunicipalBodies","type":"tuple[]"}],"name":"arrayDistricts","type":"tuple[]"}
+			]
+		},
+		{
+			"name": "candidate",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256"}],"name":"candidate","type":"map(uint256,tuple)"}
+			]
+		},
+		{
+			"name": "countCandidates",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"countCandidates","type":"uint256"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"idDeAuditData","type":"uint256"},
+		{"key":2,"name":"rootDeAudit","type":"address"},
+		{"key":3,"name":"initiator","type":"address"},
+		{"key":4,"name":"name","type":"bytes"}
+	],
+	"events": [
+	]
+}

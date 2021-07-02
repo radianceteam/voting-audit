@@ -4,5 +4,5 @@ pragma AbiHeader pubkey;
 pragma AbiHeader time;
 
 interface IParticipant {
-  function trigger(TvmCell triggerData) external;
+  function setCreatedDeAuditData(address addressDeAuditData) external;
 }

@@ -1,0 +1,133 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "trigger",
+			"inputs": [
+				{"name":"member","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "voteFor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "voteAgainst",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getBalance",
+			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "rootDeAudit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"rootDeAudit","type":"address"}
+			]
+		},
+		{
+			"name": "dataDeAudit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"dataDeAudit","type":"address"}
+			]
+		},
+		{
+			"name": "idVotingCenter",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"idVotingCenter","type":"uint256"}
+			]
+		},
+		{
+			"name": "collator",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"collator","type":"address"}
+			]
+		},
+		{
+			"name": "vcms",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"vcms","type":"uint256"}
+			]
+		},
+		{
+			"name": "candidateVotes",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"candidateVotes","type":"map(address,uint256)"}
+			]
+		},
+		{
+			"name": "validator",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"validator","type":"map(address,bool)"}
+			]
+		},
+		{
+			"name": "countValidators",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"countValidators","type":"uint256"}
+			]
+		},
+		{
+			"name": "countValidationsFor",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"countValidationsFor","type":"uint256"}
+			]
+		},
+		{
+			"name": "countValidationsAgainst",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"countValidationsAgainst","type":"uint256"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"rootDeAudit","type":"address"},
+		{"key":2,"name":"dataDeAudit","type":"address"},
+		{"key":3,"name":"idVotingCenter","type":"uint256"},
+		{"key":4,"name":"collator","type":"address"},
+		{"key":5,"name":"vcms","type":"uint256"}
+	],
+	"events": [
+	]
+}

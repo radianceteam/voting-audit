@@ -1,0 +1,198 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "sendTransfer",
+			"inputs": [
+				{"name":"dest","type":"address"},
+				{"name":"value","type":"uint128"},
+				{"name":"bounce","type":"bool"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "initVoteAddActionTeamMember",
+			"inputs": [
+				{"name":"participantAddr","type":"address"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "initVoteRemoveActionTeamMember",
+			"inputs": [
+				{"name":"participantAddr","type":"address"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "createDeAuditData",
+			"inputs": [
+				{"name":"deAuditDataName","type":"bytes"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "initVoteDeAudut",
+			"inputs": [
+				{"name":"timeStart","type":"uint256"},
+				{"name":"dataDeAudit","type":"address"},
+				{"name":"colPeriod","type":"uint256"},
+				{"name":"valPeriod","type":"uint256"},
+				{"name":"colStake","type":"uint256"},
+				{"name":"valStake","type":"uint256"},
+				{"name":"colRwd","type":"uint256"},
+				{"name":"valRwd","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "voteFor",
+			"inputs": [
+				{"name":"voteId","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "voteAgainst",
+			"inputs": [
+				{"name":"voteId","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "resultVote",
+			"inputs": [
+				{"name":"voteId","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "sendTrigger",
+			"inputs": [
+				{"name":"addrDeAudit","type":"address"},
+				{"name":"addrAct4","type":"address"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setCreatedDeAuditData",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addDistrict",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameDistrict","type":"bytes"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addMunicipalBody",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameMunicipalBody","type":"bytes"},
+				{"name":"indexDistrict","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addVotingPool",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameVotingPool","type":"bytes"},
+				{"name":"indexDistrict","type":"uint256"},
+				{"name":"indexMunicipalBody","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addVotingCenter",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameVotingCenter","type":"bytes"},
+				{"name":"location","type":"bytes"},
+				{"name":"indexDistrict","type":"uint256"},
+				{"name":"indexMunicipalBody","type":"uint256"},
+				{"name":"indexVotingPool","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addCandidate",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameCandidate","type":"bytes"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getBalance",
+			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "rootDeAudit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"rootDeAudit","type":"address"}
+			]
+		},
+		{
+			"name": "initiatedDeAuditData",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"initiatedDeAuditData","type":"map(address,uint256)"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"rootDeAudit","type":"address"}
+	],
+	"events": [
+	]
+}
