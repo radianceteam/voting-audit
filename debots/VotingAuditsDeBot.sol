@@ -20,13 +20,13 @@ interface IDexRoot {
 }
 interface IDexClient {
     function getPairData(address pairAddr) external returns (
- bool pairStatus,
- address pairRootA,
- address pairWalletA,
- address pairRootB,
- address pairWalletB,
- address pairRootAB,
- address curPair
+        bool pairStatus,
+        address pairRootA,
+        address pairWalletA,
+        address pairRootB,
+        address pairWalletB,
+        address pairRootAB,
+        address curPair
     );
 }
 
@@ -85,7 +85,7 @@ contract VotingAuditDebot is Debot {
             MenuItem("Login or sign up", "Set your seed phrase", tvm.functionId(getFCAddressAndKeys)),
             MenuItem("DEV Show Data", "", tvm.functionId(showData)),
             MenuItem("Quit", "Log out and stop debot", 0)
-        ]);
+            ]);
     }
 
     function showData(uint32 index) public {
@@ -123,14 +123,14 @@ contract VotingAuditDebot is Debot {
     function getPairKeys() public {
         optional(uint256) pubkey;
         IDexRoot(dexroot).pairKeys{
-            abiVer : 2,
-            extMsg : true,
-            sign : false,
-            pubkey : pubkey,
-            time : uint64(now),
-            expire: 0x123,
-            callbackId : tvm.functionId(pairKeysCallback),
-            onErrorId : tvm.functionId(someError)
+        abiVer : 2,
+        extMsg : true,
+        sign : false,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(pairKeysCallback),
+        onErrorId : tvm.functionId(someError)
         }();
         Terminal.print(0, "getPairKeys");
     }
@@ -152,14 +152,14 @@ contract VotingAuditDebot is Debot {
         Terminal.print(0, "callGetPairData");
         optional(uint256) pubkey;
         IDexClient(m_dexclient).getPairData{
-            abiVer : 2,
-            extMsg : true,
-            sign : false,
-            pubkey : pubkey,
-            time : uint64(now),
-            expire: 0x123,
-            callbackId : tvm.functionId(pairDataCallback),
-            onErrorId : tvm.functionId(someError)
+        abiVer : 2,
+        extMsg : true,
+        sign : false,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(pairDataCallback),
+        onErrorId : tvm.functionId(someError)
         }(curPairAddress);
     }
 
@@ -191,14 +191,14 @@ contract VotingAuditDebot is Debot {
         optional(uint256) pubkey;
         pairsWalletA[pairWalletA] = m_dexclient;
         IDexTokenWallet(pairWalletA).balance{
-            abiVer : 2,
-            extMsg : true,
-            sign : false,
-            pubkey : pubkey,
-            time : uint64(now),
-            expire: 0x123,
-            callbackId : tvm.functionId(walletBalanceCallback),
-            onErrorId : tvm.functionId(someError)
+        abiVer : 2,
+        extMsg : true,
+        sign : false,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(walletBalanceCallback),
+        onErrorId : tvm.functionId(someError)
         }(0);
     }
 
@@ -221,14 +221,14 @@ contract VotingAuditDebot is Debot {
         pairsRootA[pairRootA] = m_dexclient;
         optional(uint256) pubkey;
         IDexRootTokenContract(pairRootA).name{
-            abiVer : 2,
-            extMsg : true,
-            sign : false,
-            pubkey : pubkey,
-            time : uint64(now),
-            expire: 0x123,
-            callbackId : tvm.functionId(tokenNameCallback),
-            onErrorId : tvm.functionId(someError)
+        abiVer : 2,
+        extMsg : true,
+        sign : false,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(tokenNameCallback),
+        onErrorId : tvm.functionId(someError)
         }();
         //getTotalSupply(pairRootA);
     }
@@ -248,14 +248,14 @@ contract VotingAuditDebot is Debot {
         Terminal.print(0, "getTotalSupply");
         optional(uint256) pubkey;
         IDexRootTokenContract(pairRootA).getTotalSupply{
-            abiVer : 2,
-            extMsg : true,
-            sign : false,
-            pubkey : pubkey,
-            time : uint64(now),
-            expire: 0x123,
-            callbackId : tvm.functionId(totalSupplyCallback),
-            onErrorId : tvm.functionId(someError)
+        abiVer : 2,
+        extMsg : true,
+        sign : false,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(totalSupplyCallback),
+        onErrorId : tvm.functionId(someError)
         }(0);
     }
 
@@ -320,12 +320,12 @@ contract VotingAuditDebot is Debot {
         Terminal.print(0x01, "");
     }
 
-        function getFCAddressAndKeys(uint32 index) public {
-    Menu.select("Login or sign up","",[
-        MenuItem("Generate a seed phrase for me", "New seed phrase", tvm.functionId(menuGenSeedPhrase)),
-        MenuItem("I have the seed phrase", "Enter seed phrase", tvm.functionId(menuEnterSeedPhrase)),
-        MenuItem("Return to main menu", "Go back", 0x02)
-    ]);
+    function getFCAddressAndKeys(uint32 index) public {
+        Menu.select("Login or sign up","",[
+            MenuItem("Generate a seed phrase for me", "New seed phrase", tvm.functionId(menuGenSeedPhrase)),
+            MenuItem("I have the seed phrase", "Enter seed phrase", tvm.functionId(menuEnterSeedPhrase)),
+            MenuItem("Return to main menu", "Go back", 0x02)
+            ]);
     }
 
     function menuGenSeedPhrase(uint32 index) public {
@@ -380,14 +380,14 @@ contract VotingAuditDebot is Debot {
         m_masterSecKey = sec;
         optional(uint256) pubkey;
         IDexRoot(dexroot).checkPubKey{
-            abiVer : 2,
-            extMsg : true,
-            sign : false,
-            pubkey : pubkey,
-            time : uint64(now),
-            expire: 0x123,
-            callbackId : tvm.functionId(checkPubKeyCallback),
-            onErrorId : tvm.functionId(someError)
+        abiVer : 2,
+        extMsg : true,
+        sign : false,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(checkPubKeyCallback),
+        onErrorId : tvm.functionId(someError)
         }(m_masterPubKey);
         Terminal.print(tvm.functionId(VotingAuditDebot.start),"Your seed phrase has been verified. Check DEX Client for existing.");
 
@@ -407,23 +407,23 @@ contract VotingAuditDebot is Debot {
 
     /// @notice Returns Metadata about DeBot.
     function getDebotInfo() public functionID(0xDEB) override view returns(
-    string name, string version, string publisher, string caption, string author,
-    address support, string hello, string language, string dabi, bytes icon
+        string name, string version, string publisher, string caption, string author,
+        address support, string hello, string language, string dabi, bytes icon
     ) {
-    name = "Radiance Voting Audit DeBot";
-    version = "0.1.0";
-    publisher = "Radiance Team";
-    caption = "DeBot for DeAudit by Radiance Team";
-    author = "Radiance Team";
-    support = address.makeAddrStd(0, 0x841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94);
-    hello = "That's debot for Voting Audit. Developed by Radiance Team";
-    language = "en";
-    dabi = m_debotAbi.get();
-    icon = m_icon;
+        name = "Radiance Voting Audit DeBot";
+        version = "0.1.0";
+        publisher = "Radiance Team";
+        caption = "DeBot for DeAudit by Radiance Team";
+        author = "Radiance Team";
+        support = address.makeAddrStd(0, 0x841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94);
+        hello = "That's debot for Voting Audit. Developed by Radiance Team";
+        language = "en";
+        dabi = m_debotAbi.get();
+        icon = m_icon;
     }
 
     function getRequiredInterfaces() public view override returns (uint256[] interfaces) {
-    return [ Terminal.ID ];
+        return [ Terminal.ID ];
     }
 
 }
