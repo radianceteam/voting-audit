@@ -40,7 +40,12 @@
 		{
 			"name": "createDeAuditData",
 			"inputs": [
-				{"name":"deAuditDataName","type":"bytes"},
+				{"name":"nameDeAuditData","type":"bytes"},
+				{"name":"timeStart","type":"uint256"},
+				{"name":"colPeriod","type":"uint256"},
+				{"name":"valPeriod","type":"uint256"},
+				{"name":"colStake","type":"uint128"},
+				{"name":"valStake","type":"uint128"},
 				{"name":"grams","type":"uint128"}
 			],
 			"outputs": [
@@ -49,14 +54,7 @@
 		{
 			"name": "initVoteDeAudut",
 			"inputs": [
-				{"name":"timeStart","type":"uint256"},
-				{"name":"dataDeAudit","type":"address"},
-				{"name":"colPeriod","type":"uint256"},
-				{"name":"valPeriod","type":"uint256"},
-				{"name":"colStake","type":"uint256"},
-				{"name":"valStake","type":"uint256"},
-				{"name":"colRwd","type":"uint256"},
-				{"name":"valRwd","type":"uint256"},
+				{"name":"addrDeAuditData","type":"address"},
 				{"name":"grams","type":"uint128"}
 			],
 			"outputs": [

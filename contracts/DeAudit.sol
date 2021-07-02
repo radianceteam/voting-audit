@@ -22,10 +22,8 @@ contract DeAudit is IDeAudit {
 	uint256 static public timeStart;
 	uint256 static public colPeriod;
 	uint256 static public valPeriod;
-	uint256 static public colStake;
-	uint256 static public valStake;
-	uint256 static public colRwd;
-	uint256 static public valRwd;
+	uint128 static public colStake;
+	uint128 static public valStake;
 
 	// Modifier that allows public function to accept external calls always.
 	modifier alwaysAccept {
@@ -70,7 +68,6 @@ contract DeAudit is IDeAudit {
 		_;
 	}
 
-
 	// Init function.
 	constructor() public {
 	}
@@ -89,8 +86,6 @@ contract DeAudit is IDeAudit {
 		TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).triggerToAct4, addrAct4, member);
 		dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
 	}
-
-
 
 	// Function for get this contract TON gramms balance
 	function thisBalance() private inline  pure returns (uint128) {

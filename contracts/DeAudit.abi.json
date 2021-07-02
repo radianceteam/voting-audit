@@ -88,7 +88,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"colStake","type":"uint256"}
+				{"name":"colStake","type":"uint128"}
 			]
 		},
 		{
@@ -96,23 +96,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"valStake","type":"uint256"}
-			]
-		},
-		{
-			"name": "colRwd",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"colRwd","type":"uint256"}
-			]
-		},
-		{
-			"name": "valRwd",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"valRwd","type":"uint256"}
+				{"name":"valStake","type":"uint128"}
 			]
 		}
 	],
@@ -124,10 +108,8 @@
 		{"key":5,"name":"timeStart","type":"uint256"},
 		{"key":6,"name":"colPeriod","type":"uint256"},
 		{"key":7,"name":"valPeriod","type":"uint256"},
-		{"key":8,"name":"colStake","type":"uint256"},
-		{"key":9,"name":"valStake","type":"uint256"},
-		{"key":10,"name":"colRwd","type":"uint256"},
-		{"key":11,"name":"valRwd","type":"uint256"}
+		{"key":8,"name":"colStake","type":"uint128"},
+		{"key":9,"name":"valStake","type":"uint128"}
 	],
 	"events": [
 	]

@@ -60,23 +60,21 @@ contract Participant is IParticipant {
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function createDeAuditData(bytes deAuditDataName, uint128 grams) public view checkOwnerAndAccept {
-		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).createDeAuditData, deAuditDataName);
+	function createDeAuditData(
+		bytes nameDeAuditData,
+    uint256 timeStart,
+    uint256 colPeriod,
+    uint256 valPeriod,
+    uint128 colStake,
+    uint128 valStake,
+		uint128 grams
+	) public view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).createDeAuditData, nameDeAuditData, timeStart, colPeriod, valPeriod, colStake, valStake);
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function initVoteDeAudut(
-    uint256 timeStart,
-    address dataDeAudit,
-    uint256 colPeriod,
-    uint256 valPeriod,
-    uint256 colStake,
-    uint256 valStake,
-    uint256 colRwd,
-    uint256 valRwd,
-		uint128 grams
-  )  public  view checkOwnerAndAccept {
-		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).initVoteDeAudut, timeStart, dataDeAudit, colPeriod, valPeriod, colStake, valStake, colRwd, valRwd);
+	function initVoteDeAudut(address addrDeAuditData, uint128 grams)  public  view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).initVoteDeAudut, addrDeAuditData);
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 

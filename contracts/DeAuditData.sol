@@ -39,22 +39,26 @@ contract DeAuditData is IDeAuditData {
   struct VotingPool {
     bytes name;
     uint256[] votes;
-    VotingCenter[] arrayVotingCenteres;
+    mapping (uint256 => VotingCenter) votingCenter;
+    uint256[] votingCenterKeys;
   }
 
   struct MunicipalBody {
     bytes name;
     uint256[] votes;
-    VotingPool[] arrayVotingPools;
+    mapping (uint256 => VotingPool) votingPool;
+    uint256[] votingPoolKeys;
   }
 
   struct District {
     bytes name;
     uint256[] votes;
-    MunicipalBody[] arrayMunicipalBodies;
+    mapping (uint256 => MunicipalBody) municipalBody;
+    uint256[] municipalBodyKeys;
   }
 
-  District[] public arrayDistricts;
+  mapping (uint256 => District) public district;
+  uint256[] public districtKeys;
 
   struct Candidate {
     bytes name;
@@ -84,8 +88,8 @@ contract DeAuditData is IDeAuditData {
 
   // Init function.
   constructor() public onlyDeAuditRoot {
-     countVotingCenteres = 0;
-     countCandidates = 0;
+    countVotingCenteres = 0;
+    countCandidates = 0;
   }
 
   // Function to receive plain transfers.
@@ -104,41 +108,49 @@ contract DeAuditData is IDeAuditData {
 
   function addDistrict(bytes nameDistrict) public override onlyInitiator {
     tvm.rawReserve(address(this).balance - msg.value, 2);
-    District cd;
+    uint256 index = districtKeys.length + 1;
+    District cd = district[index];
     cd.name = nameDistrict;
-    arrayDistricts.push(cd);
+    districtKeys.push(index);
+    district[index] = cd;
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
   function addMunicipalBody(bytes nameMunicipalBody, uint indexDistrict) public override onlyInitiator {
     tvm.rawReserve(address(this).balance - msg.value, 2);
-    District cd = arrayDistricts[indexDistrict];
-    MunicipalBody cmb;
+    require(district.exists(indexDistrict), 104);
+    District cd = district[indexDistrict];
+    uint256 index = cd.municipalBodyKeys.length + 1;
+    MunicipalBody cmb = cd.municipalBody[index];
     cmb.name = nameMunicipalBody;
-    cd.arrayMunicipalBodies.push(cmb);
+    cd.municipalBody[index] = cmb;
+    cd.municipalBodyKeys.push(index);
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
   function addVotingPool(bytes nameVotingPool, uint indexDistrict, uint indexMunicipalBody) public override onlyInitiator {
     tvm.rawReserve(address(this).balance - msg.value, 2);
-    District cd = arrayDistricts[indexDistrict];
-    MunicipalBody cmb = cd.arrayMunicipalBodies[indexMunicipalBody];
-    VotingPool cvp;
+    District cd = district[indexDistrict];
+    MunicipalBody cmb = cd.municipalBody[indexMunicipalBody];
+    uint256 index = cmb.votingPoolKeys.length + 1;
+    VotingPool cvp = cmb.votingPool[index];
     cvp.name = nameVotingPool;
-    cmb.arrayVotingPools.push(cvp);
+    cmb.votingPool[index] = cvp;
+    cmb.votingPoolKeys.push(index);
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
   function addVotingCenter(bytes nameVotingCenter, bytes location, uint indexDistrict, uint indexMunicipalBody, uint indexVotingPool) public override onlyInitiator {
     tvm.rawReserve(address(this).balance - msg.value, 2);
-    District cd = arrayDistricts[indexDistrict];
-    MunicipalBody cmb = cd.arrayMunicipalBodies[indexMunicipalBody];
-    VotingPool cvp = cmb.arrayVotingPools[indexVotingPool];
-    uint indexVotingCenter = cvp.arrayVotingCenteres.length;
-    VotingCenter cvc;
+    District cd = district[indexDistrict];
+    MunicipalBody cmb = cd.municipalBody[indexMunicipalBody];
+    VotingPool cvp = cmb.votingPool[indexVotingPool];
+    uint indexVotingCenter = cvp.votingCenterKeys.length + 1;
+    VotingCenter cvc = cvp.votingCenter[indexVotingCenter];
     cvc.name = nameVotingCenter;
     cvc.location = location;
-    cvp.arrayVotingCenteres.push(cvc);
+    cvp.votingCenter[indexVotingCenter] = cvc;
+    cvp.votingCenterKeys.push(indexVotingCenter);
     VotingCenterPath cvcp = VotingCenterPath(indexDistrict, indexMunicipalBody, indexVotingPool, indexVotingCenter);
     countVotingCenteres ++;
     pathVotingCenterForIndex[countVotingCenteres] = cvcp;

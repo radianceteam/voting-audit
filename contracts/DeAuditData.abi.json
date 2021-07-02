@@ -131,11 +131,19 @@
 			]
 		},
 		{
-			"name": "arrayDistricts",
+			"name": "district",
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"location","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"collator","type":"address"},{"name":"collatorWallet","type":"address"},{"name":"collatorPhotoIndex","type":"bytes"}],"name":"arrayVotingCenteres","type":"tuple[]"}],"name":"arrayVotingPools","type":"tuple[]"}],"name":"arrayMunicipalBodies","type":"tuple[]"}],"name":"arrayDistricts","type":"tuple[]"}
+				{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"location","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"collator","type":"address"},{"name":"collatorWallet","type":"address"},{"name":"collatorPhotoIndex","type":"bytes"}],"name":"votingCenter","type":"map(uint256,tuple)"},{"name":"votingCenterKeys","type":"uint256[]"}],"name":"votingPool","type":"map(uint256,tuple)"},{"name":"votingPoolKeys","type":"uint256[]"}],"name":"municipalBody","type":"map(uint256,tuple)"},{"name":"municipalBodyKeys","type":"uint256[]"}],"name":"district","type":"map(uint256,tuple)"}
+			]
+		},
+		{
+			"name": "districtKeys",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"districtKeys","type":"uint256[]"}
 			]
 		},
 		{

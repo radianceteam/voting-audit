@@ -34,8 +34,17 @@ contract DeAuditRoot is IDeAuditRoot {
 	mapping(address => uint256) public participantPubKey;
 	address[] public participantArr;
 
-	mapping(address => address) public creatorOfDeAuditData;
+	mapping(address => DeAuditParam) public paramDeAudit;
 	uint256 public countDeAuditData;
+
+	struct DeAuditParam {
+		address creator;
+		uint256 timeStart;
+		uint256 colPeriod;
+		uint256 valPeriod;
+		uint128 colStake;
+		uint128 valStake;
+	}
 
 	mapping(address => uint256) public launchedDeAudit;
 	address[] public keysDeAudit;
@@ -60,7 +69,7 @@ contract DeAuditRoot is IDeAuditRoot {
 	}
 
 	mapping(uint256 => Vote) public vote;
-	uint256[] voteKeys;
+	uint256[] public voteKeys;
 
 	// Grams constants
 	uint128 constant public GRAMS_CREATE = 1 ton;
@@ -108,14 +117,7 @@ contract DeAuditRoot is IDeAuditRoot {
 	}
 
 	// Init function.
-	constructor(uint8 settingVoteCountModel, TvmCell code0) public {
-		uint256 creatorPubKey = msg.pubkey();
-		require(creatorPubKey != 0 && creatorPubKey == tvm.pubkey(), 103);
-		tvm.accept();
-		codeParticipant = code0;
-		address creatorAddr = createParticipant(creatorPubKey, 0, false, GRAMS_CREATE);
-		actionTeam[creatorAddr] = 1;
-		actionTeamMembers ++;
+	constructor(uint8 settingVoteCountModel) public checkOwnerAndAccept {
 		require(settingVoteCountModel == 0 || settingVoteCountModel == 1 || settingVoteCountModel == 2, 108);
 		voteCountModel = settingVoteCountModel;
 		countDeAuditData = 0;
@@ -135,6 +137,14 @@ contract DeAuditRoot is IDeAuditRoot {
 	function setCodePaticipant(TvmCell code) public checkOwnerAndAccept {
 		codeParticipant = code;
 	}
+
+	function setCreator() public checkOwnerAndAccept {
+		uint256 creatorPubKey = msg.pubkey();
+		address creatorAddr = createParticipant(creatorPubKey, 0, false, GRAMS_CREATE);
+		actionTeam[creatorAddr] = 1;
+		actionTeamMembers ++;
+	}
+
 
 	function setCodeDeAuditData(TvmCell code) public checkOwnerAndAccept {
 		codeDeAuditData = code;
@@ -172,7 +182,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		voteCountModel = VOTE_COUNT_MODEL_SUPER_MAJORITY;
 	}
 
-	function setVotingDuration(uint128 settingVotingDuration) public checkOwnerAndAccept {
+	function setVotingDuration(uint256 settingVotingDuration) public checkOwnerAndAccept {
 		votingDuration = settingVotingDuration;
 	}
 
@@ -244,7 +254,14 @@ contract DeAuditRoot is IDeAuditRoot {
 		return countDeAudit + 1;
 	}
 
-	function createDeAuditData(bytes nameDeAuditData) public override OnlyActionTeamMember {
+	function createDeAuditData(
+		bytes nameDeAuditData,
+		uint256 timeStart,
+		uint256 colPeriod,
+		uint256 valPeriod,
+		uint128 colStake,
+		uint128 valStake
+	) public override OnlyActionTeamMember {
 		require(!(msg.value < GRAMS_CREATE), 106);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address member = msg.sender;
@@ -267,7 +284,14 @@ contract DeAuditRoot is IDeAuditRoot {
 			value : GRAMS_CREATE
 		}();
 		if (deployedAddress != address(0)) {
-			creatorOfDeAuditData[deployedAddress] = member;
+			DeAuditParam cdad = paramDeAudit[deployedAddress];
+			cdad.creator = member;
+			cdad.timeStart = timeStart;
+			cdad.colPeriod = colPeriod;
+			cdad.valPeriod = valPeriod;
+			cdad.colStake = colStake;
+			cdad.valStake = valStake;
+			paramDeAudit[deployedAddress] = cdad;
 			countDeAuditData++;
 			actionTeam[member] ++;
 			TvmCell body = tvm.encodeBody(IParticipant(member).setCreatedDeAuditData, deployedAddress);
@@ -325,16 +349,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		member.transfer({ value: 0, flag: 128});
 	}
 
-	function initVoteDeAudut(
-		uint256 timeStart,
-		address dataDeAudit,
-		uint256 colPeriod,
-		uint256 valPeriod,
-		uint256 colStake,
-		uint256 valStake,
-		uint256 colRwd,
-		uint256 valRwd
-	) public override OnlyActionTeamMember {
+	function initVoteDeAudut(address addrDeAuditData) public override OnlyActionTeamMember {
 		require(!(msg.value < GRAMS_INIT_VOTE), 106);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address member = msg.sender;
@@ -345,7 +360,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		cv.duration = votingDuration;
 		cv.vcms = voteCountModel;
 		TvmBuilder builder;
-		builder.store(timeStart,dataDeAudit,colPeriod,valPeriod,colStake,valStake,colRwd,valRwd);
+		builder.store(addrDeAuditData);
 		cv.data = builder.toCell();
 		cv.actionType = LAUNCH_DE_AUDIT;
 		cv.completed = false;
@@ -355,15 +370,19 @@ contract DeAuditRoot is IDeAuditRoot {
 		member.transfer({ value: 0, flag: 128});
 	}
 
-	function isTimeUp(uint256 timeForCheck) private inline view returns (bool) {
-		return !((uint256(now) - timeForCheck) < votingDuration);
+	function isTimeUp(uint256 startTime, uint256 duration) public pure returns (bool) {
+		return uint256(now) >= (startTime + duration);
+	}
+
+	function timeNow() public pure returns (uint256) {
+		return uint256(now);
 	}
 
 	// Vote count model selector
 	// Majority = 0;
 	// SoftMajority = 1;
 	// SuperMajority = 2;
-	function calculateVotes(uint32 yes, uint32 no, uint32 total, uint8 selector) private inline pure returns (bool) {
+	function calculateVotes(uint32 yes, uint32 no, uint32 total, uint8 selector) public pure returns (bool) {
 		bool passed = false;
 		if (selector == VOTE_COUNT_MODEL_MAJORITY) {
 			passed = (yes > no);
@@ -381,10 +400,10 @@ contract DeAuditRoot is IDeAuditRoot {
 		address member = msg.sender;
 		Vote cv = vote[voteId];
 		require(cv.completed == false, 108);
-		if (isTimeUp(cv.startTime)){
+		if (isTimeUp(cv.startTime, cv.duration) == true){
 			actionTeam[member] ++;
 			bool voteResult = calculateVotes(cv.yesCount, cv.noCount, actionTeamMembers, cv.vcms);
-			if (voteResult){
+			if (voteResult == true){
 				if (cv.actionType == ADD_MEMBER_ACTION_TEAM) {
 					TvmSlice slice = cv.data.toSlice();
 					address addressParticipant = slice.decode(address);
@@ -403,8 +422,9 @@ contract DeAuditRoot is IDeAuditRoot {
 					member.transfer({ value: 0, flag: 128});
 				} else if (cv.actionType == LAUNCH_DE_AUDIT) {
 					TvmSlice slice = cv.data.toSlice();
-					(uint256 ts, address dad, uint256 cp, uint256 vp, uint256 cs, uint256 vs, uint256 cr, uint256 vr) = slice.decode(uint256, address, uint256, uint256, uint256, uint256, uint256, uint256);
-					address deployedAddr = deployDeAudit(ts,dad,cp,vp,cs,vs,cr,vr,GRAMS_CREATE);
+					address dad = slice.decode(address);
+					DeAuditParam cdad = paramDeAudit[dad];
+					address deployedAddr = deployDeAudit(cdad.timeStart,dad,cdad.colPeriod,cdad.valPeriod,cdad.colStake,cdad.valStake,GRAMS_CREATE);
 					deployRootDemocracyTokenAddress(deployedAddr, GRAMS_CREATE);
 					launchedDeAudit[deployedAddr] = voteId;
 					keysDeAudit.push(deployedAddr);
@@ -512,10 +532,8 @@ contract DeAuditRoot is IDeAuditRoot {
 		address dataDeAudit,
 		uint256 colPeriod,
 		uint256 valPeriod,
-		uint256 colStake,
-		uint256 valStake,
-		uint256 colRwd,
-		uint256 valRwd,
+		uint128 colStake,
+		uint128 valStake,
 		uint128 grammsForDeAudit
 	) private inline returns (address addressDeAudit) {
 		addressDeAudit = address(0);
@@ -532,9 +550,7 @@ contract DeAuditRoot is IDeAuditRoot {
 				colPeriod: colPeriod,
 				valPeriod: valPeriod,
 				colStake: colStake,
-				valStake: valStake,
-				colRwd: colRwd,
-				valRwd: valRwd
+				valStake: valStake
 			},
 			code: codeDeAudit,
 			pubkey : tvm.pubkey()

@@ -5,8 +5,7 @@
 		{
 			"name": "constructor",
 			"inputs": [
-				{"name":"settingVoteCountModel","type":"uint8"},
-				{"name":"code0","type":"cell"}
+				{"name":"settingVoteCountModel","type":"uint8"}
 			],
 			"outputs": [
 			]
@@ -25,6 +24,13 @@
 			"name": "setCodePaticipant",
 			"inputs": [
 				{"name":"code","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setCreator",
+			"inputs": [
 			],
 			"outputs": [
 			]
@@ -101,7 +107,7 @@
 		{
 			"name": "setVotingDuration",
 			"inputs": [
-				{"name":"settingVotingDuration","type":"uint128"}
+				{"name":"settingVotingDuration","type":"uint256"}
 			],
 			"outputs": [
 			]
@@ -146,7 +152,12 @@
 		{
 			"name": "createDeAuditData",
 			"inputs": [
-				{"name":"nameDeAuditData","type":"bytes"}
+				{"name":"nameDeAuditData","type":"bytes"},
+				{"name":"timeStart","type":"uint256"},
+				{"name":"colPeriod","type":"uint256"},
+				{"name":"valPeriod","type":"uint256"},
+				{"name":"colStake","type":"uint128"},
+				{"name":"valStake","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -170,16 +181,39 @@
 		{
 			"name": "initVoteDeAudut",
 			"inputs": [
-				{"name":"timeStart","type":"uint256"},
-				{"name":"dataDeAudit","type":"address"},
-				{"name":"colPeriod","type":"uint256"},
-				{"name":"valPeriod","type":"uint256"},
-				{"name":"colStake","type":"uint256"},
-				{"name":"valStake","type":"uint256"},
-				{"name":"colRwd","type":"uint256"},
-				{"name":"valRwd","type":"uint256"}
+				{"name":"addrDeAuditData","type":"address"}
 			],
 			"outputs": [
+			]
+		},
+		{
+			"name": "isTimeUp",
+			"inputs": [
+				{"name":"startTime","type":"uint256"},
+				{"name":"duration","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
+			"name": "timeNow",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "calculateVotes",
+			"inputs": [
+				{"name":"yes","type":"uint32"},
+				{"name":"no","type":"uint32"},
+				{"name":"total","type":"uint32"},
+				{"name":"selector","type":"uint8"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
 			]
 		},
 		{
@@ -328,11 +362,11 @@
 			]
 		},
 		{
-			"name": "creatorOfDeAuditData",
+			"name": "paramDeAudit",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"creatorOfDeAuditData","type":"map(address,address)"}
+				{"components":[{"name":"creator","type":"address"},{"name":"timeStart","type":"uint256"},{"name":"colPeriod","type":"uint256"},{"name":"valPeriod","type":"uint256"},{"name":"colStake","type":"uint128"},{"name":"valStake","type":"uint128"}],"name":"paramDeAudit","type":"map(address,tuple)"}
 			]
 		},
 		{
@@ -397,6 +431,14 @@
 			],
 			"outputs": [
 				{"components":[{"name":"initiator","type":"address"},{"name":"startTime","type":"uint256"},{"name":"duration","type":"uint256"},{"name":"vcms","type":"uint8"},{"name":"yes","type":"map(address,uint32)"},{"name":"no","type":"map(address,uint32)"},{"name":"yesCount","type":"uint32"},{"name":"noCount","type":"uint32"},{"name":"data","type":"cell"},{"name":"actionType","type":"uint8"},{"name":"completed","type":"bool"}],"name":"vote","type":"map(uint256,tuple)"}
+			]
+		},
+		{
+			"name": "voteKeys",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"voteKeys","type":"uint256[]"}
 			]
 		}
 	],
