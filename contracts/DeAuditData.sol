@@ -16,17 +16,6 @@ contract DeAuditData is IDeAuditData {
   address static public initiator;
   bytes static public name;
 
-  mapping(address => VotingCenterPath) public pathVotingCenterForAct4;
-  mapping(uint256 => VotingCenterPath) public pathVotingCenterForIndex;
-  uint256 public countVotingCenteres;
-
-  struct VotingCenterPath {
-    uint d;
-    uint mb;
-    uint vp;
-    uint vc;
-  }
-
   struct VotingCenter {
     bytes name;
     bytes location;
@@ -34,27 +23,42 @@ contract DeAuditData is IDeAuditData {
     address collator;
     address collatorWallet;
     bytes collatorPhotoIndex;
+    uint256 idVotingPool;
+    uint256 idMunicipalBody;
+    uint256 idDistrict;
   }
+
+  mapping (uint256 => VotingCenter) public votingCenter;
+  uint256[] public votingCenterKeys;
+
+  mapping(address => uint256) public votingCenterForAct4;
+  mapping(uint256 => address) public act4ForVotingCenter;
 
   struct VotingPool {
     bytes name;
     uint256[] votes;
-    mapping (uint256 => VotingCenter) votingCenter;
-    uint256[] votingCenterKeys;
+    uint256[] votingCentersArr;
   }
+
+  mapping (uint256 => VotingPool) public votingPool;
+  uint256[] public votingPoolKeys;
 
   struct MunicipalBody {
     bytes name;
     uint256[] votes;
-    mapping (uint256 => VotingPool) votingPool;
-    uint256[] votingPoolKeys;
+    uint256[] votingCentersArr;
+    uint256[] votingPoolsArr;
   }
+
+  mapping (uint256 => MunicipalBody) public municipalBody;
+  uint256[] public municipalBodyKeys;
 
   struct District {
     bytes name;
     uint256[] votes;
-    mapping (uint256 => MunicipalBody) municipalBody;
-    uint256[] municipalBodyKeys;
+    uint256[] votingCentersArr;
+    uint256[] votingPoolsArr;
+    uint256[] municipalBodiesArr;
   }
 
   mapping (uint256 => District) public district;
@@ -66,7 +70,7 @@ contract DeAuditData is IDeAuditData {
   }
 
   mapping (uint256 => Candidate) public candidate;
-  uint256 public countCandidates;
+  uint256[] public candidateKeys;
 
   // Modifier that allows public function to accept external calls always.
   modifier alwaysAccept {
@@ -88,8 +92,6 @@ contract DeAuditData is IDeAuditData {
 
   // Init function.
   constructor() public onlyDeAuditRoot {
-    countVotingCenteres = 0;
-    countCandidates = 0;
   }
 
   // Function to receive plain transfers.
@@ -98,11 +100,12 @@ contract DeAuditData is IDeAuditData {
 
   function addCandidate(bytes nameCandidate) public override onlyInitiator {
     tvm.rawReserve(address(this).balance - msg.value, 2);
-    countCandidates ++;
-    Candidate cc = candidate[countCandidates];
+    uint256 index = candidateKeys.length + 1;
+    Candidate cc = candidate[index];
     cc.name = nameCandidate;
     cc.votes = 0;
-    candidate[countCandidates] = cc;
+    candidate[index] = cc;
+    candidateKeys.push(index);
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
@@ -116,50 +119,58 @@ contract DeAuditData is IDeAuditData {
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
-  function addMunicipalBody(bytes nameMunicipalBody, uint indexDistrict) public override onlyInitiator {
-    tvm.rawReserve(address(this).balance - msg.value, 2);
+  function addMunicipalBody(bytes nameMunicipalBody, uint256 indexDistrict) public override onlyInitiator {
     require(district.exists(indexDistrict), 104);
+    tvm.rawReserve(address(this).balance - msg.value, 2);
     District cd = district[indexDistrict];
-    uint256 index = cd.municipalBodyKeys.length + 1;
-    MunicipalBody cmb = cd.municipalBody[index];
+    uint256 indexMunicipalBody = municipalBodyKeys.length + 1;
+    MunicipalBody cmb = municipalBody[indexMunicipalBody];
     cmb.name = nameMunicipalBody;
-    cd.municipalBody[index] = cmb;
-    cd.municipalBodyKeys.push(index);
+    municipalBody[indexMunicipalBody] = cmb;
+    municipalBodyKeys.push(indexMunicipalBody);
+    cd.municipalBodiesArr.push(indexMunicipalBody);
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
-  function addVotingPool(bytes nameVotingPool, uint indexDistrict, uint indexMunicipalBody) public override onlyInitiator {
+  function addVotingPool(bytes nameVotingPool, uint256 indexDistrict, uint256 indexMunicipalBody) public override onlyInitiator {
+    require(district.exists(indexDistrict) && municipalBody.exists(indexMunicipalBody), 106);
     tvm.rawReserve(address(this).balance - msg.value, 2);
     District cd = district[indexDistrict];
-    MunicipalBody cmb = cd.municipalBody[indexMunicipalBody];
-    uint256 index = cmb.votingPoolKeys.length + 1;
-    VotingPool cvp = cmb.votingPool[index];
+    MunicipalBody cmb = municipalBody[indexMunicipalBody];
+    uint256 indexVotingPool = votingPoolKeys.length + 1;
+    VotingPool cvp = votingPool[indexVotingPool];
     cvp.name = nameVotingPool;
-    cmb.votingPool[index] = cvp;
-    cmb.votingPoolKeys.push(index);
+    votingPool[indexVotingPool] = cvp;
+    votingPoolKeys.push(indexVotingPool);
+    cmb.votingPoolsArr.push(indexVotingPool);
+    cd.votingPoolsArr.push(indexVotingPool);
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
-  function addVotingCenter(bytes nameVotingCenter, bytes location, uint indexDistrict, uint indexMunicipalBody, uint indexVotingPool) public override onlyInitiator {
+  function addVotingCenter(bytes nameVotingCenter, bytes location, uint256 indexDistrict, uint256 indexMunicipalBody, uint256 indexVotingPool) public override onlyInitiator {
     tvm.rawReserve(address(this).balance - msg.value, 2);
+    require(district.exists(indexDistrict) && municipalBody.exists(indexMunicipalBody) && votingPool.exists(indexVotingPool), 105);
     District cd = district[indexDistrict];
-    MunicipalBody cmb = cd.municipalBody[indexMunicipalBody];
-    VotingPool cvp = cmb.votingPool[indexVotingPool];
-    uint indexVotingCenter = cvp.votingCenterKeys.length + 1;
-    VotingCenter cvc = cvp.votingCenter[indexVotingCenter];
+    MunicipalBody cmb = municipalBody[indexMunicipalBody];
+    VotingPool cvp = votingPool[indexVotingPool];
+    uint indexVotingCenter = votingCenterKeys.length + 1;
+    VotingCenter cvc = votingCenter[indexVotingCenter];
     cvc.name = nameVotingCenter;
     cvc.location = location;
-    cvp.votingCenter[indexVotingCenter] = cvc;
-    cvp.votingCenterKeys.push(indexVotingCenter);
-    VotingCenterPath cvcp = VotingCenterPath(indexDistrict, indexMunicipalBody, indexVotingPool, indexVotingCenter);
-    countVotingCenteres ++;
-    pathVotingCenterForIndex[countVotingCenteres] = cvcp;
+    cvc.idVotingPool = indexVotingPool;
+    cvc.idMunicipalBody = indexMunicipalBody;
+    cvc.idDistrict = indexDistrict;
+    votingCenter[indexVotingCenter] = cvc;
+    votingCenterKeys.push(indexVotingCenter);
+    cvp.votingCentersArr.push(indexVotingCenter);
+    cmb.votingCentersArr.push(indexVotingCenter);
+    cd.votingCentersArr.push(indexVotingCenter);
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
   function triggerToAct4(address addrAct4, address member) public override onlyDeAuditRoot {
     tvm.rawReserve(address(this).balance - msg.value, 2);
-    if (pathVotingCenterForAct4.exists(addrAct4)) {
+    if (votingCenterForAct4.exists(addrAct4)) {
       TvmCell body = tvm.encodeBody(IAct4(addrAct4).trigger, member);
       addrAct4.transfer({value: 0, flag: 128, bounce:true, body:body});
     } else {

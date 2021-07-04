@@ -10,8 +10,11 @@ const networkSelector = process.env.NET_SELECTOR;
 const fs = require('fs');
 // const pathJsonR = './GiverContractRTD.json';
 
-let destination = '0:6dcc169d243856d15878e0adc15b512425db70baeb1921767627c5cbea7800b8';
-let gramms = 20000000000;
+const { DeAuditRootContract } = require("./DeAuditRoot.js");
+
+const pathJsonRoot = './DeAuditRoot.json';
+
+
 
 TonClient.useBinaryLibrary(libNode);
 
@@ -23,6 +26,19 @@ async function logEvents(params, response_type) {
 
 async function main(client) {
     let response;
+
+    const rootAddr = JSON.parse(fs.readFileSync(pathJsonRoot,{encoding: "utf8"})).address;
+    const rootAcc = new Account(DeAuditRootContract, {address:rootAddr,client,});
+
+    response = await rootAcc.runLocal("actionTeamKeys", {});
+    console.log("Contract reacted to your actionTeamKeys:", response.decoded.output);
+
+    let destination = response.decoded.output.actionTeamKeys[0];
+    console.log("Contract reacted to your actionTeamKeys[0]:", destination);
+
+    let gramms = 20000000000;
+
+
     // const giverAddr = JSON.parse(fs.readFileSync('./GiverContractFLD.json',{encoding: "utf8"})).address;
     const giverKeys = JSON.parse(fs.readFileSync('./GiverContractNTD.json',{encoding: "utf8"})).keys;
     // const giverAddr = JSON.parse(fs.readFileSync(pathJsonClient,{encoding: "utf8"})).address;

@@ -16,6 +16,7 @@ import "./interfaces/IBurnTokensCallback.sol";
 contract DeAudit is IDeAudit {
 
 	uint32 static public sequentialNumber;
+	bytes static public name;
 	address static public rootDeAudit;
 	address static public dataDeAudit;
 	address static public tokenDeAudit;
@@ -71,6 +72,22 @@ contract DeAudit is IDeAudit {
 	// Init function.
 	constructor() public {
 	}
+
+	function getDetails() override external view responsible returns (IDeAuditDetails) {
+			return { value: 0, bounce: false, flag: 64 } IDeAuditDetails(
+				sequentialNumber,
+				name,
+				rootDeAudit,
+				dataDeAudit,
+				tokenDeAudit,
+				timeStart,
+				colPeriod,
+				valPeriod,
+				colStake,
+				valStake
+			);
+	}
+
 
 	// Function to transfers plain transfers.
 	function sendTransfer(address dest, uint128 value, bool bounce) private inline pure {

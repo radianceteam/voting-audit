@@ -152,7 +152,7 @@
 		{
 			"name": "createDeAuditData",
 			"inputs": [
-				{"name":"nameDeAuditData","type":"bytes"},
+				{"name":"nameDeAudit","type":"bytes"},
 				{"name":"timeStart","type":"uint256"},
 				{"name":"colPeriod","type":"uint256"},
 				{"name":"valPeriod","type":"uint256"},
@@ -314,6 +314,14 @@
 			]
 		},
 		{
+			"name": "actionTeamKeys",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"actionTeamKeys","type":"address[]"}
+			]
+		},
+		{
 			"name": "actionTeamMembers",
 			"inputs": [
 			],
@@ -366,7 +374,15 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"creator","type":"address"},{"name":"timeStart","type":"uint256"},{"name":"colPeriod","type":"uint256"},{"name":"valPeriod","type":"uint256"},{"name":"colStake","type":"uint128"},{"name":"valStake","type":"uint128"}],"name":"paramDeAudit","type":"map(address,tuple)"}
+				{"components":[{"name":"creator","type":"address"},{"name":"name","type":"bytes"},{"name":"timeStart","type":"uint256"},{"name":"colPeriod","type":"uint256"},{"name":"valPeriod","type":"uint256"},{"name":"colStake","type":"uint128"},{"name":"valStake","type":"uint128"}],"name":"paramDeAudit","type":"map(address,tuple)"}
+			]
+		},
+		{
+			"name": "keysDeAuditData",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"keysDeAuditData","type":"address[]"}
 			]
 		},
 		{

@@ -74,7 +74,14 @@ async function main(client) {
     client,
   });
 
-  let deauditDataAddr1 = '0:2c44f76dbd6ea38eec9b32dd7fcf3a2c395eec9d26fd494bf4fe1935029243ac';
+  response = await rootAcc.runLocal("keysDeAuditData", {});
+  console.log("Contract reacted to your keysDeAuditData:", response.decoded.output);
+
+  let keysDeAuditData = response.decoded.output.keysDeAuditData;
+  console.log("Contract reacted to your keysDeAuditData[0]:", keysDeAuditData[0]);
+
+
+  let deauditDataAddr1 = keysDeAuditData[0];
 
   const deauditdataAcc = new Account(DeAuditDataContract, {
     address: deauditDataAddr1,
@@ -112,11 +119,13 @@ async function main(client) {
   });
   console.log("Contract reacted to your addDistrict:", response.decoded.output);
 
+  // ========
+
   response = await creatorAcc.run("addMunicipalBody",
   {
     addressDeAuditData:deauditDataAddr1,
     nameMunicipalBody:toHex("MunicipalBody A1"),
-    indexDistrict:0,
+    indexDistrict:1,
     grams:1500000000
   });
   console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
@@ -125,7 +134,7 @@ async function main(client) {
   {
     addressDeAuditData:deauditDataAddr1,
     nameMunicipalBody:toHex("MunicipalBody A2"),
-    indexDistrict:0,
+    indexDistrict:1,
     grams:1500000000
   });
   console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
@@ -134,7 +143,7 @@ async function main(client) {
   {
     addressDeAuditData:deauditDataAddr1,
     nameMunicipalBody:toHex("MunicipalBody B1"),
-    indexDistrict:1,
+    indexDistrict:2,
     grams:1500000000
   });
   console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
@@ -143,17 +152,19 @@ async function main(client) {
   {
     addressDeAuditData:deauditDataAddr1,
     nameMunicipalBody:toHex("MunicipalBody B2"),
-    indexDistrict:1,
+    indexDistrict:2,
     grams:1500000000
   });
   console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
+
+  // ==========
 
   response = await creatorAcc.run("addVotingPool",
   {
     addressDeAuditData:deauditDataAddr1,
     nameVotingPool:toHex("VotingPool A1-1"),
-    indexDistrict:0,
-    indexMunicipalBody:0,
+    indexDistrict:1,
+    indexMunicipalBody:1,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingPool:", response.decoded.output);
@@ -162,56 +173,6 @@ async function main(client) {
   {
     addressDeAuditData:deauditDataAddr1,
     nameVotingPool:toHex("VotingPool A1-2"),
-    indexDistrict:0,
-    indexMunicipalBody:0,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingPool",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingPool:toHex("VotingPool A2-1"),
-    indexDistrict:0,
-    indexMunicipalBody:1,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingPool",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingPool:toHex("VotingPool A2-2"),
-    indexDistrict:0,
-    indexMunicipalBody:1,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingPool",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingPool:toHex("VotingPool B1-1"),
-    indexDistrict:1,
-    indexMunicipalBody:0,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingPool",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingPool:toHex("VotingPool B1-2"),
-    indexDistrict:1,
-    indexMunicipalBody:0,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingPool",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingPool:toHex("VotingPool B2-1"),
     indexDistrict:1,
     indexMunicipalBody:1,
     grams:1500000000
@@ -221,21 +182,73 @@ async function main(client) {
   response = await creatorAcc.run("addVotingPool",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingPool:toHex("VotingPool B2-2"),
+    nameVotingPool:toHex("VotingPool A2-3"),
     indexDistrict:1,
-    indexMunicipalBody:1,
+    indexMunicipalBody:2,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingPool:", response.decoded.output);
+
+  response = await creatorAcc.run("addVotingPool",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingPool:toHex("VotingPool A2-4"),
+    indexDistrict:1,
+    indexMunicipalBody:2,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
+
+  response = await creatorAcc.run("addVotingPool",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingPool:toHex("VotingPool B3-5"),
+    indexDistrict:2,
+    indexMunicipalBody:3,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
+
+  response = await creatorAcc.run("addVotingPool",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingPool:toHex("VotingPool B3-6"),
+    indexDistrict:2,
+    indexMunicipalBody:3,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
+
+  response = await creatorAcc.run("addVotingPool",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingPool:toHex("VotingPool B4-7"),
+    indexDistrict:2,
+    indexMunicipalBody:4,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
+
+  response = await creatorAcc.run("addVotingPool",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingPool:toHex("VotingPool B4-8"),
+    indexDistrict:2,
+    indexMunicipalBody:4,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
+
+  // =====
 
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
     nameVotingCenter:toHex("VotingCenter A1-1-1"),
     location:toHex("coordinates here"),
-    indexDistrict:0,
-    indexMunicipalBody:0,
-    indexVotingPool:0,
+    indexDistrict:1,
+    indexMunicipalBody:1,
+    indexVotingPool:1,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
@@ -245,69 +258,7 @@ async function main(client) {
     addressDeAuditData:deauditDataAddr1,
     nameVotingCenter:toHex("VotingCenter A1-1-2"),
     location:toHex("coordinates here"),
-    indexDistrict:0,
-    indexMunicipalBody:0,
-    indexVotingPool:0,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingCenter",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter A1-2-1"),
-    location:toHex("coordinates here"),
-    indexDistrict:0,
-    indexMunicipalBody:0,
-    indexVotingPool:1,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingCenter",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter A1-2-2"),
-    location:toHex("coordinates here"),
-    indexDistrict:0,
-    indexMunicipalBody:0,
-    indexVotingPool:1,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
-
-
-
-  response = await creatorAcc.run("addVotingCenter",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter A2-1-1"),
-    location:toHex("coordinates here"),
-    indexDistrict:0,
-    indexMunicipalBody:1,
-    indexVotingPool:0,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingCenter",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter A2-1-2"),
-    location:toHex("coordinates here"),
-    indexDistrict:0,
-    indexMunicipalBody:1,
-    indexVotingPool:0,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingCenter",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter A2-2-1"),
-    location:toHex("coordinates here"),
-    indexDistrict:0,
+    indexDistrict:1,
     indexMunicipalBody:1,
     indexVotingPool:1,
     grams:1500000000
@@ -317,11 +268,73 @@ async function main(client) {
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter A2-2-2"),
+    nameVotingCenter:toHex("VotingCenter A1-2-3"),
     location:toHex("coordinates here"),
-    indexDistrict:0,
+    indexDistrict:1,
     indexMunicipalBody:1,
-    indexVotingPool:1,
+    indexVotingPool:2,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
+
+  response = await creatorAcc.run("addVotingCenter",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingCenter:toHex("VotingCenter A1-2-4"),
+    location:toHex("coordinates here"),
+    indexDistrict:1,
+    indexMunicipalBody:1,
+    indexVotingPool:2,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
+
+
+
+  response = await creatorAcc.run("addVotingCenter",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingCenter:toHex("VotingCenter A2-3-5"),
+    location:toHex("coordinates here"),
+    indexDistrict:1,
+    indexMunicipalBody:2,
+    indexVotingPool:3,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
+
+  response = await creatorAcc.run("addVotingCenter",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingCenter:toHex("VotingCenter A2-3-6"),
+    location:toHex("coordinates here"),
+    indexDistrict:1,
+    indexMunicipalBody:2,
+    indexVotingPool:3,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
+
+  response = await creatorAcc.run("addVotingCenter",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingCenter:toHex("VotingCenter A2-4-7"),
+    location:toHex("coordinates here"),
+    indexDistrict:1,
+    indexMunicipalBody:2,
+    indexVotingPool:4,
+    grams:1500000000
+  });
+  console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
+
+  response = await creatorAcc.run("addVotingCenter",
+  {
+    addressDeAuditData:deauditDataAddr1,
+    nameVotingCenter:toHex("VotingCenter A2-4-8"),
+    location:toHex("coordinates here"),
+    indexDistrict:1,
+    indexMunicipalBody:2,
+    indexVotingPool:4,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
@@ -331,11 +344,11 @@ async function main(client) {
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter B1-1-1"),
+    nameVotingCenter:toHex("VotingCenter B3-5-9"),
     location:toHex("coordinates here"),
-    indexDistrict:1,
-    indexMunicipalBody:0,
-    indexVotingPool:0,
+    indexDistrict:2,
+    indexMunicipalBody:3,
+    indexVotingPool:5,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
@@ -343,11 +356,11 @@ async function main(client) {
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter B1-1-2"),
+    nameVotingCenter:toHex("VotingCenter B3-5-10"),
     location:toHex("coordinates here"),
-    indexDistrict:1,
-    indexMunicipalBody:0,
-    indexVotingPool:0,
+    indexDistrict:2,
+    indexMunicipalBody:3,
+    indexVotingPool:5,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
@@ -355,11 +368,11 @@ async function main(client) {
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter B1-2-1"),
+    nameVotingCenter:toHex("VotingCenter B3-6-11"),
     location:toHex("coordinates here"),
-    indexDistrict:1,
-    indexMunicipalBody:0,
-    indexVotingPool:1,
+    indexDistrict:2,
+    indexMunicipalBody:3,
+    indexVotingPool:6,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
@@ -367,11 +380,11 @@ async function main(client) {
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter B1-2-2"),
+    nameVotingCenter:toHex("VotingCenter B3-6-12"),
     location:toHex("coordinates here"),
-    indexDistrict:1,
-    indexMunicipalBody:0,
-    indexVotingPool:1,
+    indexDistrict:2,
+    indexMunicipalBody:3,
+    indexVotingPool:6,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
@@ -381,11 +394,11 @@ async function main(client) {
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter B2-1-1"),
+    nameVotingCenter:toHex("VotingCenter B4-7-13"),
     location:toHex("coordinates here"),
-    indexDistrict:1,
-    indexMunicipalBody:1,
-    indexVotingPool:0,
+    indexDistrict:2,
+    indexMunicipalBody:4,
+    indexVotingPool:7,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
@@ -393,11 +406,11 @@ async function main(client) {
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter B2-1-2"),
+    nameVotingCenter:toHex("VotingCenter B4-7-14"),
     location:toHex("coordinates here"),
-    indexDistrict:1,
-    indexMunicipalBody:1,
-    indexVotingPool:0,
+    indexDistrict:2,
+    indexMunicipalBody:4,
+    indexVotingPool:7,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
@@ -405,11 +418,11 @@ async function main(client) {
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter B2-2-1"),
+    nameVotingCenter:toHex("VotingCenter B4-8-15"),
     location:toHex("coordinates here"),
-    indexDistrict:1,
-    indexMunicipalBody:1,
-    indexVotingPool:1,
+    indexDistrict:2,
+    indexMunicipalBody:4,
+    indexVotingPool:8,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);
@@ -417,11 +430,11 @@ async function main(client) {
   response = await creatorAcc.run("addVotingCenter",
   {
     addressDeAuditData:deauditDataAddr1,
-    nameVotingCenter:toHex("VotingCenter B2-2-2"),
+    nameVotingCenter:toHex("VotingCenter B4-8-16"),
     location:toHex("coordinates here"),
-    indexDistrict:1,
-    indexMunicipalBody:1,
-    indexVotingPool:1,
+    indexDistrict:2,
+    indexMunicipalBody:4,
+    indexVotingPool:8,
     grams:1500000000
   });
   console.log("Contract reacted to your addVotingCenter:", response.decoded.output);

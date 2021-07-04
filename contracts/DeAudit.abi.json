@@ -10,6 +10,15 @@
 			]
 		},
 		{
+			"name": "getDetails",
+			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
+			],
+			"outputs": [
+				{"components":[{"name":"sequentialNumber","type":"uint32"},{"name":"name","type":"bytes"},{"name":"rootDeAudit","type":"address"},{"name":"dataDeAudit","type":"address"},{"name":"tokenDeAudit","type":"address"},{"name":"timeStart","type":"uint256"},{"name":"colPeriod","type":"uint256"},{"name":"valPeriod","type":"uint256"},{"name":"colStake","type":"uint128"},{"name":"valStake","type":"uint128"}],"name":"value0","type":"tuple"}
+			]
+		},
+		{
 			"name": "triggerToDeAuditData",
 			"inputs": [
 				{"name":"addrAct4","type":"address"},
@@ -33,6 +42,14 @@
 			],
 			"outputs": [
 				{"name":"sequentialNumber","type":"uint32"}
+			]
+		},
+		{
+			"name": "name",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"name","type":"bytes"}
 			]
 		},
 		{
@@ -102,14 +119,15 @@
 	],
 	"data": [
 		{"key":1,"name":"sequentialNumber","type":"uint32"},
-		{"key":2,"name":"rootDeAudit","type":"address"},
-		{"key":3,"name":"dataDeAudit","type":"address"},
-		{"key":4,"name":"tokenDeAudit","type":"address"},
-		{"key":5,"name":"timeStart","type":"uint256"},
-		{"key":6,"name":"colPeriod","type":"uint256"},
-		{"key":7,"name":"valPeriod","type":"uint256"},
-		{"key":8,"name":"colStake","type":"uint128"},
-		{"key":9,"name":"valStake","type":"uint128"}
+		{"key":2,"name":"name","type":"bytes"},
+		{"key":3,"name":"rootDeAudit","type":"address"},
+		{"key":4,"name":"dataDeAudit","type":"address"},
+		{"key":5,"name":"tokenDeAudit","type":"address"},
+		{"key":6,"name":"timeStart","type":"uint256"},
+		{"key":7,"name":"colPeriod","type":"uint256"},
+		{"key":8,"name":"valPeriod","type":"uint256"},
+		{"key":9,"name":"colStake","type":"uint128"},
+		{"key":10,"name":"valStake","type":"uint128"}
 	],
 	"events": [
 	]

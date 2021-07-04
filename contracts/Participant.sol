@@ -112,7 +112,7 @@ contract Participant is IParticipant {
 	function addMunicipalBody(
 		address addressDeAuditData,
 		bytes nameMunicipalBody,
-		uint indexDistrict,
+		uint256 indexDistrict,
 		uint128 grams
 	)  public view checkOwnerAndAccept {
 		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
@@ -123,8 +123,8 @@ contract Participant is IParticipant {
 	function addVotingPool(
 		address addressDeAuditData,
 		bytes nameVotingPool,
-		uint indexDistrict,
-		uint indexMunicipalBody,
+		uint256 indexDistrict,
+		uint256 indexMunicipalBody,
 		uint128 grams
 	)  public  view checkOwnerAndAccept {
 		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
@@ -136,9 +136,9 @@ contract Participant is IParticipant {
 		address addressDeAuditData,
 		bytes nameVotingCenter,
 		bytes location,
-		uint indexDistrict,
-		uint indexMunicipalBody,
-		uint indexVotingPool,
+		uint256 indexDistrict,
+		uint256 indexMunicipalBody,
+		uint256 indexVotingPool,
 		uint128 grams
 	)   public  view checkOwnerAndAccept {
 		require(initiatedDeAuditData.exists(addressDeAuditData), 103);

@@ -77,7 +77,7 @@ async function main(client) {
 
 
   response = await creatorAcc.run("createDeAuditData", {
-    nameDeAuditData:toHex("001 TEST VOTING DeAudit"),
+    nameDeAuditData:toHex("4 Jul 2021 17:19:1 TEST VOTING DeAudit"),
     timeStart:1625700000,
     colPeriod:100000,
     valPeriod:100000,

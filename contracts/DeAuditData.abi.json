@@ -107,27 +107,67 @@
 			]
 		},
 		{
-			"name": "pathVotingCenterForAct4",
+			"name": "votingCenter",
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"d","type":"uint256"},{"name":"mb","type":"uint256"},{"name":"vp","type":"uint256"},{"name":"vc","type":"uint256"}],"name":"pathVotingCenterForAct4","type":"map(address,tuple)"}
+				{"components":[{"name":"name","type":"bytes"},{"name":"location","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"collator","type":"address"},{"name":"collatorWallet","type":"address"},{"name":"collatorPhotoIndex","type":"bytes"},{"name":"idVotingPool","type":"uint256"},{"name":"idMunicipalBody","type":"uint256"},{"name":"idDistrict","type":"uint256"}],"name":"votingCenter","type":"map(uint256,tuple)"}
 			]
 		},
 		{
-			"name": "pathVotingCenterForIndex",
+			"name": "votingCenterKeys",
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"d","type":"uint256"},{"name":"mb","type":"uint256"},{"name":"vp","type":"uint256"},{"name":"vc","type":"uint256"}],"name":"pathVotingCenterForIndex","type":"map(uint256,tuple)"}
+				{"name":"votingCenterKeys","type":"uint256[]"}
 			]
 		},
 		{
-			"name": "countVotingCenteres",
+			"name": "votingCenterForAct4",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"countVotingCenteres","type":"uint256"}
+				{"name":"votingCenterForAct4","type":"map(address,uint256)"}
+			]
+		},
+		{
+			"name": "act4ForVotingCenter",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"act4ForVotingCenter","type":"map(uint256,address)"}
+			]
+		},
+		{
+			"name": "votingPool",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"votingCentersArr","type":"uint256[]"}],"name":"votingPool","type":"map(uint256,tuple)"}
+			]
+		},
+		{
+			"name": "votingPoolKeys",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"votingPoolKeys","type":"uint256[]"}
+			]
+		},
+		{
+			"name": "municipalBody",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"votingCentersArr","type":"uint256[]"},{"name":"votingPoolsArr","type":"uint256[]"}],"name":"municipalBody","type":"map(uint256,tuple)"}
+			]
+		},
+		{
+			"name": "municipalBodyKeys",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"municipalBodyKeys","type":"uint256[]"}
 			]
 		},
 		{
@@ -135,7 +175,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"components":[{"name":"name","type":"bytes"},{"name":"location","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"collator","type":"address"},{"name":"collatorWallet","type":"address"},{"name":"collatorPhotoIndex","type":"bytes"}],"name":"votingCenter","type":"map(uint256,tuple)"},{"name":"votingCenterKeys","type":"uint256[]"}],"name":"votingPool","type":"map(uint256,tuple)"},{"name":"votingPoolKeys","type":"uint256[]"}],"name":"municipalBody","type":"map(uint256,tuple)"},{"name":"municipalBodyKeys","type":"uint256[]"}],"name":"district","type":"map(uint256,tuple)"}
+				{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"votingCentersArr","type":"uint256[]"},{"name":"votingPoolsArr","type":"uint256[]"},{"name":"municipalBodiesArr","type":"uint256[]"}],"name":"district","type":"map(uint256,tuple)"}
 			]
 		},
 		{
@@ -155,11 +195,11 @@
 			]
 		},
 		{
-			"name": "countCandidates",
+			"name": "candidateKeys",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"countCandidates","type":"uint256"}
+				{"name":"candidateKeys","type":"uint256[]"}
 			]
 		}
 	],
