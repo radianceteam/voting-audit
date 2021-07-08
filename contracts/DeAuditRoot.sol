@@ -57,6 +57,8 @@ contract DeAuditRoot is IDeAuditRoot {
 	uint128 public deployFee;
 	uint256 public votingDuration;
 	uint8 public voteCountModel;
+	uint256 public maxQtyAct4Links;
+
 
 	struct Vote {
 		address initiator;
@@ -122,11 +124,13 @@ contract DeAuditRoot is IDeAuditRoot {
 	}
 
 	// Init function.
-	constructor(uint8 settingVoteCountModel) public checkOwnerAndAccept {
+	constructor(uint8 settingVoteCountModel, uint256 settingLinksMaxLength) public checkOwnerAndAccept {
 		require(settingVoteCountModel == 0 || settingVoteCountModel == 1 || settingVoteCountModel == 2, 108);
+		require(settingLinksMaxLength != 0, 108);
 		voteCountModel = settingVoteCountModel;
 		countDeAuditData = 0;
 		countDeAudit = 0;
+		maxQtyAct4Links = settingLinksMaxLength;
 	}
 
 	// Function to transfers plain transfers.
@@ -151,7 +155,6 @@ contract DeAuditRoot is IDeAuditRoot {
 		actionTeamMembers ++;
 	}
 
-
 	function setCodeDeAuditData(TvmCell code) public checkOwnerAndAccept {
 		codeDeAuditData = code;
 	}
@@ -170,6 +173,10 @@ contract DeAuditRoot is IDeAuditRoot {
 
 	function setCodeTONTokenWallet(TvmCell code) public checkOwnerAndAccept {
 		codeTONTokenWallet = code;
+	}
+
+	function setMaxQtyAct4Links(uint128 settingLinksMaxLength) public checkOwnerAndAccept {
+		maxQtyAct4Links = settingLinksMaxLength;
 	}
 
 	function setDeployFee(uint128 settingDeployFee) public checkOwnerAndAccept {
@@ -278,7 +285,8 @@ contract DeAuditRoot is IDeAuditRoot {
 				idDeAuditData: getDeAuditDataId(),
 				rootDeAudit: address(this),
 				initiator: member,
-				name: nameDeAudit
+				name: nameDeAudit,
+				codeAct4: codeAct4
 			},
 			code: codeDeAuditData,
 			pubkey: tvm.pubkey()
@@ -288,7 +296,7 @@ contract DeAuditRoot is IDeAuditRoot {
 			flag: 0,
 			bounce : false,
 			value : GRAMS_CREATE
-		}();
+		}(maxQtyAct4Links);
 		if (deployedAddress != address(0)) {
 			DeAuditParam cdad = paramDeAudit[deployedAddress];
 			cdad.creator = member;
@@ -410,7 +418,7 @@ contract DeAuditRoot is IDeAuditRoot {
 	}
 
 	function resultVote(uint256 voteId) public override OnlyActionTeamMember {
-		require(!(msg.value < GRAMS_INIT_VOTE * 5) && vote.exists(voteId), 107);
+		require(!(msg.value < GRAMS_INIT_VOTE * 6) && vote.exists(voteId), 107);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address member = msg.sender;
 		Vote cv = vote[voteId];
@@ -441,10 +449,14 @@ contract DeAuditRoot is IDeAuditRoot {
 					TvmSlice slice = cv.data.toSlice();
 					address dad = slice.decode(address);
 					DeAuditParam cdad = paramDeAudit[dad];
-					(address deployedAddr, ) = deployDeAudit(cdad.name, cdad.timeStart,dad,cdad.colPeriod,cdad.valPeriod,cdad.colStake,cdad.valStake);
+					(address deployedAddr, ) = deployDeAudit(cdad.name, cdad.timeStart, dad, cdad.colPeriod, cdad.valPeriod, cdad.colStake, cdad.valStake, cv.vcms);
 					launchedDeAudit[deployedAddr] = voteId;
 					keysDeAudit.push(deployedAddr);
 					countDeAudit ++;
+
+					TvmCell body = tvm.encodeBody(IDeAuditData(dad).setDeAudit, deployedAddr, member);
+					dad.transfer({value:GRAMS_INIT_VOTE, flag:0, bounce:true, body:body});
+
 					cv.completed = true;
 					vote[voteId] = cv;
 					member.transfer({ value: 0, flag: 128});
@@ -452,6 +464,8 @@ contract DeAuditRoot is IDeAuditRoot {
 					member.transfer({ value: 0, flag: 128});
 				}
 			} else {
+				cv.completed = true;
+				vote[voteId] = cv;
 				member.transfer({ value: 0, flag: 128});
 			}
 		} else {
@@ -493,7 +507,6 @@ contract DeAuditRoot is IDeAuditRoot {
 		actionTeam[member] ++;
 		addrDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
 	}
-
 
 	function computeRootDemocracyTokenAddress(uint32 sequentialNumber) private inline view returns (address) {
 		string name = format("DemocracyToken {}", sequentialNumber);
@@ -554,7 +567,8 @@ contract DeAuditRoot is IDeAuditRoot {
 		uint256 colPeriod,
 		uint256 valPeriod,
 		uint128 colStake,
-		uint128 valStake
+		uint128 valStake,
+		uint8 vcms
 	) private inline returns (address addressDeAudit, address addressRootDemocracyToken) {
 		addressDeAudit = address(0);
 		addressRootDemocracyToken = address(0);
@@ -572,7 +586,8 @@ contract DeAuditRoot is IDeAuditRoot {
 				colPeriod: colPeriod,
 				valPeriod: valPeriod,
 				colStake: colStake,
-				valStake: valStake
+				valStake: valStake,
+				vcms: vcms
 			},
 			code: codeDeAudit,
 			pubkey : tvm.pubkey()
@@ -585,6 +600,65 @@ contract DeAuditRoot is IDeAuditRoot {
 			value : GRAMS_CREATE
 		}();
 		addressRootDemocracyToken = deployRootDemocracyToken(addressDeAudit, sequentialNumber, GRAMS_CREATE);
+	}
+
+	function getDeAuditParam4Debot(address keysDeAuditDataCurrent) public view returns (
+		address creator4Debot,
+		bytes name4Debot,
+		uint256 timeStart4Debot,
+		uint256 colPeriod4Debot,
+		uint256 valPeriod4Debot,
+		uint256 colStake4Debot,
+		uint256 valStake4Debot,
+		address curDADkeyD
+	) {
+		DeAuditParam curDeAuditParam = paramDeAudit[keysDeAuditDataCurrent];
+		creator4Debot = curDeAuditParam.creator;
+		name4Debot   = curDeAuditParam.name;
+		timeStart4Debot = curDeAuditParam.timeStart;
+		colPeriod4Debot = curDeAuditParam.colPeriod;
+		valPeriod4Debot = curDeAuditParam.valPeriod;
+		colStake4Debot  = curDeAuditParam.colStake;
+		valStake4Debot  = curDeAuditParam.valStake;
+		curDADkeyD = keysDeAuditDataCurrent;
+	}
+
+	function getVote4Debot(uint256 voteKey) public view returns (
+		address initiator4Debot,
+		uint256 startTime4Debot,
+		uint256 duration4Debot,
+		uint8 vcms4Debot,
+		mapping(address => uint32) yes4Debot,
+		mapping(address => uint32) no4Debot,
+		uint32 yesCount4Debot,
+		uint32 noCount4Debot,
+		TvmCell data4Debot,
+		uint8 actionType4Debot,
+		bool completed4Debot,
+		uint256 voteKeyD
+	) {
+		Vote curVote = vote[voteKey];
+		initiator4Debot  = curVote.initiator;
+		startTime4Debot  = curVote.startTime;
+		duration4Debot  = curVote.duration;
+		vcms4Debot   = curVote.vcms;
+		yes4Debot   = curVote.yes;
+		no4Debot   = curVote.no;
+		yesCount4Debot  = curVote.yesCount;
+		noCount4Debot  = curVote.noCount;
+		data4Debot   = curVote.data;
+		actionType4Debot = curVote.actionType;
+		completed4Debot  = curVote.completed;
+		voteKeyD = voteKey;
+	}
+
+	function checkPubKey(uint256 pubkey) public view returns (bool status, address participant) {
+		status = participantAddr.exists(pubkey);
+		participant = participantAddr[pubkey];
+	}
+
+	function isActionTeamMember(address addressParticipant) public view returns (bool status) {
+		status = actionTeam.exists(addressParticipant);
 	}
 
 }

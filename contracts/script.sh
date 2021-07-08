@@ -8,10 +8,12 @@ echo "tvm_linker decode"
 /home/yaroslav/.tondev/solidity/tvm_linker decode --tvc TONTokenWallet.tvc | grep code: | cut -c 8- > TONTokenWallet.txt
 
 # echo "wrap *.abi.json to *.js"
-# tondev js wrap DeAuditRoot.abi.json -o DeAuditRoot.js
-# tondev js wrap DeAudit.abi.json -o DeAudit.js
-# tondev js wrap DeAuditData.abi.json -o DeAuditData.js
-# tondev js wrap Act4.abi.json -o Act4.js
-# tondev js wrap Participant.abi.json -o Participant.js
-# tondev js wrap RootTokenContract.abi.json -o RootTokenContract.js
+# tondev js wrap DeAuditRoot.abi.json -o DeAuditRoot.js &&
+# tondev js wrap DeAudit.abi.json -o DeAudit.js &&
+# tondev js wrap DeAuditData.abi.json -o DeAuditData.js &&
+# tondev js wrap Act4.abi.json -o Act4.js &&
+# tondev js wrap Participant.abi.json -o Participant.js &&
+# tondev js wrap RootTokenContract.abi.json -o RootTokenContract.js &&
 # tondev js wrap TONTokenWallet.abi.json -o TONTokenWallet.js
+
+# tondev sol compile DeAuditRoot.sol && tondev sol compile DeAudit.sol && tondev sol compile DeAuditData.sol && tondev sol compile Act4.sol && tondev sol compile Participant.sol

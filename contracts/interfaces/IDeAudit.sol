@@ -20,6 +20,10 @@ interface IDeAudit {
 
   function getDetails() external view responsible returns (IDeAuditDetails);
 
+  function addCollation(uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix) external;
+
+  function collationCallback(uint8 statusCollation, address addressCollator) external;
+
   function triggerToDeAuditData(address addrAct4, address member) external;
 
 }

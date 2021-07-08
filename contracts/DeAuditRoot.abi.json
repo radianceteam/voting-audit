@@ -5,7 +5,8 @@
 		{
 			"name": "constructor",
 			"inputs": [
-				{"name":"settingVoteCountModel","type":"uint8"}
+				{"name":"settingVoteCountModel","type":"uint8"},
+				{"name":"settingLinksMaxLength","type":"uint256"}
 			],
 			"outputs": [
 			]
@@ -71,6 +72,14 @@
 			"name": "setCodeTONTokenWallet",
 			"inputs": [
 				{"name":"code","type":"cell"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setMaxQtyAct4Links",
+			"inputs": [
+				{"name":"settingLinksMaxLength","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -247,6 +256,61 @@
 				{"name":"addrAct4","type":"address"}
 			],
 			"outputs": [
+			]
+		},
+		{
+			"name": "getDeAuditParam4Debot",
+			"inputs": [
+				{"name":"keysDeAuditDataCurrent","type":"address"}
+			],
+			"outputs": [
+				{"name":"creator4Debot","type":"address"},
+				{"name":"name4Debot","type":"bytes"},
+				{"name":"timeStart4Debot","type":"uint256"},
+				{"name":"colPeriod4Debot","type":"uint256"},
+				{"name":"valPeriod4Debot","type":"uint256"},
+				{"name":"colStake4Debot","type":"uint256"},
+				{"name":"valStake4Debot","type":"uint256"},
+				{"name":"curDADkeyD","type":"address"}
+			]
+		},
+		{
+			"name": "getVote4Debot",
+			"inputs": [
+				{"name":"voteKey","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"initiator4Debot","type":"address"},
+				{"name":"startTime4Debot","type":"uint256"},
+				{"name":"duration4Debot","type":"uint256"},
+				{"name":"vcms4Debot","type":"uint8"},
+				{"name":"yes4Debot","type":"map(address,uint32)"},
+				{"name":"no4Debot","type":"map(address,uint32)"},
+				{"name":"yesCount4Debot","type":"uint32"},
+				{"name":"noCount4Debot","type":"uint32"},
+				{"name":"data4Debot","type":"cell"},
+				{"name":"actionType4Debot","type":"uint8"},
+				{"name":"completed4Debot","type":"bool"},
+				{"name":"voteKeyD","type":"uint256"}
+			]
+		},
+		{
+			"name": "checkPubKey",
+			"inputs": [
+				{"name":"pubkey","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"status","type":"bool"},
+				{"name":"participant","type":"address"}
+			]
+		},
+		{
+			"name": "isActionTeamMember",
+			"inputs": [
+				{"name":"addressParticipant","type":"address"}
+			],
+			"outputs": [
+				{"name":"status","type":"bool"}
 			]
 		},
 		{
@@ -439,6 +503,14 @@
 			],
 			"outputs": [
 				{"name":"voteCountModel","type":"uint8"}
+			]
+		},
+		{
+			"name": "maxQtyAct4Links",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"maxQtyAct4Links","type":"uint256"}
 			]
 		},
 		{

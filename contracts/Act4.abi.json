@@ -32,6 +32,15 @@
 			]
 		},
 		{
+			"name": "addToAdditionalPhotoLinkArr",
+			"inputs": [
+				{"name":"linkToPhoto","type":"bytes"},
+				{"name":"participant","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "getBalance",
 			"inputs": [
 				{"name":"_answer_id","type":"uint32"}
@@ -65,14 +74,6 @@
 			]
 		},
 		{
-			"name": "collator",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"collator","type":"address"}
-			]
-		},
-		{
 			"name": "vcms",
 			"inputs": [
 			],
@@ -81,11 +82,35 @@
 			]
 		},
 		{
-			"name": "candidateVotes",
+			"name": "collator",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"candidateVotes","type":"map(address,uint256)"}
+				{"name":"collator","type":"address"}
+			]
+		},
+		{
+			"name": "collatorPhotoLink",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"collatorPhotoLink","type":"bytes"}
+			]
+		},
+		{
+			"name": "voteMatrix",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"voteMatrix","type":"uint256[]"}
+			]
+		},
+		{
+			"name": "additionalPhotoLinkArr",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"additionalPhotoLinkArr","type":"bytes[]"}
 			]
 		},
 		{
@@ -125,8 +150,10 @@
 		{"key":1,"name":"rootDeAudit","type":"address"},
 		{"key":2,"name":"dataDeAudit","type":"address"},
 		{"key":3,"name":"idVotingCenter","type":"uint256"},
-		{"key":4,"name":"collator","type":"address"},
-		{"key":5,"name":"vcms","type":"uint256"}
+		{"key":4,"name":"vcms","type":"uint256"},
+		{"key":5,"name":"collator","type":"address"},
+		{"key":6,"name":"collatorPhotoLink","type":"bytes"},
+		{"key":7,"name":"voteMatrix","type":"uint256[]"}
 	],
 	"events": [
 	]

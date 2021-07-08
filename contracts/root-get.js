@@ -95,6 +95,9 @@ async function main(client) {
   response = await rootAcc.runLocal("voteCountModel", {});
   console.log("Contract reacted to your voteCountModel:", response.decoded.output);
 
+  response = await rootAcc.runLocal("maxQtyAct4Links", {});
+  console.log("Contract reacted to your maxQtyAct4Links:", response.decoded.output);
+
   response = await rootAcc.runLocal("vote", {});
   console.log("Contract reacted to your vote:", response.decoded.output);
 

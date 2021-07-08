@@ -33,6 +33,20 @@ const Act4Contract = {
                 "outputs": []
             },
             {
+                "name": "addToAdditionalPhotoLinkArr",
+                "inputs": [
+                    {
+                        "name": "linkToPhoto",
+                        "type": "bytes"
+                    },
+                    {
+                        "name": "participant",
+                        "type": "address"
+                    }
+                ],
+                "outputs": []
+            },
+            {
                 "name": "getBalance",
                 "inputs": [
                     {
@@ -78,16 +92,6 @@ const Act4Contract = {
                 ]
             },
             {
-                "name": "collator",
-                "inputs": [],
-                "outputs": [
-                    {
-                        "name": "collator",
-                        "type": "address"
-                    }
-                ]
-            },
-            {
                 "name": "vcms",
                 "inputs": [],
                 "outputs": [
@@ -98,12 +102,42 @@ const Act4Contract = {
                 ]
             },
             {
-                "name": "candidateVotes",
+                "name": "collator",
                 "inputs": [],
                 "outputs": [
                     {
-                        "name": "candidateVotes",
-                        "type": "map(address,uint256)"
+                        "name": "collator",
+                        "type": "address"
+                    }
+                ]
+            },
+            {
+                "name": "collatorPhotoLink",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "collatorPhotoLink",
+                        "type": "bytes"
+                    }
+                ]
+            },
+            {
+                "name": "voteMatrix",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "voteMatrix",
+                        "type": "uint256[]"
+                    }
+                ]
+            },
+            {
+                "name": "additionalPhotoLinkArr",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "additionalPhotoLinkArr",
+                        "type": "bytes[]"
                     }
                 ]
             },
@@ -166,17 +200,27 @@ const Act4Contract = {
             },
             {
                 "key": 4,
+                "name": "vcms",
+                "type": "uint256"
+            },
+            {
+                "key": 5,
                 "name": "collator",
                 "type": "address"
             },
             {
-                "key": 5,
-                "name": "vcms",
-                "type": "uint256"
+                "key": 6,
+                "name": "collatorPhotoLink",
+                "type": "bytes"
+            },
+            {
+                "key": 7,
+                "name": "voteMatrix",
+                "type": "uint256[]"
             }
         ],
         "events": []
     },
-    tvc: "te6ccgECKAEAB3IAAgE0AwEBAcACAEPQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgBCSK7VMg4wMgwP/jAiDA/uMC8gsmBwQnAQAFAvyNCGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT4aSHbPNMAAY4agQIA1xgg+QEB0wABlNP/AwGTAvhC4vkQ8qiV0wAB8nri0z8Bjh34QyG5IJ8wIPgjgQPoqIIIG3dAoLnekyD4Y+DyNNgw0x8B+CO88rnTHwESBgEO2zz4R27yfAgBaiLQ0wP6QDD4aak4APhEf29xggiYloBvcm1vc3BvdPhk3CHHANwh1w0f8rwh3QHbPPhHbvJ8CARQIIIQQKu+fbvjAiCCEFH+ty+74wIgghBtdnkZu+MCIIIQfjiGFbvjAiAXDwkDPCCCEHHJOm264wIgghB7V4v2uuMCIIIQfjiGFbrjAg4MCgMcMPhIbuMA0ds82zx/+GclCx0CzPhJ+FCBAQv0CiCRMd4gjhMw+En4UIEBC/QKk9cKAJFw4n+93vLgZ9s8ghAdzWUAufLQaPgnbxDbPKG1f3L7AvhJIPhQf8jKAFmBAQv0Qfhw+FKk+HIgyM+FiM6Ab89AyYEAgPsAMB8fAvAw0x/4RFhvdfhk0ds8IcD/jioj0NMB+kAwMcjPhyDOjQQAAAAAAAAAAAAAAAAPtXi/aM8WIc8Lf8lw+wCOM/hEIG8TIW8S+ElVAm8RyHLPQMoAc89AzgH6AvQAgGrPQPhEbxXPCx8hzwt/yfhEbxT7AOIw4wB/+GcNHQAk+ERwb3Jwb3GAQG90+GT4J28QAVQw0ds8+E0hjh2NBHAAAAAAAAAAAAAAAAA8ck6bYMjOIc8WyXD7AN5/+GclBFAgghBZqYxBuuMCIIIQWcnMtbrjAiCCEGi1Xz+64wIgghBtdnkZuuMCFhUREAFWMNHbPPhMIY4ejQRwAAAAAAAAAAAAAAAAO12eRmDIziHPC//JcPsA3n/4ZyUCSjD4SG7jAPhG8nNx+GbR+En4S8cF8uBlcPhxcPhycPhz2zx/+GcSHQGc7UTQINdJwgGOQdP/0z/TAPpA1NHQ+kDT/9TR0PpA0//0BPQE1NHQ0//T/9P/0fhz+HL4cfhw+G/4bvht+Gz4a/hqf/ho+Gb4Y/hijoDiEwHq9AVxIYBA9A6OJI0IYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABN/4anIhgED0Do4kjQhgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE3/hrcyGAQPQOk9cL/5Fw4vhsdCGAQPQOFAC6jiSNCGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATf+G11IYBA9A6T1wv/kXDi+G5t+G9t+HBw+HFw+HJw+HNwAYBA9A7yvdcL//hicPhjcPhmf/hoAVQw0ds8+Eohjh2NBHAAAAAAAAAAAAAAAAA2cnMtYMjOIc8WyXD7AN5/+GclAVQw0ds8+Eshjh2NBHAAAAAAAAAAAAAAAAA2amMQYMjOIc8WyXD7AN5/+GclBFAgghBCsspwuuMCIIIQSn/C9rrjAiCCEE6e4aS64wIgghBR/rcvuuMCHBoZGAFWMNHbPPhTIY4ejQRwAAAAAAAAAAAAAAAANH+ty+DIziHPC//JcPsA3n/4ZyUBVjDR2zz4UCGOHo0EcAAAAAAAAAAAAAAAADOnuGkgyM4hAfQAyXD7AN5/+GclAy4w+Ehu4wD6QZXU0dD6QN/R2zzbPH/4ZyUbHQFM+En4S8cF8uBl+CdvENs8obV/cvsCIMjPhYjOgG/PQMmBAID7ADAfAxww+Ehu4wDR2zzbPH/4ZyUeHQCE+Eb4Q/hCyMv/yz/LAPhKzxb4S8jO+EzPC//4TcjO+E7PC//4TwH0APhQAfQA+FHIy//4Us8L//hTzwv/zc3Nye1UAsz4SfhQgQEL9AogkTHeII4TMPhJ+FCBAQv0CpPXCgCRcOJ/vd7y4GfbPIIQHc1lALny0Gj4J28Q2zyhtX9y+wL4SSD4UH/IygBZgQEL9EH4cPhTpPhzIMjPhYjOgG/PQMmBAID7ADAfHwAYcGim+2CVaKb+YDHfBFAgghAK4/jiuuMCIIIQGLT6QLrjAiCCEB82Oti64wIgghBAq759uuMCJCMiIQFWMNHbPPhSIY4ejQRwAAAAAAAAAAAAAAAAMCrvn2DIziHPC//JcPsA3n/4ZyUBVjDR2zz4TiGOHo0EcAAAAAAAAAAAAAAAACfNjrYgyM4hzwv/yXD7AN5/+GclAVYw0ds8+E8hjh6NBHAAAAAAAAAAAAAAAAAmLT6QIMjOIQH0AMlw+wDef/hnJQFWMNHbPPhRIY4ejQRwAAAAAAAAAAAAAAAAIrj+OKDIziHPC//JcPsA3n/4ZyUAiO1E0NP/0z/TAPpA1NHQ+kDT/9TR0PpA0//0BPQE1NHQ0//T/9P/0fhz+HL4cfhw+G/4bvht+Gz4a/hqf/ho+Gb4Y/hiAQr0pCD0oScAAA==",
+    tvc: "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",
 };
 module.exports = { Act4Contract };

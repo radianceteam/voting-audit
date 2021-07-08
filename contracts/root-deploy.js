@@ -77,6 +77,7 @@ async function main(client) {
     initFunctionName:"constructor",
     initInput:{
       settingVoteCountModel: 1,
+      settingLinksMaxLength: 5,
     },
   }));
   let shard_block_id;

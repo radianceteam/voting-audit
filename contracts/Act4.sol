@@ -14,10 +14,13 @@ contract Act4 is IAct4 {
 	address static public rootDeAudit;
 	address static public dataDeAudit;
 	uint256 static public idVotingCenter;
-	address static public collator;
 	uint256 static public vcms;
+	address static public collator;
+	bytes static public collatorPhotoLink;
+	uint256[] static public voteMatrix;
 
-	mapping(address => uint256) public candidateVotes;
+  bytes[] public additionalPhotoLinkArr;
+
 	mapping(address => bool) public validator;
 	uint256 public countValidators;
 	uint256 public countValidationsFor;
@@ -44,12 +47,6 @@ contract Act4 is IAct4 {
 	// Modifier that allows public function to accept external calls only from the parent DeAuditData.
 	modifier onlyDeAuditData {
 		require(msg.sender == dataDeAudit, 101);
-		_;
-	}
-
-	// Modifier that allows public function to accept external calls only from the collator.
-	modifier onlyCollator {
-		require(msg.sender == collator, 102);
 		_;
 	}
 
@@ -95,7 +92,6 @@ contract Act4 is IAct4 {
 		return passed;
 	}
 
-
 	function voteFor() public override onlyValidatorOnce {
 		require(!(msg.value < GRAMS_VALIDATE), 104);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
@@ -114,14 +110,16 @@ contract Act4 is IAct4 {
 		cv.transfer({ value: 0, flag: 128});
 	}
 
+	function addToAdditionalPhotoLinkArr(bytes linkToPhoto, address participant) public override onlyDeAuditData {
+		tvm.rawReserve(address(this).balance - msg.value, 2);
+		additionalPhotoLinkArr.push(linkToPhoto);
+		participant.transfer({ value: 0, flag: 128});
+	}
 
-
-	// Function for get this contract TON gramms balance
   function thisBalance() private inline  pure returns (uint128) {
     return address(this).balance;
   }
 
-  // Function for external get this contract TON gramms balance
   function getBalance() public pure responsible returns (uint128) {
     return { value: 0, bounce: false, flag: 64 } thisBalance();
   }

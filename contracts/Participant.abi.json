@@ -163,6 +163,18 @@
 			]
 		},
 		{
+			"name": "addCollation",
+			"inputs": [
+				{"name":"addressDeAudit","type":"address"},
+				{"name":"indexVotingCenter","type":"uint256"},
+				{"name":"linkToCollationPhoto","type":"bytes"},
+				{"name":"voteMatrix","type":"uint256[]"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "getBalance",
 			"inputs": [
 				{"name":"_answer_id","type":"uint32"}

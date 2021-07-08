@@ -17,15 +17,6 @@ const { ParticipantContract } = require("./Participant.js");
 const pathJsonRoot = './DeAuditRoot.json';
 const pathJsonParticipants = './Participants.json';
 
-const hex = require('ascii-hex');
-const hex2ascii = require('hex2ascii');
-
-function toHex(input) {
-  let output = '';
-  for (i = 0; i < input.length; i ++){output += hex(input[i]).toString(16)}
-  return String(output);
-}
-
 
 TonClient.useBinaryLibrary(libNode);
 
@@ -63,29 +54,17 @@ async function main(client) {
   response = await creatorAcc.runLocal("initiatedDeAuditData", {});
   console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
 
-
+  let idVote = 2;
 
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
-  const participantAddr = resultArr[0].address;
-  const participantKeys = resultArr[0].keys;
-  const participantAcc = new Account(ParticipantContract, {
-    address: participantAddr,
-    signer: participantKeys,
-    client,
-  });
+  const participantAddress = resultArr[0].address;
 
+  response = await creatorAcc.run("resultVote", {voteId:idVote,grams:3500000000});
+  console.log("Contract reacted to your resultVote:", response.decoded.output);
 
+  // response = await creatorAcc.run("voteAgainst", {voteId:1,grams:1000000000});
+  // console.log("Contract reacted to your voteFor:", response.decoded.output);
 
-  response = await creatorAcc.run("createDeAuditData", {
-    nameDeAuditData:toHex("4 Jul 2021 17:19:1 TEST VOTING DeAudit"),
-    timeStart:1625700000,
-    colPeriod:100000,
-    valPeriod:100000,
-    colStake:20000000000,
-    valStake:10000000000,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your createDeAuditData:", response.decoded.output);
 
 
   // for (const item of resultArr) {

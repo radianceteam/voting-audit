@@ -155,6 +155,17 @@ contract Participant is IParticipant {
 		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
+	function addCollation(
+		address addressDeAudit,
+		uint256 indexVotingCenter,
+		bytes linkToCollationPhoto,
+		uint256[] voteMatrix,
+		uint128 grams
+	) public pure checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IDeAudit(addressDeAudit).addCollation, indexVotingCenter, linkToCollationPhoto, voteMatrix);
+		addressDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
 	// Function for get this contract TON gramms balance
   function thisBalance() private inline pure returns (uint128) {
     return address(this).balance;
