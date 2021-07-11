@@ -71,7 +71,7 @@ async function main(client) {
   });
 
 
-let idVote = 2;
+let idVote = 4;
 
   response = await creatorAcc.run("voteFor", {voteId:idVote,grams:1000000000});
   console.log("Contract reacted to your voteFor:", response.decoded.output);

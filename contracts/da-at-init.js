@@ -67,13 +67,13 @@ async function main(client) {
   console.log("Contract reacted to your keysDeAuditData:", response.decoded.output);
 
   let keysDeAuditData = response.decoded.output.keysDeAuditData;
-  console.log("Contract reacted to your keysDeAuditData[0]:", keysDeAuditData[0]);
+  console.log("Contract reacted to your keysDeAuditData[1]:", keysDeAuditData[2]);
 
   response = await rootAcc.runLocal("paramDeAudit", {});
   console.log("Contract reacted to your paramDeAudit:", response.decoded.output);
 
-  let paramDeAudit = response.decoded.output.paramDeAudit[keysDeAuditData[0]];
-  console.log("Contract reacted to your paramDeAudit[keysDeAuditData[0]:", hex2ascii(paramDeAudit.name));
+  let paramDeAudit = response.decoded.output.paramDeAudit[keysDeAuditData[2]];
+  console.log("Contract reacted to your paramDeAudit[keysDeAuditData[1]:", hex2ascii(paramDeAudit.name));
 
 
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
@@ -88,7 +88,7 @@ async function main(client) {
 
 
   response = await creatorAcc.run("initVoteDeAudut", {
-    addrDeAuditData:keysDeAuditData[0],
+    addrDeAuditData:keysDeAuditData[2],
     grams:2000000000,
   });
   console.log("Contract reacted to your initVoteDeAudut:", response.decoded.output);

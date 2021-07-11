@@ -5,4 +5,5 @@ pragma AbiHeader time;
 
 interface IParticipant {
   function setCreatedDeAuditData(address addressDeAuditData) external;
+  function setDeAuditValidations(uint256[] votingCentersArr) external;
 }

@@ -108,7 +108,11 @@ async function main(client) {
   // console.log("Contract reacted to your isTimeUp:", response.decoded.output);
 
   response = await rootAcc.runLocal("timeNow", {});
-  console.log("Contract reacted to your timeNow:", timeConverter(parseInt(response.decoded.output.value0)));
+  let ts = parseInt(response.decoded.output.value0);
+  console.log("Contract reacted to your timeNow:", ts);
+  console.log("Contract reacted to your timeNow:", timeConverter(ts));
+
+
 
 
   response = await rootAcc.runLocal("launchedDeAudit", {});

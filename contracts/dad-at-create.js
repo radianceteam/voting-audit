@@ -77,12 +77,12 @@ async function main(client) {
 
 
   response = await creatorAcc.run("createDeAuditData", {
-    nameDeAuditData:toHex("8 Jul 2021 11:50:33 TEST VOTING DeAudit"),
-    timeStart:1627430400,
-    colPeriod:100000,
-    valPeriod:100000,
-    colStake:20000000000,
-    valStake:10000000000,
+    nameDeAuditData:toHex("8 Jul 2021 18:36:21 TEST VOTING DeAudit # 3"),
+    timeStart:1625758581,
+    colPeriod:180000,
+    valPeriod:180000,
+    colStake:3000000000,
+    valStake:1000000000,
     grams:1500000000
   });
   console.log("Contract reacted to your createDeAuditData:", response.decoded.output);

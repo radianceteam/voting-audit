@@ -78,10 +78,10 @@ async function main(client) {
   console.log("Contract reacted to your keysDeAuditData:", response.decoded.output);
 
   let keysDeAuditData = response.decoded.output.keysDeAuditData;
-  console.log("Contract reacted to your keysDeAuditData[0]:", keysDeAuditData[0]);
+  console.log("Contract reacted to your keysDeAuditData[0]:", keysDeAuditData[2]);
 
 
-  let deauditDataAddr1 = keysDeAuditData[0];
+  let deauditDataAddr1 = keysDeAuditData[2];
 
 
   const deauditdataAcc = new Account(DeAuditDataContract, {

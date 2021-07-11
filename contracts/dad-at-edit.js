@@ -78,10 +78,10 @@ async function main(client) {
   console.log("Contract reacted to your keysDeAuditData:", response.decoded.output);
 
   let keysDeAuditData = response.decoded.output.keysDeAuditData;
-  console.log("Contract reacted to your keysDeAuditData[0]:", keysDeAuditData[0]);
+  console.log("Contract reacted to your keysDeAuditData[0]:", keysDeAuditData[2]);
 
 
-  let deauditDataAddr1 = keysDeAuditData[0];
+  let deauditDataAddr1 = keysDeAuditData[2];
 
   const deauditdataAcc = new Account(DeAuditDataContract, {
     address: deauditDataAddr1,
@@ -444,7 +444,7 @@ async function main(client) {
 response = await creatorAcc.run("addCandidate",
 {
   addressDeAuditData:deauditDataAddr1,
-  nameCandidate:toHex("Tested Candidate A"),
+  nameCandidate:toHex("27 LIBRE"),
   grams:1500000000
 });
 console.log("Contract reacted to your addCandidate:", response.decoded.output);
@@ -452,7 +452,7 @@ console.log("Contract reacted to your addCandidate:", response.decoded.output);
 response = await creatorAcc.run("addCandidate",
 {
   addressDeAuditData:deauditDataAddr1,
-  nameCandidate:toHex("Tested Candidate B"),
+  nameCandidate:toHex("7 UNIONISTA"),
   grams:1500000000
 });
 console.log("Contract reacted to your addCandidate:", response.decoded.output);
@@ -460,7 +460,7 @@ console.log("Contract reacted to your addCandidate:", response.decoded.output);
 response = await creatorAcc.run("addCandidate",
 {
   addressDeAuditData:deauditDataAddr1,
-  nameCandidate:toHex("Tested Candidate C"),
+  nameCandidate:toHex("21 VAMOS"),
   grams:1500000000
 });
 console.log("Contract reacted to your addCandidate:", response.decoded.output);
@@ -468,7 +468,7 @@ console.log("Contract reacted to your addCandidate:", response.decoded.output);
 response = await creatorAcc.run("addCandidate",
 {
   addressDeAuditData:deauditDataAddr1,
-  nameCandidate:toHex("Tested Candidate D"),
+  nameCandidate:toHex("17 FUERZA"),
   grams:1500000000
 });
 console.log("Contract reacted to your addCandidate:", response.decoded.output);

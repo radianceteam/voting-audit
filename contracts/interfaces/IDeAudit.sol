@@ -22,8 +22,12 @@ interface IDeAudit {
 
   function addCollation(uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix) external;
 
+  function registrationForValidation() external;
+
   function collationCallback(uint8 statusCollation, address addressCollator) external;
 
   function triggerToDeAuditData(address addrAct4, address member) external;
+
+  function regForValidationCallback(address addressValidator, uint256[] vcfvArr) external;
 
 }

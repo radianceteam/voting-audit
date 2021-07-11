@@ -9,4 +9,6 @@ interface IAct4 {
   function voteAgainst() external;
   function trigger(address member) external;
   function addToAdditionalPhotoLinkArr(bytes linkToPhoto, address participant) external;
+
+  function setValidator(address participant) external;
 }

@@ -48,6 +48,22 @@
 			]
 		},
 		{
+			"name": "registrationForValidation",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "regForValidationCallback",
+			"inputs": [
+				{"name":"addressValidator","type":"address"},
+				{"name":"vcfvArr","type":"uint256[]"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "triggerToDeAuditData",
 			"inputs": [
 				{"name":"addrAct4","type":"address"},
@@ -168,6 +184,22 @@
 			],
 			"outputs": [
 				{"name":"vcms","type":"uint8"}
+			]
+		},
+		{
+			"name": "stakeOf",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"stakeOf","type":"map(address,uint128)"}
+			]
+		},
+		{
+			"name": "walletOf",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"walletOf","type":"map(address,address)"}
 			]
 		}
 	],

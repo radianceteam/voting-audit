@@ -54,7 +54,7 @@ async function main(client) {
   response = await creatorAcc.runLocal("initiatedDeAuditData", {});
   console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
 
-  let idVote = 2;
+  let idVote = 4;
 
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
   const participantAddress = resultArr[0].address;
