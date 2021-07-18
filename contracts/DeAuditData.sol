@@ -19,8 +19,29 @@ contract DeAuditData is IDeAuditData {
   bytes static public name;
   TvmCell static public codeAct4;
 
-
   address public launchedDeAudit;
+
+  mapping(address => uint256) public votingCenterForAct4;
+
+  struct Collation {
+    uint256 indexVC;
+    address addressAct4;
+    address[] validators;
+  }
+
+  mapping (uint256 => Collation) public queueAct4;
+
+  uint256 public countAct4;
+
+  uint256 public queueAct4Length;
+
+  uint256 public countCollatedVC;
+
+  uint256 public countSpointVC;
+
+  uint256 public labelLVA4;
+
+  uint256 public limitValsForCol;
 
   struct VotingCenter {
     bytes name;
@@ -30,20 +51,12 @@ contract DeAuditData is IDeAuditData {
     uint256 idMunicipalBody;
     uint256 idDistrict;
     bool collationStatus;
-    uint256 countAdditionlPhotoLinks;
-    address[] validatorsArr;
-    // bytes collatorPhotoLink;
-    // bytes[] additionalPhotoLinkArr;
+    address[] act4Arr;
+    mapping (address => address[]) validatorsArr;
   }
 
   mapping (uint256 => VotingCenter) public votingCenter;
   uint256[] public votingCenterKeys;
-
-  mapping(address => uint256) public votingCenterForAct4;
-  mapping(uint256 => address) public act4ForVotingCenter;
-  uint256 public countAct4;
-  uint256 public labelLVA4;
-
 
   struct VotingPool {
     bytes name;
@@ -86,16 +99,9 @@ contract DeAuditData is IDeAuditData {
   // Collation callback types
   uint8 constant public DATA_INCORRECT = 0;
   uint8 constant public SUCCESS_COLLATION = 1;
-  uint8 constant public ALREADY_COLLATED_LINK_ADDED = 2;
-  uint8 constant public ALREADY_COLLATED_LINKS_FULL = 3;
-
-  uint256 public settingLinksMaxLength;
 
   // Grams constants
   uint128 constant public GRAMS_DEPLOY = 1 ton;
-  uint128 constant public GRAMS_SET = 0.5 ton;
-
-
 
   // Modifier that allows public function to accept external calls always.
   modifier alwaysAccept {
@@ -123,8 +129,10 @@ contract DeAuditData is IDeAuditData {
 
   // Init function.
   constructor(uint256 valueMaxLength) public onlyDeAuditRoot {
-    settingLinksMaxLength = valueMaxLength;
+    limitValsForCol = valueMaxLength;
     countAct4 = 0;
+    queueAct4Length = 0;
+    countCollatedVC = 0;
     labelLVA4 = 1;
   }
 
@@ -163,6 +171,7 @@ contract DeAuditData is IDeAuditData {
     municipalBody[indexMunicipalBody] = cmb;
     municipalBodyKeys.push(indexMunicipalBody);
     cd.municipalBodiesArr.push(indexMunicipalBody);
+    district[indexDistrict] = cd;
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
@@ -178,6 +187,8 @@ contract DeAuditData is IDeAuditData {
     votingPoolKeys.push(indexVotingPool);
     cmb.votingPoolsArr.push(indexVotingPool);
     cd.votingPoolsArr.push(indexVotingPool);
+    district[indexDistrict] = cd;
+    municipalBody[indexMunicipalBody] = cmb;
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
@@ -199,6 +210,9 @@ contract DeAuditData is IDeAuditData {
     cvp.votingCentersArr.push(indexVotingCenter);
     cmb.votingCentersArr.push(indexVotingCenter);
     cd.votingCentersArr.push(indexVotingCenter);
+    district[indexDistrict] = cd;
+    municipalBody[indexMunicipalBody] = cmb;
+    votingPool[indexVotingPool] = cvp;
     msg.sender.transfer({value: 0, flag: 128, bounce:true});
   }
 
@@ -244,83 +258,113 @@ contract DeAuditData is IDeAuditData {
   function setCollation(address collator, uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix, uint8 vcms) public override onlyDeAudit {
     tvm.rawReserve(address(this).balance - msg.value, 2);
     if (votingCenter.exists(indexVotingCenter) && voteMatrix.length == candidateKeys.length) {
+      address deployedAct4 = deployAct4(rootDeAudit, address(this), indexVotingCenter, vcms, collator, linkToCollationPhoto, voteMatrix, GRAMS_DEPLOY);
+      votingCenterForAct4[deployedAct4] = indexVotingCenter;
+      countAct4 ++;
+      queueAct4Length ++;
+      Collation ca4 = queueAct4[countAct4];
+      ca4.indexVC = indexVotingCenter;
+      ca4.addressAct4 = deployedAct4;
+      queueAct4[countAct4] = ca4;
       VotingCenter cvc = votingCenter[indexVotingCenter];
-      if (!act4ForVotingCenter.exists(indexVotingCenter)) {
-        address deployedAct4 = deployAct4(rootDeAudit, address(this), indexVotingCenter, vcms, collator, linkToCollationPhoto, voteMatrix, GRAMS_DEPLOY);
-        act4ForVotingCenter[indexVotingCenter] = deployedAct4;
-        votingCenterForAct4[deployedAct4] = indexVotingCenter;
-        countAct4 ++;
+      if (cvc.collationStatus == false) {
         cvc.collationStatus = true;
+        countCollatedVC ++;
         votingCenter[indexVotingCenter] = cvc;
-        TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).collationCallback, SUCCESS_COLLATION, collator);
-        launchedDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
-      } else if (cvc.countAdditionlPhotoLinks < settingLinksMaxLength) {
-        address addressAct4 = act4ForVotingCenter[indexVotingCenter];
-        TvmCell bodyAct4 = tvm.encodeBody(IAct4(addressAct4).addToAdditionalPhotoLinkArr, linkToCollationPhoto, collator);
-        addressAct4.transfer({value: GRAMS_SET, flag: 0, bounce:true, body:bodyAct4});
-        cvc.countAdditionlPhotoLinks ++;
-        votingCenter[indexVotingCenter] = cvc;
-        TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).collationCallback, ALREADY_COLLATED_LINK_ADDED, collator);
+        address[] msgForParticipant;
+        msgForParticipant.push(deployedAct4);
+        TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).collationCallback, SUCCESS_COLLATION, collator, msgForParticipant);
         launchedDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
       } else {
-        TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).collationCallback, ALREADY_COLLATED_LINKS_FULL, collator);
+        votingCenter[indexVotingCenter] = cvc;
+        address[] msgForParticipant;
+        msgForParticipant.push(deployedAct4);
+        TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).collationCallback, SUCCESS_COLLATION, collator, msgForParticipant);
         launchedDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
       }
     } else {
-      TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).collationCallback, DATA_INCORRECT, collator);
+      address[] msgForParticipant;
+      msgForParticipant.push(address(0));
+      TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).collationCallback, DATA_INCORRECT, collator, msgForParticipant);
       launchedDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
     }
   }
 
-  function getRandomStepsFrom(uint256 limit) private pure inline returns (uint256) {
+  // private inline pure
+
+  function getRandomStepsFrom(uint256 limit) public pure alwaysAccept returns (uint256) {
     rnd.shuffle();
-    return rnd.next(limit) + 1;
+    uint256 rndFromFreeTon = rnd.next(limit);
+    return rndFromFreeTon == (limit - 1) ? rndFromFreeTon + 1 : ;
   }
 
-  function getQtyAct4() private inline view returns (uint256) {
-    return countAct4;
+  function getQtyAct4() public view returns (uint256) {
+    return queueAct4Length;
   }
 
-  function getStartPoint() private inline view returns (uint256) {
+  function getStartPoint() public view returns (uint256) {
     return labelLVA4;
   }
 
-  function getNextKey(uint256 key) private view returns (uint256) {
-    optional(uint256, address) nexta4fvc = act4ForVotingCenter.next(key);
-    optional(uint256, address) mina4fvc = act4ForVotingCenter.min();
-    optional(uint256, address) maxa4fvc = act4ForVotingCenter.max();
+  function getNextKey(uint256 key) public view returns (uint256) {
+    optional(uint256, Collation) nextVC = queueAct4.next(key);
+    optional(uint256, Collation) minVC = queueAct4.min();
     uint256 nextKey;
-    if (nexta4fvc.hasValue()) {(nextKey, ) = nexta4fvc.get();} else {nextKey = 0;}
+    if (nextVC.hasValue()) {(nextKey, ) = nextVC.get();} else {nextKey = 0;}
     uint256 minKey;
-    if (mina4fvc.hasValue()) {(minKey, ) = mina4fvc.get();} else {minKey = 0;}
-    uint256 maxKey;
-    if (maxa4fvc.hasValue()) {(maxKey, ) = maxa4fvc.get();} else {maxKey = 0;}
-    return (nextKey == 0 && key == maxKey) ? minKey : nextKey;
+    if (minVC.hasValue()) {(minKey, ) = minVC.get();} else {minKey = 0;}
+    return (nextKey == 0) ? minKey : nextKey;
   }
 
+  function getGramsForAct4(uint128 totalValue, uint128 qtyAct4) public pure returns (uint128) {
+    return totalValue / (qtyAct4 + 1);
+  }
 
-  function setValidationForParticipant(address participantAddr, uint256 qtyValidations) public override onlyDeAudit {
+  function getLimit() public view returns (uint256) {
+    return limitValsForCol;
+  }
+
+  function isAct4Full(uint256 qtyValidations, uint256 limit) public pure returns (bool) {
+    return limit <= qtyValidations + 1;
+  }
+
+  function setValidationForParticipant(address participantAddr, uint128 qtyValidations) public override onlyDeAudit {
     tvm.rawReserve(address(this).balance - msg.value, 2);
-    uint256[] validationsArr;
+    uint128 gramsForAct4 = getGramsForAct4(msg.value, qtyValidations);
+    address[] validatorAct4Arr;
     repeat(qtyValidations) {
       uint256 totalSteps = getQtyAct4();
       uint256 steps = getRandomStepsFrom(totalSteps);
       uint256 key = getStartPoint();
       repeat(steps) { key = getNextKey(key); }
-      labelLVA4 = key;
-      VotingCenter cvc = votingCenter[key];
-      cvc.validatorsArr.push(participantAddr);
-      votingCenter[key] = cvc;
-      validationsArr.push(key);
-      address act4Addr = act4ForVotingCenter[key];
-      TvmCell bodyA4 = tvm.encodeBody(IAct4(act4Addr).setValidator, participantAddr);
-      act4Addr.transfer({value: GRAMS_SET, flag: 0, bounce:true, body:bodyA4});
+      Collation ca4 = queueAct4[key];
+      uint256 currentValidations = ca4.validators.length;
+      uint256 lvfc = getLimit();
+      if (!isAct4Full(currentValidations, lvfc)) {
+        ca4.validators.push(participantAddr);
+        address addressAct4 = ca4.addressAct4;
+        queueAct4[key] = ca4;
+        TvmCell bodyA4 = tvm.encodeBody(IAct4(addressAct4).setValidator, participantAddr);
+        addressAct4.transfer({value: gramsForAct4, flag: 0, bounce:true, body:bodyA4});
+        labelLVA4 = key;
+      } else {
+        ca4.validators.push(participantAddr);
+        address addressAct4 = ca4.addressAct4;
+        TvmCell bodyA4 = tvm.encodeBody(IAct4(addressAct4).setValidator, participantAddr);
+        addressAct4.transfer({value: gramsForAct4, flag: 0, bounce:true, body:bodyA4});
+        VotingCenter cvc = votingCenter[ca4.indexVC];
+        countSpointVC = cvc.act4Arr.length < 1 ? countSpointVC + 1: countSpointVC ;
+        cvc.act4Arr.push(addressAct4);
+        cvc.validatorsArr[addressAct4] = ca4.validators;
+        votingCenter[ca4.indexVC] = cvc;
+        labelLVA4 = getNextKey(key);
+        delete queueAct4[key];
+        queueAct4Length --;
+      }
     }
-    TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).regForValidationCallback, participantAddr, validationsArr);
+    TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).regForValidationCallback, participantAddr, validatorAct4Arr);
     launchedDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
   }
-
-
 
   function triggerToAct4(address addrAct4, address member) public override onlyDeAuditRoot {
     tvm.rawReserve(address(this).balance - msg.value, 2);
@@ -350,7 +394,7 @@ contract DeAuditData is IDeAuditData {
     uint256 idMunicipalBody4Debot,
     uint256 idDistrict4Debot,
     bool collationStatus4Debot,
-    uint256 countAdditionlPhotoLinks4Debot,
+    address[] act4Arr4Debot,
     uint256 votingCenterCurrentKeyD
   ) {
     VotingCenter curVotingCenter = votingCenter[votingCenterCurrentKey];
@@ -361,10 +405,9 @@ contract DeAuditData is IDeAuditData {
     idMunicipalBody4Debot = curVotingCenter.idMunicipalBody;
     idDistrict4Debot = curVotingCenter.idDistrict;
     collationStatus4Debot = curVotingCenter.collationStatus;
-    countAdditionlPhotoLinks4Debot = curVotingCenter.countAdditionlPhotoLinks;
+    act4Arr4Debot = curVotingCenter.act4Arr;
     votingCenterCurrentKeyD = votingCenterCurrentKey;
   }
-
 
   function getVotingPool4Debot(uint256 votingPoolCurrentKey) public view returns (
     bytes name4Debot,

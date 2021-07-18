@@ -11,6 +11,6 @@ interface IDeAuditData {
   function addCandidate(bytes nameCandidate) external;
   function setDeAudit(address addressDeAudit, address addressATM) external;
   function setCollation(address collator, uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix, uint8 vcms) external;
-  function setValidationForParticipant(address participantAddr, uint256 qtyValidations) external;
+  function setValidationForParticipant(address participantAddr, uint128 qtyValidations) external;
   function triggerToAct4(address addrAct4, address member) external;
 }

@@ -13,8 +13,6 @@ const { DeAuditRootCode } = require("./DeAuditRootCode.js");
 
 const { DeAuditRootContract } = require("./DeAuditRoot.js");
 const { DeAuditDataContract } = require("./DeAuditData.js");
-const { DeAuditContract } = require("./DeAudit.js");
-const { RootTokenContractContract } = require("./RootTokenContract.js");
 const { ParticipantContract } = require("./Participant.js");
 
 const pathJsonRoot = './DeAuditRoot.json';
@@ -29,18 +27,7 @@ function toHex(input) {
   return String(output);
 }
 
-function timeConverter(UNIX_timestamp){
-  var a = new Date(UNIX_timestamp * 1000);
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var year = a.getFullYear();
-  var month = months[a.getMonth()];
-  var date = a.getDate();
-  var hour = a.getHours();
-  var min = a.getMinutes();
-  var sec = a.getSeconds();
-  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-  return time;
-}
+const indexKeysDeAuditData = 0;
 
 
 TonClient.useBinaryLibrary(libNode);
@@ -52,95 +39,70 @@ async function logEvents(params, response_type) {
 
 async function main(client) {
   let response;
+  const rootKeys = JSON.parse(fs.readFileSync(pathJsonRoot,{encoding: "utf8"})).keys;
   const rootAddr = JSON.parse(fs.readFileSync(pathJsonRoot,{encoding: "utf8"})).address;
-  const rootAcc = new Account(DeAuditRootContract, {address:rootAddr,client,});
-  console.log("DeAuditRoot address:", rootAddr);
-  response = await rootAcc.runLocal("keysDeAudit", {});
-  console.log("Contract reacted to your keysDeAudit:", response.decoded.output);
+  console.log("rootAddr:", rootAddr);
 
-
-
-  let deauditAddr = response.decoded.output.keysDeAudit[2];
-  console.log("Contract reacted to your keysDeAudit[1]:", deauditAddr);
-
-  const deauditAcc = new Account(DeAuditContract, {
-    address: deauditAddr,
-    // signer: participantKeys,
+  const rootAcc = new Account(DeAuditRootContract, {
+    address:rootAddr,
+    signer: rootKeys,
     client,
   });
 
-  response = await deauditAcc.runLocal("sequentialNumber", {});
-  console.log("DeAudit sequentialNumber:", response.decoded.output.sequentialNumber);
+  let pubkeyCreator = '0x'+rootKeys.keys.public;
+  response = await rootAcc.runLocal("getParticipantAddress", {_answer_id:0, pubkeyParticipant:pubkeyCreator});
+  console.log("creatorAddr:", response.decoded.output);
 
-  response = await deauditAcc.runLocal("name", {});
-  console.log("Contract reacted to your DeAudit name:", hex2ascii(response.decoded.output.name));
-
-  response = await deauditAcc.runLocal("rootDeAudit", {});
-  console.log("DeAudit rootDeAudit:", response.decoded.output);
-
-  response = await deauditAcc.runLocal("dataDeAudit", {});
-  console.log("DeAudit data smartcontract address: ", response.decoded.output);
-  let deauditDataAddr = response.decoded.output.dataDeAudit;
-
-
-  response = await deauditAcc.runLocal("tokenDeAudit", {});
-  console.log("DeAudit  root token smartcontract address:", response.decoded.output);
-  let rootTokenAddr = response.decoded.output.tokenDeAudit;
-
-
-  response = await deauditAcc.runLocal("timeStart", {});
-  console.log("Contract reacted to your timeStart:", timeConverter(parseInt(response.decoded.output.timeStart)));
-
-  response = await deauditAcc.runLocal("colPeriod", {});
-  console.log("Contract reacted to your colPeriod:", parseInt(response.decoded.output.colPeriod));
-
-  response = await deauditAcc.runLocal("valPeriod", {});
-  console.log("Contract reacted to your valPeriod:", parseInt(response.decoded.output.valPeriod));
-
-  response = await deauditAcc.runLocal("colStake", {});
-  console.log("Contract reacted to your colStake:", parseInt(response.decoded.output.colStake));
-
-  response = await deauditAcc.runLocal("valStake", {});
-  console.log("Contract reacted to your valStake:", parseInt(response.decoded.output.valStake));
-
-  response = await deauditAcc.runLocal("getDetails", {_answer_id:0});
-  console.log("Contract reacted to your getDetails:", response.decoded.output);
-
-
-  const rootTokenAcc = new Account(RootTokenContractContract, {
-    address: rootTokenAddr,
-    // signer: participantKeys,
+  const creatorAddr = response.decoded.output.value0;
+  const creatorAcc = new Account(ParticipantContract, {
+    address: creatorAddr,
+    signer: rootKeys,
     client,
   });
 
-  response = await rootTokenAcc.runLocal("getDetails", {_answer_id:0});
-  // console.log("Contract reacted to your getDetails:", response.decoded.output);
-  console.log("root Democracy Token details:");
+  response = await creatorAcc.runLocal("rootDeAudit", {});
+  console.log("Contract reacted to your rootDeAudit:", response.decoded.output);
 
-  console.log("name: ", hex2ascii(response.decoded.output.value0.name));
-  console.log("symbol: ", hex2ascii(response.decoded.output.value0.symbol));
+  response = await creatorAcc.runLocal("initiatedDeAuditData", {});
+  console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
 
-  response = await rootTokenAcc.runLocal("getTotalSupply", {_answer_id:0});
-  console.log("totalSupply:", response.decoded.output);
 
-  response = await rootTokenAcc.runLocal("getVersion", {_answer_id:0});
-  console.log("getVersion: ", response.decoded.output);
+  let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
+  const participantAddr = resultArr[0].address;
+  const participantKeys = resultArr[0].keys;
+  const participantAcc = new Account(ParticipantContract, {
+    address: participantAddr,
+    signer: participantKeys,
+    client,
+  });
 
+  response = await rootAcc.runLocal("keysDeAuditData", {});
+  console.log("Contract reacted to your keysDeAuditData:", response.decoded.output);
+
+  let keysDeAuditData = response.decoded.output.keysDeAuditData;
+  console.log("Contract reacted to your keysDeAuditData:", keysDeAuditData[indexKeysDeAuditData]);
+
+
+  let deauditDataAddr1 = keysDeAuditData[indexKeysDeAuditData];
 
 
   const deauditdataAcc = new Account(DeAuditDataContract, {
-    address: deauditDataAddr,
+    address: deauditDataAddr1,
     // signer: participantKeys,
     client,
   });
 
+  response = await deauditdataAcc.runLocal("idDeAuditData", {});
+  console.log("Contract reacted to your idDeAuditData:", response.decoded.output);
 
-  // response = await deauditdataAcc.runLocal("idDeAuditData", {});
-  // console.log("Contract reacted to your idDeAuditData:", response.decoded.output);
+  response = await deauditdataAcc.runLocal("rootDeAudit", {});
+  console.log("Contract reacted to your rootDeAudit:", response.decoded.output);
 
+  response = await deauditdataAcc.runLocal("initiator", {});
+  console.log("Contract reacted to your initiator:", response.decoded.output);
 
   response = await deauditdataAcc.runLocal("name", {});
-  console.log("DeAuditData details:", hex2ascii(response.decoded.output.name));
+  console.log("Contract reacted to your name:", hex2ascii(response.decoded.output.name));
 
   // response = await deauditdataAcc.runLocal("district", {});
   // console.log("Contract reacted to your district:", response.decoded.output);
@@ -157,7 +119,6 @@ async function main(client) {
   response = await deauditdataAcc.runLocal("candidateKeys", {});
   // console.log("Contract reacted to your candidateKeys:", response.decoded.output);
   let candidateKeys = response.decoded.output.candidateKeys;
-  console.log("===> DeAuditData Candidates list:");
 
   for (const item of candidateKeys) {
     console.log(hex2ascii(candidate[item].name));
@@ -172,7 +133,6 @@ async function main(client) {
   response = await deauditdataAcc.runLocal("district", {});
   // console.log("Contract reacted to your district:", response.decoded.output);
   let district = response.decoded.output.district;
-  console.log("===> DeAuditData vouting districts list:");
 
   for (const item of districtKeys) {
     console.log(hex2ascii(district[item].name));
@@ -186,7 +146,6 @@ async function main(client) {
   response = await deauditdataAcc.runLocal("municipalBody", {});
   // console.log("Contract reacted to your municipalBody:", response.decoded.output);
   let municipalBody = response.decoded.output.municipalBody;
-  console.log("===> DeAuditData voting municipalBodies list:");
 
   for (const item of municipalBodyKeys) {
     console.log(hex2ascii(municipalBody[item].name));
@@ -200,7 +159,6 @@ async function main(client) {
   response = await deauditdataAcc.runLocal("votingPool", {});
   // console.log("Contract reacted to your votingPool:", response.decoded.output);
   let votingPool = response.decoded.output.votingPool;
-  console.log("===> DeAuditData voting pools list:");
 
   for (const item of votingPoolKeys) {
     console.log(hex2ascii(votingPool[item].name));
@@ -214,18 +172,10 @@ async function main(client) {
   response = await deauditdataAcc.runLocal("votingCenter", {});
   // console.log("Contract reacted to your votingCenter:", response.decoded.output);
   let votingCenterKeysObj = response.decoded.output.votingCenter;
-  console.log("===> DeAuditData voting centeres list:");
 
   for (const item of votingCenterKeysArr) {
     console.log(hex2ascii(votingCenterKeysObj[item].name));
   }
-
-
-
-
-
-
-
 
 
 

@@ -79,10 +79,72 @@
 			]
 		},
 		{
+			"name": "getRandomStepsFrom",
+			"inputs": [
+				{"name":"limit","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "getQtyAct4",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "getStartPoint",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "getNextKey",
+			"inputs": [
+				{"name":"key","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "getGramsForAct4",
+			"inputs": [
+				{"name":"totalValue","type":"uint128"},
+				{"name":"qtyAct4","type":"uint128"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "getLimit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "isAct4Full",
+			"inputs": [
+				{"name":"qtyValidations","type":"uint256"},
+				{"name":"limit","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"value0","type":"bool"}
+			]
+		},
+		{
 			"name": "setValidationForParticipant",
 			"inputs": [
 				{"name":"participantAddr","type":"address"},
-				{"name":"qtyValidations","type":"uint256"}
+				{"name":"qtyValidations","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -118,7 +180,7 @@
 				{"name":"idMunicipalBody4Debot","type":"uint256"},
 				{"name":"idDistrict4Debot","type":"uint256"},
 				{"name":"collationStatus4Debot","type":"bool"},
-				{"name":"countAdditionlPhotoLinks4Debot","type":"uint256"},
+				{"name":"act4Arr4Debot","type":"address[]"},
 				{"name":"votingCenterCurrentKeyD","type":"uint256"}
 			]
 		},
@@ -221,22 +283,6 @@
 			]
 		},
 		{
-			"name": "votingCenter",
-			"inputs": [
-			],
-			"outputs": [
-				{"components":[{"name":"name","type":"bytes"},{"name":"location","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"idVotingPool","type":"uint256"},{"name":"idMunicipalBody","type":"uint256"},{"name":"idDistrict","type":"uint256"},{"name":"collationStatus","type":"bool"},{"name":"countAdditionlPhotoLinks","type":"uint256"},{"name":"validatorsArr","type":"address[]"}],"name":"votingCenter","type":"map(uint256,tuple)"}
-			]
-		},
-		{
-			"name": "votingCenterKeys",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"votingCenterKeys","type":"uint256[]"}
-			]
-		},
-		{
 			"name": "votingCenterForAct4",
 			"inputs": [
 			],
@@ -245,11 +291,11 @@
 			]
 		},
 		{
-			"name": "act4ForVotingCenter",
+			"name": "queueAct4",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"act4ForVotingCenter","type":"map(uint256,address)"}
+				{"components":[{"name":"indexVC","type":"uint256"},{"name":"addressAct4","type":"address"},{"name":"validators","type":"address[]"}],"name":"queueAct4","type":"map(uint256,tuple)"}
 			]
 		},
 		{
@@ -261,11 +307,59 @@
 			]
 		},
 		{
+			"name": "queueAct4Length",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"queueAct4Length","type":"uint256"}
+			]
+		},
+		{
+			"name": "countCollatedVC",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"countCollatedVC","type":"uint256"}
+			]
+		},
+		{
+			"name": "countSpointVC",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"countSpointVC","type":"uint256"}
+			]
+		},
+		{
 			"name": "labelLVA4",
 			"inputs": [
 			],
 			"outputs": [
 				{"name":"labelLVA4","type":"uint256"}
+			]
+		},
+		{
+			"name": "limitValsForCol",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"limitValsForCol","type":"uint256"}
+			]
+		},
+		{
+			"name": "votingCenter",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"name","type":"bytes"},{"name":"location","type":"bytes"},{"name":"votes","type":"uint256[]"},{"name":"idVotingPool","type":"uint256"},{"name":"idMunicipalBody","type":"uint256"},{"name":"idDistrict","type":"uint256"},{"name":"collationStatus","type":"bool"},{"name":"act4Arr","type":"address[]"},{"name":"validatorsArr","type":"map(address,address[])"}],"name":"votingCenter","type":"map(uint256,tuple)"}
+			]
+		},
+		{
+			"name": "votingCenterKeys",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"votingCenterKeys","type":"uint256[]"}
 			]
 		},
 		{
@@ -330,14 +424,6 @@
 			],
 			"outputs": [
 				{"name":"candidateKeys","type":"uint256[]"}
-			]
-		},
-		{
-			"name": "settingLinksMaxLength",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"settingLinksMaxLength","type":"uint256"}
 			]
 		}
 	],

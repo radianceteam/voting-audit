@@ -17,13 +17,12 @@ const { ParticipantContract } = require("./Participant.js");
 const pathJsonRoot = './DeAuditRoot.json';
 const pathJsonParticipants = './Participants.json';
 
+let idVote = 2;
 
 TonClient.useBinaryLibrary(libNode);
 
-async function logEvents(params, response_type) {
-  // console.log(`params = ${JSON.stringify(params, null, 2)}`);
-  // console.log(`response_type = ${JSON.stringify(response_type, null, 2)}`);
-}
+
+
 
 async function main(client) {
   let response;
@@ -55,39 +54,13 @@ async function main(client) {
   console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
 
 
-
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
+  const participantAddress = resultArr[0].address;
 
-  const participantAcc1 = new Account(ParticipantContract, {
-    address: resultArr[0].address,
-    signer: resultArr[0].keys,
-    client,
-  });
+  response = await creatorAcc.run("resultVote", {voteId:idVote,grams:3500000000});
+  console.log("Contract reacted to your resultVote:", response.decoded.output);
 
-  const participantAcc2 = new Account(ParticipantContract, {
-    address: resultArr[1].address,
-    signer: resultArr[1].keys,
-    client,
-  });
-
-
-let idVote = 2;
-
-  response = await creatorAcc.run("voteFor", {voteId:idVote,grams:1000000000});
-  console.log("Contract reacted to your voteFor:", response.decoded.output);
-
-  response = await participantAcc1.run("voteFor", {voteId:idVote,grams:1000000000});
-  console.log("Contract reacted to your voteFor:", response.decoded.output);
-
-  // response = await participantAcc2.run("voteFor", {voteId:idVote,grams:1000000000});
-  // console.log("Contract reacted to your voteFor:", response.decoded.output);
-
-
-
-  // response = await creatorAcc.run("voteAgainst", {voteId:idVote,grams:1000000000});
-  // console.log("Contract reacted to your voteFor:", response.decoded.output);
-  //
-  // response = await participantAcc1.run("voteAgainst", {voteId:idVote,grams:1000000000});
+  // response = await creatorAcc.run("voteAgainst", {voteId:1,grams:1000000000});
   // console.log("Contract reacted to your voteFor:", response.decoded.output);
 
 

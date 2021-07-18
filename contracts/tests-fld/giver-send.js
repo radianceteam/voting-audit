@@ -13,7 +13,10 @@ const fs = require('fs');
 const { DeAuditRootContract } = require("./DeAuditRoot.js");
 
 const pathJsonRoot = './DeAuditRoot.json';
+const pathJsonParticipants = './Participants.json';
 
+
+const indexPartisipant = 0;
 
 
 TonClient.useBinaryLibrary(libNode);
@@ -31,10 +34,17 @@ async function main(client) {
     const rootAcc = new Account(DeAuditRootContract, {address:rootAddr,client,});
 
     response = await rootAcc.runLocal("actionTeamKeys", {});
-    console.log("Contract reacted to your actionTeamKeys:", response.decoded.output);
+    // console.log("Contract reacted to your actionTeamKeys:", response.decoded.output);
 
-    let destination = response.decoded.output.actionTeamKeys[0];
-    console.log("Contract reacted to your actionTeamKeys[0]:", destination);
+    let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
+    const participantAddr = resultArr[17].address;
+
+    // let destination = participantAddr;
+
+    // let destination = response.decoded.output.actionTeamKeys[indexPartisipant];
+    let destination = '0:52513f82dade29b01db9c99ce3a7a75e328d78cffddbddc8e84ec830739a2f8a';
+
+    console.log("Contract reacted to your destination]:", destination);
 
     let gramms = 20000000000;
 

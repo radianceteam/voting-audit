@@ -32,7 +32,7 @@ async function main(client) {
   let resultArr = [];
   let count = 0;
   // let cumulativ = 0;
-  while (count<3) {
+  while (count < 20) {
     const SEED_PHRASE_WORD_COUNT = 12;
     const SEED_PHRASE_DICTIONARY_ENGLISH = 1;
     const HD_PATH = "m/44'/396'/0'/0/0";

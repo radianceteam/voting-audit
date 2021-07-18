@@ -6,7 +6,7 @@
 			"name": "constructor",
 			"inputs": [
 				{"name":"settingVoteCountModel","type":"uint8"},
-				{"name":"settingLinksMaxLength","type":"uint256"}
+				{"name":"settingLimitVFC","type":"uint256"}
 			],
 			"outputs": [
 			]
@@ -79,7 +79,7 @@
 		{
 			"name": "setMaxQtyAct4Links",
 			"inputs": [
-				{"name":"settingLinksMaxLength","type":"uint128"}
+				{"name":"settingLimitVFC","type":"uint128"}
 			],
 			"outputs": [
 			]
@@ -506,11 +506,11 @@
 			]
 		},
 		{
-			"name": "maxQtyAct4Links",
+			"name": "limitVFC",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"maxQtyAct4Links","type":"uint256"}
+				{"name":"limitVFC","type":"uint256"}
 			]
 		},
 		{

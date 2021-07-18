@@ -17,14 +17,9 @@ const { ParticipantContract } = require("./Participant.js");
 const pathJsonRoot = './DeAuditRoot.json';
 const pathJsonParticipants = './Participants.json';
 
-const hex = require('ascii-hex');
-const hex2ascii = require('hex2ascii');
+let idVote = 4;
 
-function toHex(input) {
-  let output = '';
-  for (i = 0; i < input.length; i ++){output += hex(input[i]).toString(16)}
-  return String(output);
-}
+
 
 
 TonClient.useBinaryLibrary(libNode);
@@ -63,35 +58,41 @@ async function main(client) {
   response = await creatorAcc.runLocal("initiatedDeAuditData", {});
   console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
 
-  response = await rootAcc.runLocal("keysDeAuditData", {});
-  console.log("Contract reacted to your keysDeAuditData:", response.decoded.output);
-
-  let keysDeAuditData = response.decoded.output.keysDeAuditData;
-  console.log("Contract reacted to your keysDeAuditData[1]:", keysDeAuditData[2]);
-
-  response = await rootAcc.runLocal("paramDeAudit", {});
-  console.log("Contract reacted to your paramDeAudit:", response.decoded.output);
-
-  let paramDeAudit = response.decoded.output.paramDeAudit[keysDeAuditData[0]];
-  console.log("Contract reacted to your paramDeAudit[keysDeAuditData[0]:", hex2ascii(paramDeAudit.name));
 
 
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
-  const participantAddr = resultArr[0].address;
-  const participantKeys = resultArr[0].keys;
-  const participantAcc = new Account(ParticipantContract, {
-    address: participantAddr,
-    signer: participantKeys,
+
+  const participantAcc1 = new Account(ParticipantContract, {
+    address: resultArr[0].address,
+    signer: resultArr[0].keys,
+    client,
+  });
+
+  const participantAcc2 = new Account(ParticipantContract, {
+    address: resultArr[1].address,
+    signer: resultArr[1].keys,
     client,
   });
 
 
 
-  response = await creatorAcc.run("initVoteDeAudut", {
-    addrDeAuditData:keysDeAuditData[0],
-    grams:2000000000,
-  });
-  console.log("Contract reacted to your initVoteDeAudut:", response.decoded.output);
+  response = await creatorAcc.run("voteFor", {voteId:idVote,grams:1000000000});
+  console.log("Contract reacted to your voteFor:", response.decoded.output);
+
+  response = await participantAcc1.run("voteFor", {voteId:idVote,grams:1000000000});
+  console.log("Contract reacted to your voteFor:", response.decoded.output);
+
+  // response = await participantAcc2.run("voteFor", {voteId:idVote,grams:1000000000});
+  // console.log("Contract reacted to your voteFor:", response.decoded.output);
+
+
+
+  // response = await creatorAcc.run("voteAgainst", {voteId:idVote,grams:1000000000});
+  // console.log("Contract reacted to your voteFor:", response.decoded.output);
+  //
+  // response = await participantAcc1.run("voteAgainst", {voteId:idVote,grams:1000000000});
+  // console.log("Contract reacted to your voteFor:", response.decoded.output);
+
 
 
   // for (const item of resultArr) {

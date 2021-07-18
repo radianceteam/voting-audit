@@ -27,6 +27,8 @@ function toHex(input) {
   return String(output);
 }
 
+const indexKeysDeAuditData = 6;
+
 
 TonClient.useBinaryLibrary(libNode);
 
@@ -78,10 +80,10 @@ async function main(client) {
   console.log("Contract reacted to your keysDeAuditData:", response.decoded.output);
 
   let keysDeAuditData = response.decoded.output.keysDeAuditData;
-  console.log("Contract reacted to your keysDeAuditData[0]:", keysDeAuditData[2]);
+  console.log("Contract reacted to your keysDeAuditData:", keysDeAuditData[indexKeysDeAuditData]);
 
 
-  let deauditDataAddr1 = keysDeAuditData[0];
+  let deauditDataAddr1 = keysDeAuditData[indexKeysDeAuditData];
 
 
   const deauditdataAcc = new Account(DeAuditDataContract, {
@@ -109,72 +111,97 @@ async function main(client) {
   // console.log("Contract reacted to your districtKeys:", response.decoded.output);
 
 
-  response = await deauditdataAcc.runLocal("candidate", {});
-  // console.log("Contract reacted to your candidate:", response.decoded.output);
-  let candidate = response.decoded.output.candidate;
+  response = await deauditdataAcc.runLocal("getQtyAct4", {});
+  let totalSteps = parseInt(response.decoded.output.value0);
+  console.log("Contract reacted to your getQtyAct4:", totalSteps);
 
+  let s = 0;
 
-  response = await deauditdataAcc.runLocal("candidateKeys", {});
-  // console.log("Contract reacted to your candidateKeys:", response.decoded.output);
-  let candidateKeys = response.decoded.output.candidateKeys;
+  // while (s < 20) {
+  //   console.log(s);
+  //   response = await deauditdataAcc.run("getRandomStepsFrom", {limit:totalSteps});
+  //   console.log('Contract reacted to your getRandomStepsFrom from steps: '+totalSteps+', result: '+parseInt(response.decoded.output.value0));
+  //
+  //   s++;
+  // }
 
-  for (const item of candidateKeys) {
-    console.log(hex2ascii(candidate[item].name));
-  }
+  response = await deauditdataAcc.run("getRandomStepsFrom", {limit:totalSteps});
+  console.log('Contract reacted to your getRandomStepsFrom from steps: '+totalSteps+', result: '+parseInt(response.decoded.output.value0));
 
+  // let key = 0;
+  // while (key < 20) {
+  //   console.log('key: '+key);
+  //   response = await deauditdataAcc.runLocal("getNextKey", {key:key});
+  //   console.log('Contract reacted to your getNextKey for key: '+key+', result: '+parseInt(response.decoded.output.value0));
+  //   key ++;
+  // }
 
+  // response = await deauditdataAcc.runLocal("getNextKey", {key:key});
+  // console.log('Contract reacted to your getNextKey for key: '+totalSteps+', result: '+parseInt(response.decoded.output.value0));
 
-  response = await deauditdataAcc.runLocal("districtKeys", {});
-  // console.log("Contract reacted to your districtKeys:", response.decoded.output);
-  let districtKeys = response.decoded.output.districtKeys;
-
-  response = await deauditdataAcc.runLocal("district", {});
-  // console.log("Contract reacted to your district:", response.decoded.output);
-  let district = response.decoded.output.district;
-
-  for (const item of districtKeys) {
-    console.log(hex2ascii(district[item].name));
-  }
-
-
-  response = await deauditdataAcc.runLocal("municipalBodyKeys", {});
-  // console.log("Contract reacted to your municipalBodyKeys:", response.decoded.output);
-  let municipalBodyKeys = response.decoded.output.municipalBodyKeys;
-
-  response = await deauditdataAcc.runLocal("municipalBody", {});
-  // console.log("Contract reacted to your municipalBody:", response.decoded.output);
-  let municipalBody = response.decoded.output.municipalBody;
-
-  for (const item of municipalBodyKeys) {
-    console.log(hex2ascii(municipalBody[item].name));
-  }
-
-
-  response = await deauditdataAcc.runLocal("votingPoolKeys", {});
-  // console.log("Contract reacted to your votingPoolKeys:", response.decoded.output);
-  let votingPoolKeys = response.decoded.output.votingPoolKeys;
-
-  response = await deauditdataAcc.runLocal("votingPool", {});
-  // console.log("Contract reacted to your votingPool:", response.decoded.output);
-  let votingPool = response.decoded.output.votingPool;
-
-  for (const item of votingPoolKeys) {
-    console.log(hex2ascii(votingPool[item].name));
-  }
-
-
-  response = await deauditdataAcc.runLocal("votingCenterKeys", {});
-  // console.log("Contract reacted to your votingCenterKeys:", response.decoded.output);
-  let votingCenterKeysArr = response.decoded.output.votingCenterKeys;
-
-  response = await deauditdataAcc.runLocal("votingCenter", {});
-  // console.log("Contract reacted to your votingCenter:", response.decoded.output);
-  let votingCenterKeysObj = response.decoded.output.votingCenter;
-
-  for (const item of votingCenterKeysArr) {
-    console.log(hex2ascii(votingCenterKeysObj[item].name));
-  }
-
+  //
+  //
+  // response = await deauditdataAcc.runLocal("candidateKeys", {});
+  // // console.log("Contract reacted to your candidateKeys:", response.decoded.output);
+  // let candidateKeys = response.decoded.output.candidateKeys;
+  //
+  // for (const item of candidateKeys) {
+  //   console.log(hex2ascii(candidate[item].name));
+  // }
+  //
+  //
+  //
+  // response = await deauditdataAcc.runLocal("districtKeys", {});
+  // // console.log("Contract reacted to your districtKeys:", response.decoded.output);
+  // let districtKeys = response.decoded.output.districtKeys;
+  //
+  // response = await deauditdataAcc.runLocal("district", {});
+  // // console.log("Contract reacted to your district:", response.decoded.output);
+  // let district = response.decoded.output.district;
+  //
+  // for (const item of districtKeys) {
+  //   console.log(hex2ascii(district[item].name));
+  // }
+  //
+  //
+  // response = await deauditdataAcc.runLocal("municipalBodyKeys", {});
+  // // console.log("Contract reacted to your municipalBodyKeys:", response.decoded.output);
+  // let municipalBodyKeys = response.decoded.output.municipalBodyKeys;
+  //
+  // response = await deauditdataAcc.runLocal("municipalBody", {});
+  // // console.log("Contract reacted to your municipalBody:", response.decoded.output);
+  // let municipalBody = response.decoded.output.municipalBody;
+  //
+  // for (const item of municipalBodyKeys) {
+  //   console.log(hex2ascii(municipalBody[item].name));
+  // }
+  //
+  //
+  // response = await deauditdataAcc.runLocal("votingPoolKeys", {});
+  // // console.log("Contract reacted to your votingPoolKeys:", response.decoded.output);
+  // let votingPoolKeys = response.decoded.output.votingPoolKeys;
+  //
+  // response = await deauditdataAcc.runLocal("votingPool", {});
+  // // console.log("Contract reacted to your votingPool:", response.decoded.output);
+  // let votingPool = response.decoded.output.votingPool;
+  //
+  // for (const item of votingPoolKeys) {
+  //   console.log(hex2ascii(votingPool[item].name));
+  // }
+  //
+  //
+  // response = await deauditdataAcc.runLocal("votingCenterKeys", {});
+  // // console.log("Contract reacted to your votingCenterKeys:", response.decoded.output);
+  // let votingCenterKeysArr = response.decoded.output.votingCenterKeys;
+  //
+  // response = await deauditdataAcc.runLocal("votingCenter", {});
+  // // console.log("Contract reacted to your votingCenter:", response.decoded.output);
+  // let votingCenterKeysObj = response.decoded.output.votingCenter;
+  //
+  // for (const item of votingCenterKeysArr) {
+  //   console.log(hex2ascii(votingCenterKeysObj[item].name));
+  // }
+  //
 
 
 

@@ -20,6 +20,28 @@
 			]
 		},
 		{
+			"name": "publishData",
+			"inputs": [
+				{"name":"publishName","type":"bytes"},
+				{"name":"publishPhotoLink","type":"bytes"},
+				{"name":"publishDataLink","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getPublishedData",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"pName","type":"bytes"},
+				{"name":"pPhotoLink","type":"bytes"},
+				{"name":"pDataLink","type":"bytes"},
+				{"name":"pAddress","type":"address"},
+				{"name":"pBalance","type":"uint128"}
+			]
+		},
+		{
 			"name": "initVoteAddActionTeamMember",
 			"inputs": [
 				{"name":"participantAddr","type":"address"},
@@ -184,9 +206,10 @@
 			]
 		},
 		{
-			"name": "setDeAuditValidations",
+			"name": "receiveDeAuditMsg",
 			"inputs": [
-				{"name":"votingCentersArr","type":"uint256[]"}
+				{"name":"act4Arr","type":"address[]"},
+				{"name":"walletDeAudit","type":"address"}
 			],
 			"outputs": [
 			]
@@ -209,6 +232,30 @@
 			]
 		},
 		{
+			"name": "name",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"name","type":"bytes"}
+			]
+		},
+		{
+			"name": "photoLink",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"photoLink","type":"bytes"}
+			]
+		},
+		{
+			"name": "dataLink",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"dataLink","type":"bytes"}
+			]
+		},
+		{
 			"name": "initiatedDeAuditData",
 			"inputs": [
 			],
@@ -217,11 +264,19 @@
 			]
 		},
 		{
-			"name": "validations",
+			"name": "activities",
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"reg","type":"bool"},{"name":"votingCentersArr","type":"uint256[]"}],"name":"validations","type":"map(address,tuple)"}
+				{"components":[{"name":"reg","type":"bool"},{"name":"atype","type":"uint8"},{"name":"act4Arr","type":"address[]"},{"name":"wallet","type":"address"}],"name":"activities","type":"map(address,tuple)"}
+			]
+		},
+		{
+			"name": "walletsDC",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"walletsDC","type":"address[]"}
 			]
 		}
 	],

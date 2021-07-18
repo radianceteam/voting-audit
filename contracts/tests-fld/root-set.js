@@ -3,8 +3,8 @@ const { libNode } = require("@tonclient/lib-node");
 const { Account } = require("@tonclient/appkit");
 const fs = require('fs');
 const dotenv = require('dotenv').config();
-const networks = ["http://localhost",'net.ton.dev','main.ton.dev','rustnet.ton.dev'];
-const hello = ["Hello localhost TON!","Hello dev net TON!","Hello main net TON!","Hello rust dev net TON!"];
+const networks = ["http://localhost",'net.ton.dev','main.ton.dev','rustnet.ton.dev','https://gql.custler.net'];
+const hello = ["Hello localhost TON!","Hello dev net TON!","Hello main net TON!","Hello rust dev net TON!","Hello fld dev net TON!"];
 const networkSelector = process.env.NET_SELECTOR;
 
 const { GiverContract } = require("./Giver.js");
@@ -36,11 +36,11 @@ async function main(client) {
   });
 
 
-  // response = await rootAcc.run("setCodeDeAuditData", {code:DeAuditRootCode.deauditdata});
-  // console.log("Contract reacted to your setCodeDeAuditData:", response.decoded.output);
+  response = await rootAcc.run("setCodeDeAuditData", {code:DeAuditRootCode.deauditdata});
+  console.log("Contract reacted to your setCodeDeAuditData:", response.decoded.output);
 
-  response = await rootAcc.run("setCodeDeAudit", {code:DeAuditRootCode.deaudit});
-  console.log("Contract reacted to your setCodeDeAudit:", response.decoded.output);
+  // response = await rootAcc.run("setCodeDeAudit", {code:DeAuditRootCode.deaudit});
+  // console.log("Contract reacted to your setCodeDeAudit:", response.decoded.output);
 
 
 

@@ -17,6 +17,8 @@ const { ParticipantContract } = require("./Participant.js");
 const pathJsonRoot = './DeAuditRoot.json';
 const pathJsonParticipants = './Participants.json';
 
+const indexPartisipant = 0;
+
 
 TonClient.useBinaryLibrary(libNode);
 
@@ -57,7 +59,7 @@ async function main(client) {
 
 
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
-  const participantAddress = resultArr[0].address;
+  const participantAddress = resultArr[indexPartisipant].address;
 
   response = await creatorAcc.run("initVoteAddActionTeamMember", {participantAddr:participantAddress,grams:1000000000});
   console.log("Contract reacted to your initVoteAddActionTeamMember:", response.decoded.output);

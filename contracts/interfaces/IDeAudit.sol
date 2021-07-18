@@ -24,10 +24,10 @@ interface IDeAudit {
 
   function registrationForValidation() external;
 
-  function collationCallback(uint8 statusCollation, address addressCollator) external;
+  function collationCallback(uint8 statusCollation, address addressCollator, address[] msgData) external;
 
   function triggerToDeAuditData(address addrAct4, address member) external;
 
-  function regForValidationCallback(address addressValidator, uint256[] vcfvArr) external;
+  function regForValidationCallback(address addressValidator, address[] msgData) external;
 
 }

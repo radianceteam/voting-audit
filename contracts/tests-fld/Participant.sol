@@ -16,14 +16,23 @@ contract Participant is IParticipant {
 
 	address static public rootDeAudit;
 
+	bytes public name;
+	bytes public photoLink;
+	bytes public dataLink;
+
 	mapping(address => uint256) public initiatedDeAuditData;
 
-	mapping(address => Validations) public validations;
-
-	struct Validations {
+	struct Activity {
 		bool reg;
-		uint256[] votingCentersArr;
+		uint8 atype;
+		address[] act4Arr;
+		address wallet;
 	}
+
+	mapping(address => Activity) public activities;
+
+	address[] public walletsDC;
+
 
 
 	// Modifier that allows public function to accept external calls always.
@@ -46,14 +55,16 @@ contract Participant is IParticipant {
 	}
 
 	modifier onlyDeAuditAfterReg {
-		require(validations.exists(msg.sender), 104);
+		require(activities.exists(msg.sender), 104);
 		_;
 	}
 
-
-
 	// Init function.
-	constructor() public {
+	constructor() public onlyDeAuditRoot {
+	  string generatedName = format("Participant {}", address(this));
+		name = bytes(generatedName);
+		photoLink = bytes("no link");
+		dataLink = bytes("no link");
 	}
 
 	// Function to transfers plain transfers.
@@ -63,6 +74,26 @@ contract Participant is IParticipant {
 
 	// Function to receive plain transfers.
 	receive() external {
+	}
+
+	function publishData(bytes publishName, bytes publishPhotoLink, bytes publishDataLink)  public checkOwnerAndAccept {
+		name = publishName;
+		photoLink = publishPhotoLink;
+		dataLink = publishDataLink;
+	}
+
+	function getPublishedData()  public view returns (
+		bytes pName,
+		bytes pPhotoLink,
+		bytes pDataLink,
+		address pAddress,
+		uint128 pBalance
+	) {
+		pName = name;
+		pPhotoLink = photoLink;
+		pDataLink = dataLink;
+		pAddress = address(this);
+		pBalance = thisBalance();
 	}
 
 	function initVoteAddActionTeamMember(address participantAddr, uint128 grams)  public view checkOwnerAndAccept {
@@ -77,11 +108,11 @@ contract Participant is IParticipant {
 
 	function createDeAuditData(
 		bytes nameDeAuditData,
-    uint256 timeStart,
-    uint256 colPeriod,
-    uint256 valPeriod,
-    uint128 colStake,
-    uint128 valStake,
+		uint256 timeStart,
+		uint256 colPeriod,
+		uint256 valPeriod,
+		uint128 colStake,
+		uint128 valStake,
 		uint128 grams
 	) public view checkOwnerAndAccept {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).createDeAuditData, nameDeAuditData, timeStart, colPeriod, valPeriod, colStake, valStake);
@@ -93,22 +124,22 @@ contract Participant is IParticipant {
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-  function voteFor(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
+	function voteFor(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).voteFor, voteId);
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-  function voteAgainst(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
+	function voteAgainst(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).voteAgainst, voteId);
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-  function resultVote(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
+	function resultVote(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).resultVote, voteId);
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-  function sendTrigger(address addrDeAudit, address addrAct4, uint128 grams)  public view checkOwnerAndAccept {
+	function sendTrigger(address addrDeAudit, address addrAct4, uint128 grams)  public view checkOwnerAndAccept {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).sendTrigger, addrDeAudit, addrAct4);
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
@@ -176,38 +207,46 @@ contract Participant is IParticipant {
 		bytes linkToCollationPhoto,
 		uint256[] voteMatrix,
 		uint128 grams
-	) public pure checkOwnerAndAccept {
+	) public checkOwnerAndAccept {
+		Activity cv = activities[addressDeAudit];
+		cv.reg = true;
+		cv.atype = 0;
+		activities[addressDeAudit] = cv;
 		TvmCell body = tvm.encodeBody(IDeAudit(addressDeAudit).addCollation, indexVotingCenter, linkToCollationPhoto, voteMatrix);
 		addressDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
+
 
 	function registrationForValidation(
 		address addressDeAudit,
 		uint128 grams
 	) public checkOwnerAndAccept {
-		Validations cv = validations[addressDeAudit];
+		Activity cv = activities[addressDeAudit];
 		cv.reg = true;
-		validations[addressDeAudit] = cv;
+		cv.atype = 1;
+		activities[addressDeAudit] = cv;
 		TvmCell body = tvm.encodeBody(IDeAudit(addressDeAudit).registrationForValidation);
 		addressDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function setDeAuditValidations(uint256[] votingCentersArr) public override onlyDeAuditAfterReg {
+	function receiveDeAuditMsg(address[] act4Arr, address walletDeAudit) public override onlyDeAuditAfterReg {
 		tvm.accept();
-		Validations cv = validations[msg.sender];
-		cv.votingCentersArr = votingCentersArr;
-		validations[msg.sender] = cv;
+		address addressDeAudit = msg.sender;
+		Activity cv = activities[addressDeAudit];
+		cv.act4Arr = act4Arr;
+		cv.wallet = walletDeAudit;
+		activities[addressDeAudit] = cv;
+		walletsDC.push(walletDeAudit);
 	}
 
-
 	// Function for get this contract TON gramms balance
-  function thisBalance() private inline pure returns (uint128) {
-    return address(this).balance;
-  }
+	function thisBalance() private inline pure returns (uint128) {
+		return address(this).balance;
+	}
 
-  // Function for external get this contract TON gramms balance
-  function getBalance() public pure responsible returns (uint128) {
-    return { value: 0, bounce: false, flag: 64 } thisBalance();
-  }
+	// Function for external get this contract TON gramms balance
+	function getBalance() public pure responsible returns (uint128) {
+		return { value: 0, bounce: false, flag: 64 } thisBalance();
+	}
 
 }

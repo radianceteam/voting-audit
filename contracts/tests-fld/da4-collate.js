@@ -18,6 +18,7 @@ const { ParticipantContract } = require("./Participant.js");
 const { Act4Contract } = require("./Act4.js");
 const { TONTokenWalletContract } = require("./TONTokenWallet.js");
 
+const indexKeysDeAuditData = 3;
 
 
 
@@ -43,6 +44,7 @@ async function logEvents(params, response_type) {
 
 async function main(client) {
   let response;
+
   const rootKeys = JSON.parse(fs.readFileSync(pathJsonRoot,{encoding: "utf8"})).keys;
   const rootAddr = JSON.parse(fs.readFileSync(pathJsonRoot,{encoding: "utf8"})).address;
   console.log("rootAddr:", rootAddr);
@@ -72,113 +74,59 @@ async function main(client) {
 
 
   response = await rootAcc.runLocal("keysDeAudit", {});
-  console.log("keysDeAudit[0]:", response.decoded.output.keysDeAudit[2]);
-  let deauditAddr = response.decoded.output.keysDeAudit[0];
+  console.log("keysDeAudit index:"+indexKeysDeAuditData+' address:'+response.decoded.output.keysDeAudit[indexKeysDeAuditData]);
 
-
+  let deauditAddr = response.decoded.output.keysDeAudit[indexKeysDeAuditData];
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
-  const participantAddr = resultArr[1].address;
-  const participantKeys = resultArr[1].keys;
-  const participantAcc = new Account(ParticipantContract, {
-    address: participantAddr,
-    signer: participantKeys,
-    client,
-  });
 
-  console.log("collator address:", participantAddr);
-
-  response = await participantAcc.runLocal("getBalance", {_answer_id:0});
-  console.log("collator getBalance:", response.decoded.output);
-  //
-  // let keysDeAuditData = response.decoded.output.keysDeAuditData;
-  // console.log("Contract reacted to your keysDeAuditData[0]:", keysDeAuditData[0]);
-  //
-  //
-  // let deauditDataAddr1 = keysDeAuditData[0];
-  //
-  const deauditAcc = new Account(DeAuditContract, {
-    address: deauditAddr,
-    // signer: participantKeys,
-    client,
-  });
-  //
+  const deauditAcc = new Account(DeAuditContract, {address: deauditAddr,client,});
   response = await deauditAcc.runLocal("colStake", {});
   console.log("deauditAcc colStake:", response.decoded.output);
 
   response = await deauditAcc.runLocal("dataDeAudit", {});
-  console.log("deauditAcc dataDeAudit:", response.decoded.output);
-
   let deauditdataAddr = response.decoded.output.dataDeAudit;
+  console.log("deauditAcc dataDeAudit:", deauditdataAddr);
 
-  const deauditDataAcc = new Account(DeAuditDataContract, {
-    address: deauditdataAddr,
-    // signer: participantKeys,
-    client,
-  });
+  const deauditDataAcc = new Account(DeAuditDataContract, {address: deauditdataAddr,client,});
 
   response = await deauditDataAcc.runLocal("launchedDeAudit", {});
   console.log("deauditDataAcc launchedDeAudit:", response.decoded.output);
 
-
   response = await deauditDataAcc.runLocal("votingCenterKeys", {});
-  // console.log("deauditDataAcc votingCenterKeys:", response.decoded.output);
 
-  let indexVC = response.decoded.output.votingCenterKeys[1];
-  console.log("deauditDataAcc votingCenterKeys[1]:", indexVC);
-
-
+  let votingCenterKeys = response.decoded.output.votingCenterKeys;
 
   response = await deauditDataAcc.runLocal("votingCenter", {});
-  console.log("deauditDataAcc votingCenter:", response.decoded.output.votingCenter[indexVC]);
 
-  response = await deauditDataAcc.runLocal("act4ForVotingCenter", {});
-  let act4Addr = response.decoded.output.act4ForVotingCenter[indexVC];
-  console.log("act4ForVotingCenter votingCenter:", act4Addr);
-
-  const act4Acc = new Account(Act4Contract, {
-    address: act4Addr,
-    // signer: participantKeys,
-    client,
-  });
-
-  response = await act4Acc.runLocal("collator", {});
-  console.log("act4Acc collator:", response.decoded.output);
-
-  response = await act4Acc.runLocal("collatorPhotoLink", {});
-  console.log("act4Acc collatorPhotoLink:", hex2ascii(response.decoded.output.collatorPhotoLink));
-
-  response = await act4Acc.runLocal("voteMatrix", {});
-  console.log("act4Acc voteMatrix:", response.decoded.output);
-
-
-  response = await deauditAcc.runLocal("stakeOf", {});
-  console.log("deauditAcc stakeOf:", response.decoded.output);
-
-  response = await deauditAcc.runLocal("walletOf", {});
-  let collatorWallet = response.decoded.output.walletOf[participantAddr];
-  console.log("collatorWallet:", collatorWallet);
-
-  const tokenWalletAcc = new Account(TONTokenWalletContract, {
-    address: collatorWallet,
-    // signer: participantKeys,
-    client,
-  });
-
-  response = await tokenWalletAcc.runLocal("balance", {_answer_id:0});
-  console.log("tokenWalletAcc balance:", response.decoded.output);
-
-
-  // response = await participantAcc.run("addCollation", {
-  //   addressDeAudit:deauditAddr,
-  //   indexVotingCenter:indexVC,
-  //   linkToCollationPhoto:toHex("https://drive.google.com/file/d/1CbJuffTxds3iooRkKWuVdMO5ENMHAiIh/view?usp=sharing"),
-  //   voteMatrix:[0,1,46,0],
-  //   grams:5000000000
-  // });
-  // console.log("Contract reacted to your addCollation:", response.decoded.output);
+  let votingCenters = response.decoded.output.votingCenter;
 
 
 
+
+  let count = 0;
+  while (count < 16) {
+    let indexParticipant = count;
+    let indexVC = count;
+    const participantAddr = resultArr[indexParticipant].address;
+    const participantKeys = resultArr[indexParticipant].keys;
+    const participantAcc = new Account(ParticipantContract, {address: participantAddr,signer: participantKeys,client,});
+    console.log("collator address:", participantAddr);
+    response = await participantAcc.runLocal("getBalance", {_answer_id:0});
+    console.log("collator getBalance:", response.decoded.output);
+    let votingCenterIndex = votingCenterKeys[indexVC];
+    console.log("deauditDataAcc votingCenterKey:", votingCenterIndex);
+    let votingCenter = votingCenters[votingCenterIndex];
+    console.log("deauditDataAcc votingCenter name:", hex2ascii(votingCenter.name));
+    response = await participantAcc.run("addCollation", {
+      addressDeAudit:deauditAddr,
+      indexVotingCenter:votingCenterIndex,
+      linkToCollationPhoto:toHex("https://drive.google.com/file/d/1CbJuffTxds3iooRkKWuVdMO5ENMHAiIh/view?usp=sharing"),
+      voteMatrix:[0,1,46,0],
+      grams:5000000000
+    });
+    console.log("Contract reacted to your addCollation:", response.decoded.output);
+    count++;
+  }
 
 
 }

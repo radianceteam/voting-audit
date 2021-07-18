@@ -57,7 +57,7 @@ contract DeAuditRoot is IDeAuditRoot {
 	uint128 public deployFee;
 	uint256 public votingDuration;
 	uint8 public voteCountModel;
-	uint256 public maxQtyAct4Links;
+	uint256 public limitVFC;
 
 
 	struct Vote {
@@ -124,13 +124,13 @@ contract DeAuditRoot is IDeAuditRoot {
 	}
 
 	// Init function.
-	constructor(uint8 settingVoteCountModel, uint256 settingLinksMaxLength) public checkOwnerAndAccept {
+	constructor(uint8 settingVoteCountModel, uint256 settingLimitVFC) public checkOwnerAndAccept {
 		require(settingVoteCountModel == 0 || settingVoteCountModel == 1 || settingVoteCountModel == 2, 108);
-		require(settingLinksMaxLength != 0, 108);
+		require(settingLimitVFC != 0, 108);
 		voteCountModel = settingVoteCountModel;
 		countDeAuditData = 0;
 		countDeAudit = 0;
-		maxQtyAct4Links = settingLinksMaxLength;
+		limitVFC = settingLimitVFC;
 	}
 
 	// Function to transfers plain transfers.
@@ -175,8 +175,8 @@ contract DeAuditRoot is IDeAuditRoot {
 		codeTONTokenWallet = code;
 	}
 
-	function setMaxQtyAct4Links(uint128 settingLinksMaxLength) public checkOwnerAndAccept {
-		maxQtyAct4Links = settingLinksMaxLength;
+	function setMaxQtyAct4Links(uint128 settingLimitVFC) public checkOwnerAndAccept {
+		limitVFC = settingLimitVFC;
 	}
 
 	function setDeployFee(uint128 settingDeployFee) public checkOwnerAndAccept {
@@ -296,7 +296,7 @@ contract DeAuditRoot is IDeAuditRoot {
 			flag: 0,
 			bounce : false,
 			value : GRAMS_CREATE
-		}(maxQtyAct4Links);
+		}(limitVFC);
 		if (deployedAddress != address(0)) {
 			DeAuditParam cdad = paramDeAudit[deployedAddress];
 			cdad.creator = member;
@@ -318,8 +318,6 @@ contract DeAuditRoot is IDeAuditRoot {
 	}
 
 	function createVoteId() private inline view returns (uint256) {
-		// rnd.shuffle();
-		// return rnd.getSeed();
 		return voteKeys.length + 1;
 	}
 

@@ -17,13 +17,12 @@ const { ParticipantContract } = require("./Participant.js");
 const pathJsonRoot = './DeAuditRoot.json';
 const pathJsonParticipants = './Participants.json';
 
+let idVote = 6;
 
 TonClient.useBinaryLibrary(libNode);
 
-async function logEvents(params, response_type) {
-  // console.log(`params = ${JSON.stringify(params, null, 2)}`);
-  // console.log(`response_type = ${JSON.stringify(response_type, null, 2)}`);
-}
+
+
 
 async function main(client) {
   let response;
@@ -54,7 +53,6 @@ async function main(client) {
   response = await creatorAcc.runLocal("initiatedDeAuditData", {});
   console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
 
-  let idVote = 2;
 
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
   const participantAddress = resultArr[0].address;

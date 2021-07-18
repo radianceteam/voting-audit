@@ -21,6 +21,8 @@ const pathJsonParticipants = './Participants.json';
 const hex = require('ascii-hex');
 const hex2ascii = require('hex2ascii');
 
+const indexKeysDeAuditData = 1;
+
 function toHex(input) {
   let output = '';
   for (i = 0; i < input.length; i ++){output += hex(input[i]).toString(16)}
@@ -78,10 +80,10 @@ async function main(client) {
   console.log("Contract reacted to your keysDeAuditData:", response.decoded.output);
 
   let keysDeAuditData = response.decoded.output.keysDeAuditData;
-  console.log("Contract reacted to your keysDeAuditData[0]:", keysDeAuditData[0]);
+  console.log("Contract reacted to your keysDeAuditData:", keysDeAuditData[indexKeysDeAuditData]);
 
 
-  let deauditDataAddr1 = keysDeAuditData[0];
+  let deauditDataAddr1 = keysDeAuditData[indexKeysDeAuditData];
 
   const deauditdataAcc = new Account(DeAuditDataContract, {
     address: deauditDataAddr1,
