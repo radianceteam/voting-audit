@@ -34,7 +34,7 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 
 	// Grams constants
 	uint128 constant public GRAMS_COLLATE = 1.5 ton;
-	uint128 constant public GRAMS_VALIDATION_REG = 0.1 ton;
+	uint128 constant public GRAMS_VALIDATION_REG = 0.5 ton;
 	uint128 constant GRAMS_MINT = 50000000;
 
 	// Collation callback types
@@ -159,7 +159,7 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 		address validator = msg.sender;
 		uint128 msgValue = msg.value;
 		require(!stakeOf.exists(validator) && !(msgValue < valStake + GRAMS_VALIDATION_REG), 109);
-		uint128 qtyValidations = math.divr(msgValue, valStake + GRAMS_VALIDATION_REG);
+		uint128 qtyValidations = msgValue / (valStake + GRAMS_VALIDATION_REG);
 		tvm.rawReserve(address(this).balance + qtyValidations * valStake - msgValue, 2);
 		stakeOf[validator] = qtyValidations * valStake;
 		TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).setValidationForParticipant, validator, qtyValidations);

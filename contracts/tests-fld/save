@@ -1,0 +1,2 @@
+cp DeAuditData.sol  /home/yaroslav/voting-audit/contracts/ &&
+cp DeAudit.sol  /home/yaroslav/voting-audit/contracts/ 

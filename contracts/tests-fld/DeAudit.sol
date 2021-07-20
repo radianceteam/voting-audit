@@ -34,7 +34,7 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 
 	// Grams constants
 	uint128 constant public GRAMS_COLLATE = 1.5 ton;
-	uint128 constant public GRAMS_VALIDATION_REG = 0.1 ton;
+	uint128 constant public GRAMS_VALIDATION_REG = 0.5 ton;
 	uint128 constant GRAMS_MINT = 50000000;
 
 	// Collation callback types

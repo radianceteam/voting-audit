@@ -141,6 +141,26 @@
 			]
 		},
 		{
+			"name": "getNextAct4",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "addValidatorToAct4",
+			"inputs": [
+				{"name":"validatorAddr","type":"address"},
+				{"name":"position","type":"uint256"},
+				{"name":"gramsForAct4","type":"uint128"}
+			],
+			"outputs": [
+				{"name":"act4","type":"address"},
+				{"name":"status","type":"bool"}
+			]
+		},
+		{
 			"name": "setValidationForParticipant",
 			"inputs": [
 				{"name":"participantAddr","type":"address"},
@@ -295,7 +315,7 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"components":[{"name":"indexVC","type":"uint256"},{"name":"addressAct4","type":"address"},{"name":"validators","type":"address[]"}],"name":"queueAct4","type":"map(uint256,tuple)"}
+				{"components":[{"name":"indexVC","type":"uint256"},{"name":"addressAct4","type":"address"},{"name":"validatorIndex","type":"map(address,uint256)"},{"name":"validatorQty","type":"uint256"}],"name":"queueAct4","type":"map(uint256,tuple)"}
 			]
 		},
 		{

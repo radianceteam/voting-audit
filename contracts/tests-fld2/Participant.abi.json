@@ -1,0 +1,288 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "sendTransfer",
+			"inputs": [
+				{"name":"dest","type":"address"},
+				{"name":"value","type":"uint128"},
+				{"name":"bounce","type":"bool"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "publishData",
+			"inputs": [
+				{"name":"publishName","type":"bytes"},
+				{"name":"publishPhotoLink","type":"bytes"},
+				{"name":"publishDataLink","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getPublishedData",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"pName","type":"bytes"},
+				{"name":"pPhotoLink","type":"bytes"},
+				{"name":"pDataLink","type":"bytes"},
+				{"name":"pAddress","type":"address"},
+				{"name":"pBalance","type":"uint128"}
+			]
+		},
+		{
+			"name": "initVoteAddActionTeamMember",
+			"inputs": [
+				{"name":"participantAddr","type":"address"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "initVoteRemoveActionTeamMember",
+			"inputs": [
+				{"name":"participantAddr","type":"address"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "createDeAuditData",
+			"inputs": [
+				{"name":"nameDeAuditData","type":"bytes"},
+				{"name":"timeStart","type":"uint256"},
+				{"name":"colPeriod","type":"uint256"},
+				{"name":"valPeriod","type":"uint256"},
+				{"name":"colStake","type":"uint128"},
+				{"name":"valStake","type":"uint128"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "initVoteDeAudut",
+			"inputs": [
+				{"name":"addrDeAuditData","type":"address"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "voteFor",
+			"inputs": [
+				{"name":"voteId","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "voteAgainst",
+			"inputs": [
+				{"name":"voteId","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "resultVote",
+			"inputs": [
+				{"name":"voteId","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "sendTrigger",
+			"inputs": [
+				{"name":"addrDeAudit","type":"address"},
+				{"name":"addrAct4","type":"address"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setCreatedDeAuditData",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addDistrict",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameDistrict","type":"bytes"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addMunicipalBody",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameMunicipalBody","type":"bytes"},
+				{"name":"indexDistrict","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addVotingPool",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameVotingPool","type":"bytes"},
+				{"name":"indexDistrict","type":"uint256"},
+				{"name":"indexMunicipalBody","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addVotingCenter",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameVotingCenter","type":"bytes"},
+				{"name":"location","type":"bytes"},
+				{"name":"indexDistrict","type":"uint256"},
+				{"name":"indexMunicipalBody","type":"uint256"},
+				{"name":"indexVotingPool","type":"uint256"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addCandidate",
+			"inputs": [
+				{"name":"addressDeAuditData","type":"address"},
+				{"name":"nameCandidate","type":"bytes"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addCollation",
+			"inputs": [
+				{"name":"addressDeAudit","type":"address"},
+				{"name":"indexVotingCenter","type":"uint256"},
+				{"name":"linkToCollationPhoto","type":"bytes"},
+				{"name":"voteMatrix","type":"uint256[]"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "registrationForValidation",
+			"inputs": [
+				{"name":"addressDeAudit","type":"address"},
+				{"name":"grams","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "receiveDeAuditMsg",
+			"inputs": [
+				{"name":"act4Arr","type":"address[]"},
+				{"name":"walletDeAudit","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getBalance",
+			"inputs": [
+				{"name":"_answer_id","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"value0","type":"uint128"}
+			]
+		},
+		{
+			"name": "rootDeAudit",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"rootDeAudit","type":"address"}
+			]
+		},
+		{
+			"name": "name",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"name","type":"bytes"}
+			]
+		},
+		{
+			"name": "photoLink",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"photoLink","type":"bytes"}
+			]
+		},
+		{
+			"name": "dataLink",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"dataLink","type":"bytes"}
+			]
+		},
+		{
+			"name": "initiatedDeAuditData",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"initiatedDeAuditData","type":"map(address,uint256)"}
+			]
+		},
+		{
+			"name": "activities",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"reg","type":"bool"},{"name":"atype","type":"uint8"},{"name":"act4Arr","type":"address[]"},{"name":"wallet","type":"address"}],"name":"activities","type":"map(address,tuple)"}
+			]
+		},
+		{
+			"name": "walletsDC",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"walletsDC","type":"address[]"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"rootDeAudit","type":"address"}
+	],
+	"events": [
+	]
+}

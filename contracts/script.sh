@@ -20,3 +20,7 @@ echo "tvm_linker decode"
 /home/yaroslav/.tondev/solidity/tvm_linker decode --tvc Participant.tvc | grep code: | cut -c 8- > Participant.txt &&
 /home/yaroslav/.tondev/solidity/tvm_linker decode --tvc RootTokenContract.tvc | grep code: | cut -c 8- > RootTokenContract.txt &&
 /home/yaroslav/.tondev/solidity/tvm_linker decode --tvc TONTokenWallet.tvc | grep code: | cut -c 8- > TONTokenWallet.txt
+
+
+
+# tondev sol compile DeAuditData.sol && tondev js wrap DeAuditData.abi.json -o DeAuditData.js && sudo /home/yaroslav/.tondev/solidity/tvm_linker decode --tvc DeAuditData.tvc | grep code: | cut -c 8- > DeAuditData.txt

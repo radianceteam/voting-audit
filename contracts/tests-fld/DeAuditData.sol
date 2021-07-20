@@ -26,7 +26,8 @@ contract DeAuditData is IDeAuditData {
   struct Collation {
     uint256 indexVC;
     address addressAct4;
-    address[] validators;
+    mapping (address => uint256) validatorIndex;
+    uint256 validatorQty;
   }
 
   mapping (uint256 => Collation) public queueAct4;
@@ -42,6 +43,8 @@ contract DeAuditData is IDeAuditData {
   uint256 public labelLVA4;
 
   uint256 public limitValsForCol;
+
+  uint128 constant public GRAMS_TO_ACT4_WHITH_REG_VALIDATOR_MSG = 0.1 ton;
 
   struct VotingCenter {
     bytes name;
@@ -295,12 +298,8 @@ contract DeAuditData is IDeAuditData {
   function getRandomStepsFrom(uint256 limit) public pure alwaysAccept returns (uint256) {
     rnd.shuffle();
     uint256 rndSteps = rnd.next(limit);
-    // uint256 seed = rnd.getSeed();
-    // uint256 max_uint256 = 2**256 - 1;
-    // uint256 denominator = max_uint256 / limit;
-    // return ( seed / denominator ) + 1;
     return rndSteps;
-  }  
+  }
 
   function getQtyAct4() public view returns (uint256) {
     return queueAct4Length;
@@ -329,43 +328,62 @@ contract DeAuditData is IDeAuditData {
   }
 
   function isAct4Full(uint256 qtyValidations, uint256 limit) public pure returns (bool) {
-    return limit <= qtyValidations + 1;
+    return qtyValidations >= limit;
+  }
+
+  function getNextAct4() public alwaysAccept returns (uint256) {
+    uint256 totalSteps = getQtyAct4();
+    uint256 steps = getRandomStepsFrom(totalSteps);
+    uint256 key = getStartPoint();
+    repeat(steps) { key = getNextKey(key); }
+    labelLVA4 = key;
+    return key;
+  }
+
+  function addValidatorToAct4(address validatorAddr, uint256 position, uint128 gramsForAct4) public alwaysAccept returns (address act4, bool status) {
+    Collation ca4 = queueAct4[position];
+    act4 = address(0);
+    status = false;
+    if (!ca4.validatorIndex.exists(validatorAddr)) {
+      ca4.validatorQty ++;
+      ca4.validatorIndex[validatorAddr] = ca4.validatorQty;
+      act4 = ca4.addressAct4;
+      uint256 qv = ca4.validatorQty;
+      status = true;
+      TvmCell bodyA4 = tvm.encodeBody(IAct4(act4).setValidator, validatorAddr);
+      act4.transfer({value: gramsForAct4, flag: 0, bounce:true, body:bodyA4});
+      VotingCenter cvc = votingCenter[ca4.indexVC];
+      if (!cvc.validatorsArr.exists(act4)) {
+        cvc.act4Arr.push(act4);
+        cvc.validatorsArr[act4].push(validatorAddr);
+      } else {
+        cvc.validatorsArr[act4].push(validatorAddr);
+      }
+      votingCenter[ca4.indexVC] = cvc;
+      queueAct4[position] = ca4;
+      uint256 lvfc = getLimit();
+      if (isAct4Full(qv,lvfc)) {
+        delete queueAct4[position];
+        queueAct4Length --;
+      }
+    }
   }
 
   function setValidationForParticipant(address participantAddr, uint128 qtyValidations) public override onlyDeAudit {
     tvm.rawReserve(address(this).balance - msg.value, 2);
-    uint128 gramsForAct4 = getGramsForAct4(msg.value, qtyValidations);
+    uint256 maxValidationsForParticipant = getQtyAct4();
+    uint256 attemptQty = uint256(qtyValidations) < maxValidationsForParticipant ? uint256(qtyValidations) : maxValidationsForParticipant;
+
     address[] validatorAct4Arr;
-    repeat(qtyValidations) {
-      uint256 totalSteps = getQtyAct4();
-      uint256 steps = getRandomStepsFrom(totalSteps);
-      uint256 key = getStartPoint();
-      repeat(steps) { key = getNextKey(key); }
-      Collation ca4 = queueAct4[key];
-      uint256 currentValidations = ca4.validators.length;
-      uint256 lvfc = getLimit();
-      if (!isAct4Full(currentValidations, lvfc)) {
-        ca4.validators.push(participantAddr);
-        address addressAct4 = ca4.addressAct4;
-        queueAct4[key] = ca4;
-        TvmCell bodyA4 = tvm.encodeBody(IAct4(addressAct4).setValidator, participantAddr);
-        addressAct4.transfer({value: gramsForAct4, flag: 0, bounce:true, body:bodyA4});
-        labelLVA4 = key;
-      } else {
-        ca4.validators.push(participantAddr);
-        address addressAct4 = ca4.addressAct4;
-        TvmCell bodyA4 = tvm.encodeBody(IAct4(addressAct4).setValidator, participantAddr);
-        addressAct4.transfer({value: gramsForAct4, flag: 0, bounce:true, body:bodyA4});
-        VotingCenter cvc = votingCenter[ca4.indexVC];
-        countSpointVC = cvc.act4Arr.length < 1 ? countSpointVC + 1: countSpointVC ;
-        cvc.act4Arr.push(addressAct4);
-        cvc.validatorsArr[addressAct4] = ca4.validators;
-        votingCenter[ca4.indexVC] = cvc;
-        labelLVA4 = getNextKey(key);
-        delete queueAct4[key];
-        queueAct4Length --;
-      }
+
+    repeat(attemptQty) {
+     uint256 selectedAct4 = getNextAct4();
+     (address act4, bool status) = addValidatorToAct4(participantAddr, selectedAct4, GRAMS_TO_ACT4_WHITH_REG_VALIDATOR_MSG);
+     if (status == true) {
+       validatorAct4Arr.push(act4);
+     }
     }
+
     TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).regForValidationCallback, participantAddr, validatorAct4Arr);
     launchedDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
   }
