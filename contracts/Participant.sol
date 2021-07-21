@@ -229,6 +229,16 @@ contract Participant is IParticipant {
 		addressDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
+	function validateFor(address addrAct4, uint128 grams)  public  view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IAct4(addrAct4).voteFor);
+		addrAct4.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
+	function validateAgainst(address addrAct4, uint128 grams)  public  view checkOwnerAndAccept {
+		TvmCell body = tvm.encodeBody(IAct4(addrAct4).voteAgainst);
+		addrAct4.transfer({value:grams, flag:0, bounce:true, body:body});
+	}
+
 	function receiveDeAuditMsg(address[] act4Arr, address walletDeAudit) public override onlyDeAuditAfterReg {
 		tvm.accept();
 		address addressDeAudit = msg.sender;

@@ -168,14 +168,28 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 
 	function regForValidationCallback(address addressValidator, address[] msgData) public override onlyDeAuditData {
 		uint128 valueMsg = msg.value;
-		tvm.rawReserve(address(this).balance - valueMsg, 2);
-		msgForParticipant[addressValidator] = msgData;
-		uint128 gramsToNewWallet = valueMsg / 8;
-		uint128 gramsToRoot = gramsToNewWallet * 3;
-		TvmCell bodyD = tvm.encodeBody(IRootTokenContract(tokenDeAudit).deployEmptyWallet, gramsToNewWallet, 0, addressValidator, addressValidator);
-		tokenDeAudit.transfer({value:gramsToRoot, bounce:true, body:bodyD});
-		TvmCell bodyA = tvm.encodeBody(IRootTokenContract(tokenDeAudit).sendExpectedWalletAddress, 0, addressValidator, address(this));
-		tokenDeAudit.transfer({value: 0, flag: 128, bounce:true, body:bodyA});
+		uint128 qtySettedVals = uint128(msgData.length);
+		uint128 returnValue = stakeOf[addressValidator] - (qtySettedVals * valStake);
+		if (returnValue > 0) {
+			tvm.rawReserve(address(this).balance - valueMsg - returnValue, 2);
+			msgForParticipant[addressValidator] = msgData;
+			uint128 gramsToNewWallet = valueMsg / 8;
+			uint128 gramsToRoot = gramsToNewWallet * 3;
+			TvmCell bodyD = tvm.encodeBody(IRootTokenContract(tokenDeAudit).deployEmptyWallet, gramsToNewWallet, 0, addressValidator, addressValidator);
+			tokenDeAudit.transfer({value:gramsToRoot, bounce:true, body:bodyD});
+			TvmCell bodyA = tvm.encodeBody(IRootTokenContract(tokenDeAudit).sendExpectedWalletAddress, 0, addressValidator, address(this));
+			tokenDeAudit.transfer({value: gramsToRoot, bounce:true, body:bodyA});
+			addressValidator.transfer({value: 0, flag: 128, bounce:true});
+		} else {
+			tvm.rawReserve(address(this).balance - valueMsg, 2);
+			msgForParticipant[addressValidator] = msgData;
+			uint128 gramsToNewWallet = valueMsg / 8;
+			uint128 gramsToRoot = gramsToNewWallet * 3;
+			TvmCell bodyD = tvm.encodeBody(IRootTokenContract(tokenDeAudit).deployEmptyWallet, gramsToNewWallet, 0, addressValidator, addressValidator);
+			tokenDeAudit.transfer({value:gramsToRoot, bounce:true, body:bodyD});
+			TvmCell bodyA = tvm.encodeBody(IRootTokenContract(tokenDeAudit).sendExpectedWalletAddress, 0, addressValidator, address(this));
+			tokenDeAudit.transfer({value: 0, flag: 128, bounce:true, body:bodyA});
+		}
 	}
 
 	function triggerToDeAuditData(address addrAct4, address member) public override onlyDeAuditRoot {

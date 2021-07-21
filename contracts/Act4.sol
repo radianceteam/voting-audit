@@ -19,8 +19,6 @@ contract Act4 is IAct4 {
 	bytes static public collatorPhotoLink;
 	uint256[] static public voteMatrix;
 
-  bytes[] public additionalPhotoLinkArr;
-
 	mapping(address => bool) public validator;
 	uint256 public countValidators;
 	uint256 public countValidationsFor;
@@ -108,12 +106,6 @@ contract Act4 is IAct4 {
     validator[cv] = true;
 		countValidationsAgainst ++;
 		cv.transfer({ value: 0, flag: 128});
-	}
-
-	function addToAdditionalPhotoLinkArr(bytes linkToPhoto, address participant) public override onlyDeAuditData {
-		tvm.rawReserve(address(this).balance - msg.value, 2);
-		additionalPhotoLinkArr.push(linkToPhoto);
-		participant.transfer({ value: 0, flag: 128});
 	}
 
 	function setValidator(address participant) public override onlyDeAuditData {

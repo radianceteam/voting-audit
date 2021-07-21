@@ -10,7 +10,6 @@ import "./interfaces/IAct4.sol";
 import "./interfaces/IParticipant.sol";
 import "./Act4.sol";
 
-
 contract DeAuditData is IDeAuditData {
 
   uint256 static public idDeAuditData;
@@ -44,7 +43,7 @@ contract DeAuditData is IDeAuditData {
 
   uint256 public limitValsForCol;
 
-  uint128 constant public GRAMS_TO_ACT4_WHITH_REG_VALIDATOR_MSG = 0.1 ton;
+  uint128 constant public GRAMS_TO_ACT4_WITH_REG_VALIDATOR_MSG = 0.1 ton;
 
   struct VotingCenter {
     bytes name;
@@ -293,23 +292,21 @@ contract DeAuditData is IDeAuditData {
     }
   }
 
-  // private inline pure
-
-  function getRandomStepsFrom(uint256 limit) public pure alwaysAccept returns (uint256) {
+  function getRandomStepsFrom(uint256 limit) private inline pure returns (uint256) {
     rnd.shuffle();
     uint256 rndSteps = rnd.next(limit);
     return rndSteps;
   }
 
-  function getQtyAct4() public view returns (uint256) {
+  function getQtyAct4() private inline view returns (uint256) {
     return queueAct4Length;
   }
 
-  function getStartPoint() public view returns (uint256) {
+  function getStartPoint() private inline view returns (uint256) {
     return labelLVA4;
   }
 
-  function getNextKey(uint256 key) public view returns (uint256) {
+  function getNextKey(uint256 key) private inline view returns (uint256) {
     optional(uint256, Collation) nextVC = queueAct4.next(key);
     optional(uint256, Collation) minVC = queueAct4.min();
     uint256 nextKey;
@@ -319,19 +316,15 @@ contract DeAuditData is IDeAuditData {
     return (nextKey == 0) ? minKey : nextKey;
   }
 
-  function getGramsForAct4(uint128 totalValue, uint128 qtyAct4) public pure returns (uint128) {
-    return totalValue / (qtyAct4 + 1);
-  }
-
-  function getLimit() public view returns (uint256) {
+  function getLimit() private inline view returns (uint256) {
     return limitValsForCol;
   }
 
-  function isAct4Full(uint256 qtyValidations, uint256 limit) public pure returns (bool) {
+  function isAct4Full(uint256 qtyValidations, uint256 limit) private inline pure returns (bool) {
     return qtyValidations >= limit;
   }
 
-  function getNextAct4() public alwaysAccept returns (uint256) {
+  function getNextAct4() private inline returns (uint256) {
     uint256 totalSteps = getQtyAct4();
     uint256 steps = getRandomStepsFrom(totalSteps);
     uint256 key = getStartPoint();
@@ -340,7 +333,7 @@ contract DeAuditData is IDeAuditData {
     return key;
   }
 
-  function addValidatorToAct4(address validatorAddr, uint256 position, uint128 gramsForAct4) public alwaysAccept returns (address act4, bool status) {
+  function addValidatorToAct4(address validatorAddr, uint256 position, uint128 gramsForAct4) private inline returns (address act4, bool status) {
     Collation ca4 = queueAct4[position];
     act4 = address(0);
     status = false;
@@ -373,17 +366,14 @@ contract DeAuditData is IDeAuditData {
     tvm.rawReserve(address(this).balance - msg.value, 2);
     uint256 maxValidationsForParticipant = getQtyAct4();
     uint256 attemptQty = uint256(qtyValidations) < maxValidationsForParticipant ? uint256(qtyValidations) : maxValidationsForParticipant;
-
     address[] validatorAct4Arr;
-
     repeat(attemptQty) {
      uint256 selectedAct4 = getNextAct4();
-     (address act4, bool status) = addValidatorToAct4(participantAddr, selectedAct4, GRAMS_TO_ACT4_WHITH_REG_VALIDATOR_MSG);
+     (address act4, bool status) = addValidatorToAct4(participantAddr, selectedAct4, GRAMS_TO_ACT4_WITH_REG_VALIDATOR_MSG);
      if (status == true) {
        validatorAct4Arr.push(act4);
      }
     }
-
     TvmCell body = tvm.encodeBody(IDeAudit(launchedDeAudit).regForValidationCallback, participantAddr, validatorAct4Arr);
     launchedDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
   }
@@ -459,7 +449,6 @@ contract DeAuditData is IDeAuditData {
     municipalBodyCurrentKeyD = municipalBodyCurrentKey;
   }
 
-
   function getDistrict4Debot(uint256 districtCurrentKey) public view returns (
     bytes name4Debot,
     uint256[] votes4Debot,
@@ -487,6 +476,5 @@ contract DeAuditData is IDeAuditData {
     votes4Debot = curCandidate.votes;
     candidateCurrentKeyD = candidateCurrentKey;
   }
-
 
 }
