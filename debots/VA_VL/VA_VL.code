@@ -1,0 +1,4001 @@
+.version sol 0.45.0
+
+.macro constructor
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+;; constructor protection
+GETGLOB 6
+THROWIF 51
+PUSHINT 1
+SETGLOB 6
+;; end constructor protection
+ENDS
+ACCEPT
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.macro setIcon
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDREF
+ENDS
+;; param: icon
+CALLREF {
+	CALL $setIcon_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	setIcon_internal
+.type	setIcon_internal, @function
+CALL $setIcon_internal_macro$
+
+.macro setIcon_internal_macro
+;; param: icon
+; function setIcon
+GETGLOB 5
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	PUSHINT 0
+}
+IF
+;; ==
+GETGLOB 2
+EQUAL
+THROWIFNOT 100
+ACCEPT
+; expValue
+; end expValue
+;; push identifier icon
+; colValue
+; end colValue
+; end function setIcon
+SETGLOB 19
+
+.macro prestart
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+;; param: m_participantC
+CALLREF {
+	CALL $prestart_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	prestart_internal
+.type	prestart_internal, @function
+CALL $prestart_internal_macro$
+
+.macro prestart_internal_macro
+;; param: m_participantC
+; function prestart
+; expValue
+; end expValue
+;; push identifier m_participantC
+DUP
+; colValue
+SETGLOB 18
+; end colValue
+CALLREF {
+	CALL $start_internal_macro$
+}
+; end function prestart
+DROP
+
+.macro preInd
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $preInd_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	preInd_internal
+.type	preInd_internal, @function
+CALL $preInd_internal_macro$
+
+.macro preInd_internal_macro
+;; param: index
+; function preInd
+CALLREF {
+	CALL $start_internal_macro$
+}
+; end function preInd
+DROP
+
+.macro start
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+ENDS
+CALLREF {
+	CALL $start_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	start_internal
+.type	start_internal, @function
+CALL $start_internal_macro$
+
+.macro start_internal_macro
+; function start
+NULL
+;; decl: pubkey
+;; Remote call IDeAuditRoot.voteKeys
+;; push identifier m_DeAuditRoot
+GETGLOB 17
+PUSHSLICE x926220a2706234c190b0174_
+NEWC
+STSLICE
+STSLICE
+PUSHINT 1
+STUR 6
+NEWC
+STSLICECONST 0
+;; push identifier pubkey
+PUSH S2
+ISNULL
+THROWIFNOT 64
+STSLICECONST 0
+;; push identifier now
+NOW
+;; uint64
+STUR 64
+PUSHINT 291
+STUR 32
+STSLICECONST x20630ff3
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+DROP
+; end function start
+
+.macro votingListMenu_getVoteStuct
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+LDDICT
+ROTREV
+PAIR
+SWAP
+ENDS
+;; param: voteKeys
+CALLREF {
+	CALL $votingListMenu_getVoteStuct_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	votingListMenu_getVoteStuct_internal
+.type	votingListMenu_getVoteStuct_internal, @function
+CALL $votingListMenu_getVoteStuct_internal_macro$
+
+.macro votingListMenu_getVoteStuct_internal_macro
+;; param: voteKeys
+; function votingListMenu_getVoteStuct
+; expValue
+; end expValue
+;; push identifier voteKeys
+DUP
+; colValue
+SETGLOB 21
+; end colValue
+; for
+PUSHINT 0
+;; decl: i
+PUSHCONT {
+	;; push identifier i
+	DUP
+	;; <
+	;; get member length
+	;; push identifier voteKeysD
+	GETGLOB 21
+	INDEX 0
+	LESS
+}
+PUSHCONT {
+	;; index
+	;; push identifier i
+	DUP
+	;; push identifier voteKeysD
+	GETGLOB 21
+	INDEX 1
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	PLDU 256
+	CALLREF {
+		CALL $votingListMenu_getVoteStuctCur_internal_macro$
+	}
+	;; ++
+	; expValue
+	; end expValue
+	INC
+	UFITS 8
+	; colValue
+	; end colValue
+}
+WHILE
+DROP
+; end for
+CALLREF {
+	CALL $votingListMenu_internal_macro$
+}
+; end function votingListMenu_getVoteStuct
+DROP
+
+.macro votingListMenu_getVoteStuctCur
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+ENDS
+;; param: curVoteKey
+CALLREF {
+	CALL $votingListMenu_getVoteStuctCur_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	votingListMenu_getVoteStuctCur_internal
+.type	votingListMenu_getVoteStuctCur_internal, @function
+CALL $votingListMenu_getVoteStuctCur_internal_macro$
+
+.macro votingListMenu_getVoteStuctCur_internal_macro
+;; param: curVoteKey
+; function votingListMenu_getVoteStuctCur
+NULL
+;; decl: pubkey
+;; Remote call IDeAuditRoot.getVote4Debot
+;; push identifier m_DeAuditRoot
+GETGLOB 17
+PUSHSLICE x92605ed0df9234c190b0174_
+NEWC
+STSLICE
+STSLICE
+PUSHINT 1
+STUR 6
+;; push identifier curVoteKey
+PUSH S2
+NEWC
+STSLICECONST 0
+;; push identifier pubkey
+PUSH S3
+ISNULL
+THROWIFNOT 64
+STSLICECONST 0
+;; push identifier now
+NOW
+;; uint64
+STUR 64
+PUSHINT 291
+STUR 32
+STSLICECONST x6f443fe3
+STU 256
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function votingListMenu_getVoteStuctCur
+DROP2
+
+.macro SCgetCurVote
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+LDUQ 8
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 8
+}
+IFNOT
+LDDICTQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDDICT
+}
+IFNOT
+LDDICTQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDDICT
+}
+IFNOT
+LDUQ 32
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 32
+}
+IFNOT
+LDUQ 32
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 32
+}
+IFNOT
+;; decode TvmCell
+DUP
+SBITREFS
+EQINT 1
+SWAP
+EQINT 0
+AND
+PUSHCONT {
+	LDREF
+	ENDS
+	CTOS
+}
+IF
+LDREF
+LDUQ 8
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 8
+}
+IFNOT
+LDIQ 1
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDI 1
+}
+IFNOT
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+ENDS
+;; param: initiator4Debot
+;; param: startTime4Debot
+;; param: duration4Debot
+;; param: vcms4Debot
+;; param: yes4Debot
+;; param: no4Debot
+;; param: yesCount4Debot
+;; param: noCount4Debot
+;; param: data4Debot
+;; param: actionType4Debot
+;; param: completed4Debot
+;; param: voteKeyD
+CALLREF {
+	CALL $SCgetCurVote_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	SCgetCurVote_internal
+.type	SCgetCurVote_internal, @function
+CALL $SCgetCurVote_internal_macro$
+
+.macro SCgetCurVote_internal_macro
+;; param: initiator4Debot
+;; param: startTime4Debot
+;; param: duration4Debot
+;; param: vcms4Debot
+;; param: yes4Debot
+;; param: no4Debot
+;; param: yesCount4Debot
+;; param: noCount4Debot
+;; param: data4Debot
+;; param: actionType4Debot
+;; param: completed4Debot
+;; param: voteKeyD
+; function SCgetCurVote
+;; index
+;; push identifier voteKeyD
+DUP
+;; push identifier voteD
+GETGLOB 20
+PUSHINT 256
+DICTUGETREF
+PUSHCONT {
+	CTOS
+	CALLREF {
+		LDMSGADDR
+		LDU 256
+		LDUQ 256
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 256
+		}
+		IFNOT
+		LDUQ 8
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 8
+		}
+		IFNOT
+		LDUQ 32
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 32
+		}
+		IFNOT
+		LDUQ 32
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 32
+		}
+		IFNOT
+		;; decode TvmCell
+		DUP
+		SBITREFS
+		EQINT 1
+		SWAP
+		EQINT 0
+		AND
+		PUSHCONT {
+			LDREF
+			ENDS
+			CTOS
+		}
+		IF
+		LDREF
+		LDUQ 8
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 8
+		}
+		IFNOT
+		LDIQ 1
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDI 1
+		}
+		IFNOT
+		ENDS
+		TUPLE 9
+	}
+}
+PUSHCONT {
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	PUSHINT 0
+	BLKPUSH 4, 0
+	PUSHREF {
+	}
+	PUSHINT 0
+	PUSHINT 0
+	TUPLE 9
+}
+IFELSE
+;; decl: cp
+; expValue
+; end expValue
+;; push identifier initiator4Debot
+; colValue
+PUSH S12
+SETINDEX 0
+; end colValue
+; expValue
+; end expValue
+;; push identifier startTime4Debot
+; colValue
+PUSH S11
+SETINDEX 1
+; end colValue
+; expValue
+; end expValue
+;; push identifier duration4Debot
+; colValue
+PUSH S10
+SETINDEX 2
+; end colValue
+; expValue
+; end expValue
+;; push identifier vcms4Debot
+; colValue
+PUSH S9
+SETINDEX 3
+; end colValue
+; expValue
+; end expValue
+;; push identifier yesCount4Debot
+; colValue
+PUSH S6
+SETINDEX 4
+; end colValue
+; expValue
+; end expValue
+;; push identifier noCount4Debot
+; colValue
+PUSH S5
+SETINDEX 5
+; end colValue
+; expValue
+; end expValue
+;; push identifier data4Debot
+; colValue
+PUSH S4
+SETINDEX 6
+; end colValue
+; expValue
+; end expValue
+;; push identifier actionType4Debot
+; colValue
+PUSH S3
+SETINDEX 7
+; end colValue
+; expValue
+; end expValue
+;; push identifier completed4Debot
+; colValue
+PUSH S2
+SETINDEX 8
+; end colValue
+; expValue
+;; fetch voteD
+;; push identifier voteKeyD
+PUSH S1
+GETGLOB 20
+; end expValue
+;; push identifier cp
+PUSH S2
+; colValue
+CALLREF {
+	UNTUPLE 9
+	REVERSE 9, 0
+	NEWC
+	STSLICE
+	STU 256
+	BLKSWAP 7, 1
+	NEWC
+	STU 256
+	STU 8
+	STU 32
+	STU 32
+	STREF
+	STU 8
+	STI 1
+	STBREFR
+}
+ENDC
+ROTREV
+PUSHINT 256
+DICTUSETREF
+SETGLOB 20
+; end colValue
+; end function SCgetCurVote
+BLKDROP 13
+
+.macro premenu
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $premenu_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	premenu_internal
+.type	premenu_internal, @function
+CALL $premenu_internal_macro$
+
+.macro premenu_internal_macro
+;; param: index
+; function premenu
+CALLREF {
+	CALL $votingListMenu_internal_macro$
+}
+; end function premenu
+DROP
+
+.macro votingListMenu
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+ENDS
+CALLREF {
+	CALL $votingListMenu_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	votingListMenu_internal
+.type	votingListMenu_internal, @function
+CALL $votingListMenu_internal_macro$
+
+.macro votingListMenu_internal_macro
+; function votingListMenu
+PUSHREF {
+	.blob x43686f6f736520766f74696e672074797065
+}
+PUSHREF {
+	.blob x
+}
+PUSHINT 6
+NEWDICT
+PUSHREF {
+	.blob x66657463682064617461
+}
+PUSHREF {
+	.blob x
+}
+PUSHINT 704346969
+TUPLE 3
+CALLREF {
+	UNTUPLE 3
+	XCHG s2
+	NEWC
+	STREF
+	STREF
+	STU 32
+}
+PUSHINT 0
+ROT
+PUSHINT 32
+DICTUSETB
+PUSHREF {
+	.blob x44455620736574204154206465626f742061646472657373
+}
+PUSHREF {
+	.blob x
+}
+PUSHINT 1496812763
+TUPLE 3
+CALLREF {
+	UNTUPLE 3
+	XCHG s2
+	NEWC
+	STREF
+	STREF
+	STU 32
+}
+PUSHINT 1
+ROT
+PUSHINT 32
+DICTUSETB
+PUSHREF {
+	.blob x6465762073686f7720616c6c2064617461
+}
+PUSHREF {
+	.blob x
+}
+PUSHINT 343143896
+TUPLE 3
+CALLREF {
+	UNTUPLE 3
+	XCHG s2
+	NEWC
+	STREF
+	STREF
+	STU 32
+}
+PUSHINT 2
+ROT
+PUSHINT 32
+DICTUSETB
+PUSHREF {
+	.blob x73686f7720616c6c20766f74696e6773
+}
+PUSHREF {
+	.blob x
+}
+PUSHINT 1066399817
+TUPLE 3
+CALLREF {
+	UNTUPLE 3
+	XCHG s2
+	NEWC
+	STREF
+	STREF
+	STU 32
+}
+PUSHINT 3
+ROT
+PUSHINT 32
+DICTUSETB
+PUSHREF {
+	.blob x72657475726e20746f2070726576696f7573206d656e75
+}
+PUSHREF {
+	.blob x
+}
+PUSHINT 925933973
+TUPLE 3
+CALLREF {
+	UNTUPLE 3
+	XCHG s2
+	NEWC
+	STREF
+	STREF
+	STU 32
+}
+PUSHINT 4
+ROT
+PUSHINT 32
+DICTUSETB
+PUSHREF {
+	.blob x51756974
+}
+PUSHREF {
+	.blob x
+}
+PUSHINT 0
+TUPLE 3
+CALLREF {
+	UNTUPLE 3
+	XCHG s2
+	NEWC
+	STREF
+	STREF
+	STU 32
+}
+PUSHINT 5
+ROT
+PUSHINT 32
+DICTUSETB
+PAIR
+CALLREF {
+	CALL $Menu_no_obj_select_macro$
+}
+; end function votingListMenu
+
+.macro showallV
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $showallV_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	showallV_internal
+.type	showallV_internal, @function
+CALL $showallV_internal_macro$
+
+.macro showallV_internal_macro
+;; param: index
+; function showallV
+PUSHINT 0
+NEWDICT
+PAIR
+;; decl: m_menu
+; for
+PUSHINT 0
+;; decl: i
+PUSHCONT {
+	;; push identifier i
+	DUP
+	;; <
+	;; get member length
+	;; push identifier voteKeysD
+	GETGLOB 21
+	INDEX 0
+	LESS
+}
+PUSHCONT {
+	;; index
+	;; push identifier i
+	DUP
+	;; push identifier voteKeysD
+	GETGLOB 21
+	INDEX 1
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	PLDU 256
+	;; decl: curK
+	;; index
+	;; push identifier curK
+	DUP
+	;; push identifier voteD
+	GETGLOB 20
+	PUSHINT 256
+	DICTUGETREF
+	PUSHCONT {
+		CTOS
+		CALLREF {
+			LDMSGADDR
+			LDU 256
+			LDUQ 256
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 256
+			}
+			IFNOT
+			LDUQ 8
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 8
+			}
+			IFNOT
+			LDUQ 32
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 32
+			}
+			IFNOT
+			LDUQ 32
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 32
+			}
+			IFNOT
+			;; decode TvmCell
+			DUP
+			SBITREFS
+			EQINT 1
+			SWAP
+			EQINT 0
+			AND
+			PUSHCONT {
+				LDREF
+				ENDS
+				CTOS
+			}
+			IF
+			LDREF
+			LDUQ 8
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 8
+			}
+			IFNOT
+			LDIQ 1
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDI 1
+			}
+			IFNOT
+			ENDS
+			TUPLE 9
+		}
+	}
+	PUSHCONT {
+		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+		PUSHINT 0
+		BLKPUSH 4, 0
+		PUSHREF {
+		}
+		PUSHINT 0
+		PUSHINT 0
+		TUPLE 9
+	}
+	IFELSE
+	;; decl: cp
+	;; get member data
+	;; push identifier cp
+	DUP
+	INDEX 6
+	CTOS
+	;; decl: slice
+	; expValue
+	DUP
+	; end expValue
+	LDMSGADDR
+	; colValue
+	POP S2
+	; end colValue
+	;; decl: addrData
+	PUSHREF {
+	}
+	;; decl: complete
+	;; if
+	;; get member completed
+	;; push identifier cp
+	PUSH S3
+	INDEX 8
+	;; ==
+	TRUE
+	EQUAL
+	PUSHCONT {
+		; expValue
+		; end expValue
+		PUSHREF {
+			.blob x74727565
+		}
+		; colValue
+		NIP
+		; end colValue
+	}
+	PUSHCONT {
+		; expValue
+		; end expValue
+		PUSHREF {
+			.blob x66616c7365
+		}
+		; colValue
+		NIP
+		; end colValue
+	}
+	IFELSE
+	;; end if
+	NIL
+	NEWC
+	PUSHREFSLICE {
+		.blob x3d3d3d3d3d3d0a566f74696e6720666f72207468697320616464726573733a20
+	}
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; push identifier addrData
+	PUSH S3
+	CALLREF {
+		CALL $convertAddressToHexString_macro$
+	}
+	PUSHSLICE x202d2d2d2d20737461747573203a
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; push identifier complete
+	PUSH S2
+	CTOS
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	PUSHSLICE x0a206375724b3a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; push identifier curK
+	PUSH S6
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a766f74696e6749443a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; push identifier votingID
+	GETGLOB 22
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a696e69746961746f723a
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member initiator
+	;; push identifier cp
+	PUSH S5
+	INDEX 0
+	CALLREF {
+		CALL $convertAddressToHexString_macro$
+	}
+	PUSHSLICE x0a737461727454696d653a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member startTime
+	;; push identifier cp
+	PUSH S5
+	INDEX 1
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a6475726174696f6e3a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member duration
+	;; push identifier cp
+	PUSH S5
+	INDEX 2
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a796573436f756e743a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member yesCount
+	;; push identifier cp
+	PUSH S5
+	INDEX 4
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a6e6f436f756e743a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member noCount
+	;; push identifier cp
+	PUSH S5
+	INDEX 5
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a20616374696f6e547970653a
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member actionType
+	;; push identifier cp
+	PUSH S5
+	INDEX 7
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	CALLREF {
+		CALL $assembleList_macro$
+	}
+	;; decl: curVdata
+	; expValue
+	; end expValue
+	;; push identifier curVdata
+	PUSH2 S7, S0
+	PUSHREF {
+		.blob x
+	}
+	PUSHINT 1098082128
+	TUPLE 3
+	;; array.push(..)
+	CALLREF {
+		UNTUPLE 3
+		XCHG s2
+		NEWC
+		STREF
+		STREF
+		STU 32
+	}
+	SWAP
+	UNPAIR
+	PUSH S1
+	INC
+	XCHG s3
+	ROTREV
+	PUSHINT 32
+	DICTUSETB
+	PAIR
+	; colValue
+	POP S8
+	; end colValue
+	BLKDROP 6
+	;; ++
+	; expValue
+	; end expValue
+	INC
+	UFITS 8
+	; colValue
+	; end colValue
+}
+WHILE
+DROP
+; end for
+; expValue
+DUP
+; end expValue
+PUSHREF {
+	.blob x4261636b20746f20766f74696e67206c697374206d656e7520616464
+}
+PUSHREF {
+	.blob x
+}
+PUSHINT 704346969
+TUPLE 3
+;; array.push(..)
+CALLREF {
+	UNTUPLE 3
+	XCHG s2
+	NEWC
+	STREF
+	STREF
+	STU 32
+}
+SWAP
+UNPAIR
+PUSH S1
+INC
+XCHG s3
+ROTREV
+PUSHINT 32
+DICTUSETB
+PAIR
+; colValue
+NIP
+; end colValue
+PUSHREF {
+	.blob x43686f6f736520766f74696e673a
+}
+PUSHREF {
+	.blob x
+}
+;; push identifier m_menu
+PUSH S2
+CALLREF {
+	CALL $Menu_no_obj_select_macro$
+}
+; end function showallV
+DROP2
+
+.macro toungAllV
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $toungAllV_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	toungAllV_internal
+.type	toungAllV_internal, @function
+CALL $toungAllV_internal_macro$
+
+.macro toungAllV_internal_macro
+;; param: index
+; function toungAllV
+; expValue
+; end expValue
+;; push identifier index
+DUP
+; colValue
+SETGLOB 23
+; end colValue
+; expValue
+; end expValue
+;; index
+;; push identifier index
+DUP
+;; push identifier voteKeysD
+GETGLOB 21
+INDEX 1
+PUSHINT 32
+DICTUGET
+THROWIFNOT 50
+PLDU 256
+; colValue
+; end colValue
+;; index
+;; push identifier votingID
+DUP
+SETGLOB 22
+;; push identifier voteD
+GETGLOB 20
+PUSHINT 256
+DICTUGETREF
+PUSHCONT {
+	CTOS
+	CALLREF {
+		LDMSGADDR
+		LDU 256
+		LDUQ 256
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 256
+		}
+		IFNOT
+		LDUQ 8
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 8
+		}
+		IFNOT
+		LDUQ 32
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 32
+		}
+		IFNOT
+		LDUQ 32
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 32
+		}
+		IFNOT
+		;; decode TvmCell
+		DUP
+		SBITREFS
+		EQINT 1
+		SWAP
+		EQINT 0
+		AND
+		PUSHCONT {
+			LDREF
+			ENDS
+			CTOS
+		}
+		IF
+		LDREF
+		LDUQ 8
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 8
+		}
+		IFNOT
+		LDIQ 1
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDI 1
+		}
+		IFNOT
+		ENDS
+		TUPLE 9
+	}
+}
+PUSHCONT {
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	PUSHINT 0
+	BLKPUSH 4, 0
+	PUSHREF {
+	}
+	PUSHINT 0
+	PUSHINT 0
+	TUPLE 9
+}
+IFELSE
+;; decl: cp
+PUSHINT 0
+NEWDICT
+PAIR
+;; decl: m_menu
+;; if
+;; get member completed
+;; push identifier cp
+PUSH S1
+INDEX 8
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x2f6e2f6e2a2a2a5468697320566f74696e6720636f6d706c657465642c2063686f6f736520616e6f74686572206f6e652a2a2a2f6e2f6e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	PUSHINT 0
+	CALLREF {
+		CALL $showallV_internal_macro$
+	}
+}
+PUSHCONT {
+	; expValue
+	DUP
+	; end expValue
+	PUSHREF {
+		.blob x766f746520666f72
+	}
+	PUSHREF {
+		.blob x
+	}
+	PUSHINT 58632106
+	TUPLE 3
+	;; array.push(..)
+	CALLREF {
+		UNTUPLE 3
+		XCHG s2
+		NEWC
+		STREF
+		STREF
+		STU 32
+	}
+	SWAP
+	UNPAIR
+	PUSH S1
+	INC
+	XCHG s3
+	ROTREV
+	PUSHINT 32
+	DICTUSETB
+	PAIR
+	; colValue
+	NIP
+	; end colValue
+	; expValue
+	DUP
+	; end expValue
+	PUSHREF {
+		.blob x766f746520616761696e7374
+	}
+	PUSHREF {
+		.blob x
+	}
+	PUSHINT 1087701879
+	TUPLE 3
+	;; array.push(..)
+	CALLREF {
+		UNTUPLE 3
+		XCHG s2
+		NEWC
+		STREF
+		STREF
+		STU 32
+	}
+	SWAP
+	UNPAIR
+	PUSH S1
+	INC
+	XCHG s3
+	ROTREV
+	PUSHINT 32
+	DICTUSETB
+	PAIR
+	; colValue
+	NIP
+	; end colValue
+	; expValue
+	DUP
+	; end expValue
+	PUSHREF {
+		.blob x726573756c7420766f7465
+	}
+	PUSHREF {
+		.blob x
+	}
+	PUSHINT 1535461694
+	TUPLE 3
+	;; array.push(..)
+	CALLREF {
+		UNTUPLE 3
+		XCHG s2
+		NEWC
+		STREF
+		STREF
+		STU 32
+	}
+	SWAP
+	UNPAIR
+	PUSH S1
+	INC
+	XCHG s3
+	ROTREV
+	PUSHINT 32
+	DICTUSETB
+	PAIR
+	; colValue
+	NIP
+	; end colValue
+	;; if
+	;; get member actionType
+	;; push identifier cp
+	PUSH S1
+	INDEX 7
+	EQINT 2
+	PUSHCONT {
+		; expValue
+		DUP
+		; end expValue
+		PUSHREF {
+			.blob x73686f77206465617564697444617461
+		}
+		PUSHREF {
+			.blob x
+		}
+		PUSHINT 91894483
+		TUPLE 3
+		;; array.push(..)
+		CALLREF {
+			UNTUPLE 3
+			XCHG s2
+			NEWC
+			STREF
+			STREF
+			STU 32
+		}
+		SWAP
+		UNPAIR
+		PUSH S1
+		INC
+		XCHG s3
+		ROTREV
+		PUSHINT 32
+		DICTUSETB
+		PAIR
+		; colValue
+		NIP
+		; end colValue
+	}
+	IF
+	;; end if
+	; expValue
+	DUP
+	; end expValue
+	PUSHREF {
+		.blob x72657475726e20746f20766f74696e67206c697374206d656e75
+	}
+	PUSHREF {
+		.blob x
+	}
+	PUSHINT 1138950279
+	TUPLE 3
+	;; array.push(..)
+	CALLREF {
+		UNTUPLE 3
+		XCHG s2
+		NEWC
+		STREF
+		STREF
+		STU 32
+	}
+	SWAP
+	UNPAIR
+	PUSH S1
+	INC
+	XCHG s3
+	ROTREV
+	PUSHINT 32
+	DICTUSETB
+	PAIR
+	; colValue
+	NIP
+	; end colValue
+	; expValue
+	DUP
+	; end expValue
+	PUSHREF {
+		.blob x51756974
+	}
+	PUSHREF {
+		.blob x
+	}
+	PUSHINT 0
+	TUPLE 3
+	;; array.push(..)
+	CALLREF {
+		UNTUPLE 3
+		XCHG s2
+		NEWC
+		STREF
+		STREF
+		STU 32
+	}
+	SWAP
+	UNPAIR
+	PUSH S1
+	INC
+	XCHG s3
+	ROTREV
+	PUSHINT 32
+	DICTUSETB
+	PAIR
+	; colValue
+	NIP
+	; end colValue
+	NIL
+	NEWC
+	PUSHSLICE x696e69746961746f723a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member initiator
+	;; push identifier cp
+	PUSH S3
+	INDEX 0
+	CALLREF {
+		CALL $convertAddressToHexString_macro$
+	}
+	PUSHSLICE x20766f74696e672069643a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; push identifier votingID
+	GETGLOB 22
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	CALLREF {
+		CALL $assembleList_macro$
+	}
+	;; decl: title
+	;; push identifier title
+	DUP
+	PUSHREF {
+		.blob x
+	}
+	;; push identifier m_menu
+	PUSH S3
+	CALLREF {
+		CALL $Menu_no_obj_select_macro$
+	}
+	DROP
+}
+IFELSE
+;; end if
+; end function toungAllV
+BLKDROP 3
+
+.macro setATaddress
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $setATaddress_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	setATaddress_internal
+.type	setATaddress_internal, @function
+CALL $setATaddress_internal_macro$
+
+.macro setATaddress_internal_macro
+;; param: index
+; function setATaddress
+PUSHINT 1377733005
+PUSHREF {
+	.blob x64657620736574206174206465622061646464726573733a20
+}
+CALLREF {
+	CALL $AddressInput_no_obj_get_macro$
+}
+; end function setATaddress
+DROP
+
+.macro onsetEditDebaddress
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDMSGADDRQ
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+}
+IFNOT
+ENDS
+;; param: value
+CALLREF {
+	CALL $onsetEditDebaddress_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	onsetEditDebaddress_internal
+.type	onsetEditDebaddress_internal, @function
+CALL $onsetEditDebaddress_internal_macro$
+
+.macro onsetEditDebaddress_internal_macro
+;; param: value
+; function onsetEditDebaddress
+; expValue
+; end expValue
+;; push identifier value
+DUP
+; colValue
+SETGLOB 14
+; end colValue
+CALLREF {
+	CALL $votingListMenu_internal_macro$
+}
+; end function onsetEditDebaddress
+DROP
+
+.macro goToACTMdebot
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $goToACTMdebot_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	goToACTMdebot_internal
+.type	goToACTMdebot_internal, @function
+CALL $goToACTMdebot_internal_macro$
+
+.macro goToACTMdebot_internal_macro
+;; param: index
+; function goToACTMdebot
+;; Remote call IVotingAuditDebotACTMmenu.preStart
+;; push identifier m_participant
+GETGLOB 18
+;; push identifier m_VAdebotACTMmenuAddress
+GETGLOB 14
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000003_
+STSLICER
+SWAP
+NEWC
+STSLICECONST x3668559a
+STSLICE
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function goToACTMdebot
+DROP
+
+.macro showVotings
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $showVotings_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	showVotings_internal
+.type	showVotings_internal, @function
+CALL $showVotings_internal_macro$
+
+.macro showVotings_internal_macro
+;; param: index
+; function showVotings
+; for
+PUSHINT 0
+;; decl: i
+PUSHCONT {
+	;; push identifier i
+	DUP
+	;; <
+	;; get member length
+	;; push identifier voteKeysD
+	GETGLOB 21
+	INDEX 0
+	LESS
+}
+PUSHCONT {
+	;; index
+	;; index
+	;; push identifier i
+	DUP
+	;; push identifier voteKeysD
+	GETGLOB 21
+	INDEX 1
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	PLDU 256
+	;; push identifier voteD
+	GETGLOB 20
+	PUSHINT 256
+	DICTUGETREF
+	PUSHCONT {
+		CTOS
+		CALLREF {
+			LDMSGADDR
+			LDU 256
+			LDUQ 256
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 256
+			}
+			IFNOT
+			LDUQ 8
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 8
+			}
+			IFNOT
+			LDUQ 32
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 32
+			}
+			IFNOT
+			LDUQ 32
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 32
+			}
+			IFNOT
+			;; decode TvmCell
+			DUP
+			SBITREFS
+			EQINT 1
+			SWAP
+			EQINT 0
+			AND
+			PUSHCONT {
+				LDREF
+				ENDS
+				CTOS
+			}
+			IF
+			LDREF
+			LDUQ 8
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDU 8
+			}
+			IFNOT
+			LDIQ 1
+			PUSHCONT {
+				;; load next cell
+				LDREF
+				ENDS
+				CTOS
+				LDI 1
+			}
+			IFNOT
+			ENDS
+			TUPLE 9
+		}
+	}
+	PUSHCONT {
+		PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+		PUSHINT 0
+		BLKPUSH 4, 0
+		PUSHREF {
+		}
+		PUSHINT 0
+		PUSHINT 0
+		TUPLE 9
+	}
+	IFELSE
+	;; decl: cr
+	PUSHREF {
+	}
+	;; decl: complete
+	;; if
+	;; get member completed
+	;; push identifier cr
+	PUSH S1
+	INDEX 8
+	;; ==
+	TRUE
+	EQUAL
+	PUSHCONT {
+		; expValue
+		; end expValue
+		PUSHREF {
+			.blob x74727565
+		}
+		; colValue
+		NIP
+		; end colValue
+	}
+	PUSHCONT {
+		; expValue
+		; end expValue
+		PUSHREF {
+			.blob x66616c7365
+		}
+		; colValue
+		NIP
+		; end colValue
+	}
+	IFELSE
+	;; end if
+	PUSHINT 0
+	NIL
+	NEWC
+	PUSHSLICE x3d3d3d3d3d3d0a63722e696e69746961746f723a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member initiator
+	;; push identifier cr
+	PUSH S4
+	INDEX 0
+	CALLREF {
+		CALL $convertAddressToHexString_macro$
+	}
+	PUSHSLICE x0a63722e737461727454696d653a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member startTime
+	;; push identifier cr
+	PUSH S4
+	INDEX 1
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a63722e6475726174696f6e3a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member duration
+	;; push identifier cr
+	PUSH S4
+	INDEX 2
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a63722e76636d733a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member vcms
+	;; push identifier cr
+	PUSH S4
+	INDEX 3
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a63722e796573436f756e743a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member yesCount
+	;; push identifier cr
+	PUSH S4
+	INDEX 4
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a63722e6e6f436f756e743a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member noCount
+	;; push identifier cr
+	PUSH S4
+	INDEX 5
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a63722e616374696f6e547970653a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; get member actionType
+	;; push identifier cr
+	PUSH S4
+	INDEX 7
+	PUSHINT 0
+	FALSE
+	FALSE
+	CALLREF {
+		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x0a63722e636f6d706c657465643a20
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	;; push identifier complete
+	PUSH S3
+	CTOS
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	PUSHSLICE x0a
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
+	}
+	CALLREF {
+		CALL $assembleList_macro$
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	DROP2
+	;; ++
+	; expValue
+	; end expValue
+	INC
+	UFITS 8
+	; colValue
+	; end colValue
+}
+WHILE
+DROP
+; end for
+CALLREF {
+	CALL $votingListMenu_internal_macro$
+}
+; end function showVotings
+DROP
+
+.macro showDADdata
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $showDADdata_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	showDADdata_internal
+.type	showDADdata_internal, @function
+CALL $showDADdata_internal_macro$
+
+.macro showDADdata_internal_macro
+;; param: index
+; function showDADdata
+;; index
+;; push identifier votingID
+GETGLOB 22
+;; push identifier voteD
+GETGLOB 20
+PUSHINT 256
+DICTUGETREF
+PUSHCONT {
+	CTOS
+	CALLREF {
+		LDMSGADDR
+		LDU 256
+		LDUQ 256
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 256
+		}
+		IFNOT
+		LDUQ 8
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 8
+		}
+		IFNOT
+		LDUQ 32
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 32
+		}
+		IFNOT
+		LDUQ 32
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 32
+		}
+		IFNOT
+		;; decode TvmCell
+		DUP
+		SBITREFS
+		EQINT 1
+		SWAP
+		EQINT 0
+		AND
+		PUSHCONT {
+			LDREF
+			ENDS
+			CTOS
+		}
+		IF
+		LDREF
+		LDUQ 8
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDU 8
+		}
+		IFNOT
+		LDIQ 1
+		PUSHCONT {
+			;; load next cell
+			LDREF
+			ENDS
+			CTOS
+			LDI 1
+		}
+		IFNOT
+		ENDS
+		TUPLE 9
+	}
+}
+PUSHCONT {
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	PUSHINT 0
+	BLKPUSH 4, 0
+	PUSHREF {
+	}
+	PUSHINT 0
+	PUSHINT 0
+	TUPLE 9
+}
+IFELSE
+;; decl: cr
+PUSHREF {
+}
+;; decl: completes
+;; if
+;; get member completed
+;; push identifier cr
+PUSH S1
+INDEX 8
+;; ==
+TRUE
+EQUAL
+PUSHCONT {
+	; expValue
+	; end expValue
+	PUSHREF {
+		.blob x74727565
+	}
+	; colValue
+	NIP
+	; end colValue
+}
+PUSHCONT {
+	; expValue
+	; end expValue
+	PUSHREF {
+		.blob x66616c7365
+	}
+	; colValue
+	NIP
+	; end colValue
+}
+IFELSE
+;; end if
+PUSHINT 0
+NIL
+NEWC
+PUSHSLICE x3d3d3d3d3d3d0a63722e696e69746961746f723a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; get member initiator
+;; push identifier cr
+PUSH S4
+INDEX 0
+CALLREF {
+	CALL $convertAddressToHexString_macro$
+}
+PUSHSLICE x0a63722e737461727454696d653a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; get member startTime
+;; push identifier cr
+PUSH S4
+INDEX 1
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x0a63722e6475726174696f6e3a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; get member duration
+;; push identifier cr
+PUSH S4
+INDEX 2
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x0a63722e76636d733a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; get member vcms
+;; push identifier cr
+PUSH S4
+INDEX 3
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x0a63722e796573436f756e743a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; get member yesCount
+;; push identifier cr
+PUSH S4
+INDEX 4
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x0a63722e6e6f436f756e743a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; get member noCount
+;; push identifier cr
+PUSH S4
+INDEX 5
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x0a63722e616374696f6e547970653a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; get member actionType
+;; push identifier cr
+PUSH S4
+INDEX 7
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x0a63722e636f6d706c657465643a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier completes
+PUSH S3
+CTOS
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+CALLREF {
+	CALL $assembleList_macro$
+}
+CALLREF {
+	CALL $Terminal_no_obj_print_macro$
+}
+;; push identifier indexCur
+GETGLOB 23
+CALLREF {
+	CALL $toungAllV_internal_macro$
+}
+; end function showDADdata
+BLKDROP 3
+
+.macro voteFor
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $voteFor_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	voteFor_internal
+.type	voteFor_internal, @function
+CALL $voteFor_internal_macro$
+
+.macro voteFor_internal_macro
+;; param: index
+; function voteFor
+NULL
+;; decl: pubkey
+;; Remote call IParticipant.voteFor
+;; push identifier m_participant
+GETGLOB 18
+PUSHSLICE x92600000000234c190b0174_
+NEWC
+STSLICE
+STSLICE
+PUSHINT 1
+STUR 6
+;; push identifier GRAMS_INIT_VOTE
+GETGLOB 15
+;; push identifier votingID
+GETGLOB 22
+NEWC
+STSLICECONST 1
+PUSHINT 512
+STZEROES
+;; push identifier pubkey
+PUSH2 S4, S4
+ISNULL
+PUSHCONT {
+	DROP
+	STSLICECONST 0
+}
+PUSHCONT {
+	SWAP
+	STSLICECONST 1
+	STU 256
+}
+IFELSE
+;; push identifier now
+NOW
+;; uint64
+STUR 64
+PUSHINT 291
+STUR 32
+STSLICECONST x31a3061b
+ROTREV
+NEWC
+STU 256
+STU 128
+STBREFR
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+CALLREF {
+	CALL $votingListMenu_internal_macro$
+}
+; end function voteFor
+DROP2
+
+.macro voteAgainst
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $voteAgainst_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	voteAgainst_internal
+.type	voteAgainst_internal, @function
+CALL $voteAgainst_internal_macro$
+
+.macro voteAgainst_internal_macro
+;; param: index
+; function voteAgainst
+NULL
+;; decl: pubkey
+;; Remote call IParticipant.voteAgainst
+;; push identifier m_participant
+GETGLOB 18
+PUSHSLICE x92600000000234c190b0174_
+NEWC
+STSLICE
+STSLICE
+PUSHINT 1
+STUR 6
+;; push identifier GRAMS_INIT_VOTE
+GETGLOB 15
+;; push identifier votingID
+GETGLOB 22
+NEWC
+STSLICECONST 1
+PUSHINT 512
+STZEROES
+;; push identifier pubkey
+PUSH2 S4, S4
+ISNULL
+PUSHCONT {
+	DROP
+	STSLICECONST 0
+}
+PUSHCONT {
+	SWAP
+	STSLICECONST 1
+	STU 256
+}
+IFELSE
+;; push identifier now
+NOW
+;; uint64
+STUR 64
+PUSHINT 291
+STUR 32
+STSLICECONST x0dbfd1e7
+ROTREV
+NEWC
+STU 256
+STU 128
+STBREFR
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+CALLREF {
+	CALL $votingListMenu_internal_macro$
+}
+; end function voteAgainst
+DROP2
+
+.macro resultVote
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $resultVote_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	resultVote_internal
+.type	resultVote_internal, @function
+CALL $resultVote_internal_macro$
+
+.macro resultVote_internal_macro
+;; param: index
+; function resultVote
+NULL
+;; decl: pubkey
+;; Remote call IParticipant.resultVote
+;; push identifier m_participant
+GETGLOB 18
+PUSHSLICE x92600000000234c190b0174_
+NEWC
+STSLICE
+STSLICE
+PUSHINT 1
+STUR 6
+;; push identifier GRAMS_RESULT
+GETGLOB 16
+;; push identifier votingID
+GETGLOB 22
+NEWC
+STSLICECONST 1
+PUSHINT 512
+STZEROES
+;; push identifier pubkey
+PUSH2 S4, S4
+ISNULL
+PUSHCONT {
+	DROP
+	STSLICECONST 0
+}
+PUSHCONT {
+	SWAP
+	STSLICECONST 1
+	STU 256
+}
+IFELSE
+;; push identifier now
+NOW
+;; uint64
+STUR 64
+PUSHINT 291
+STUR 32
+STSLICECONST x53787bbf
+ROTREV
+NEWC
+STU 256
+STU 128
+STBREFR
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+CALLREF {
+	CALL $votingListMenu_internal_macro$
+}
+; end function resultVote
+DROP2
+
+.macro someError
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+LDU 32
+ENDS
+;; param: sdkError
+;; param: exitCode
+CALLREF {
+	CALL $someError_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	someError_internal
+.type	someError_internal, @function
+CALL $someError_internal_macro$
+
+.macro someError_internal_macro
+;; param: sdkError
+;; param: exitCode
+; function someError
+PUSHINT 0
+NIL
+NEWC
+PUSHSLICE x73646b4572726f723a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier sdkError
+PUSH S4
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x0a65786974434f64653a
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier exitCode
+PUSH S3
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+CALLREF {
+	CALL $assembleList_macro$
+}
+CALLREF {
+	CALL $Terminal_no_obj_print_macro$
+}
+PUSHINT 1
+PUSHREF {
+	.blob x4261636b20746f206d656e752e2e2e
+}
+CALLREF {
+	CALL $Terminal_no_obj_print_macro$
+}
+; end function someError
+DROP2
+
+.macro getDebotInfo
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+ENDS
+CALLREF {
+	CALL $getDebotInfo_internal_macro$
+}
+;; emitting 10 value(s)
+PUSH S10
+PUSHCONT {
+	PUSH S12
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	REVERSE 10, 1
+	BLKSWAP 10, 1
+	NEWC
+	STSLICECONST x00000deb
+	STREF
+	STREF
+	STREF
+	BLKSWAP 7, 1
+	NEWC
+	STREF
+	STREF
+	STSLICE
+	STREF
+	BLKSWAP 3, 1
+	NEWC
+	STREF
+	STREF
+	STREF
+	STBREFR
+	STBREFR
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	BLKDROP 10
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	getDebotInfo_internal
+.type	getDebotInfo_internal, @function
+CALL $getDebotInfo_internal_macro$
+
+.macro getDebotInfo_internal_macro
+;; ret param: name
+PUSHREF {
+}
+;; ret param: version
+PUSHREF {
+}
+;; ret param: publisher
+PUSHREF {
+}
+;; ret param: caption
+PUSHREF {
+}
+;; ret param: author
+PUSHREF {
+}
+;; ret param: support
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+;; ret param: hello
+PUSHREF {
+}
+;; ret param: language
+PUSHREF {
+}
+;; ret param: dabi
+PUSHREF {
+}
+;; ret param: icon
+PUSHREF {
+}
+; function getDebotInfo
+; expValue
+; end expValue
+PUSHREF {
+	.blob x52616469616e636520566f74696e67204175646974204465426f74204143544d5f766f74696e674c697374
+}
+; colValue
+POP S10
+; end colValue
+; expValue
+; end expValue
+PUSHREF {
+	.blob x302e312e30
+}
+; colValue
+POP S9
+; end colValue
+; expValue
+; end expValue
+PUSHREF {
+	.blob x52616469616e6365205465616d
+}
+; colValue
+POP S8
+; end colValue
+; expValue
+; end expValue
+PUSHREF {
+	.blob x4465426f7420666f7220446541756469742062792052616469616e6365205465616d
+}
+; colValue
+POP S7
+; end colValue
+; expValue
+; end expValue
+PUSHREF {
+	.blob x52616469616e6365205465616d
+}
+; colValue
+POP S6
+; end colValue
+;; address.makeAddrStd()
+PUSHSLICE x801082511da76abb39b5f500d00fe05415c182d354bdbfd114f134c904852ead529_
+; expValue
+; end expValue
+; colValue
+POP S5
+; end colValue
+; expValue
+; end expValue
+PUSHREF {
+	.blob x546861742773206465626f7420666f7220566f74696e672041756469742e20446576656c6f7065642062792052616469616e6365205465616d
+}
+; colValue
+POP S4
+; end colValue
+; expValue
+; end expValue
+PUSHREF {
+	.blob x656e
+}
+; colValue
+POP S3
+; end colValue
+;; push identifier m_debotAbi
+GETGLOB 11
+DUP
+ISNULL
+THROWIF 63
+; expValue
+; end expValue
+; colValue
+POP S2
+; end colValue
+; expValue
+; end expValue
+;; push identifier m_icon
+; colValue
+DROP
+GETGLOB 19
+; end colValue
+; end function getDebotInfo
+
+.macro getRequiredInterfaces
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+ENDS
+CALLREF {
+	CALL $getRequiredInterfaces_internal_macro$
+}
+;; emitting 1 value(s)
+PUSH S1
+PUSHCONT {
+	PUSH S3
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHSLICE x00000000000000000000000036190b42a_
+	STSLICER
+	SWAP
+	UNPAIR
+	XCHG s2
+	STU 32
+	STDICT
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	DROP
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	getRequiredInterfaces_internal
+.type	getRequiredInterfaces_internal, @function
+CALL $getRequiredInterfaces_internal_macro$
+
+.macro getRequiredInterfaces_internal_macro
+;; ret param: interfaces
+PUSHINT 0
+NEWDICT
+PAIR
+; function getRequiredInterfaces
+;; return
+PUSHINT 1
+NEWDICT
+PUSHINT 61327837143279038880828163389518064523935669597243029312953519799871119370467
+NEWC
+STU 256
+PUSHINT 0
+ROT
+PUSHINT 32
+DICTUSETB
+PAIR
+NIP
+; end function getRequiredInterfaces
+
+.macro getDebotOptions
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+ENDS
+CALLREF {
+	CALL $getDebotOptions_internal_macro$
+}
+;; emitting 4 value(s)
+PUSH S4
+PUSHCONT {
+	PUSH S6
+	CTOS
+	LDU 2
+	LDMSGADDR
+	DROP
+	NIP
+	NEWC
+	STSLICECONST xc
+	STSLICE
+	PUSHINT 1
+	STUR 98
+	REVERSE 4, 1
+	BLKSWAP 4, 1
+	NEWC
+	STSLICECONST xfdecd0db
+	STU 8
+	STREF
+	STREF
+	STSLICE
+	STBREFR
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+PUSHCONT {
+	BLKDROP 4
+}
+IFELSE
+IFREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	getDebotOptions_internal
+.type	getDebotOptions_internal, @function
+CALL $getDebotOptions_internal_macro$
+
+.macro getDebotOptions_internal_macro
+;; ret param: options
+PUSHINT 0
+;; ret param: debotAbi
+PUSHREF {
+}
+;; ret param: targetAbi
+PUSHREF {
+}
+;; ret param: targetAddr
+PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+; function getDebotOptions
+;; push identifier m_debotAbi
+GETGLOB 11
+ISNULL
+NOT
+PUSHCONT {
+	;; push identifier m_debotAbi
+	GETGLOB 11
+	DUP
+	ISNULL
+	THROWIF 63
+}
+PUSHCONT {
+	PUSHREF {
+		.blob x
+	}
+}
+IFELSE
+; expValue
+; end expValue
+; colValue
+POP S3
+; end colValue
+;; push identifier m_targetAbi
+GETGLOB 12
+ISNULL
+NOT
+PUSHCONT {
+	;; push identifier m_targetAbi
+	GETGLOB 12
+	DUP
+	ISNULL
+	THROWIF 63
+}
+PUSHCONT {
+	PUSHREF {
+		.blob x
+	}
+}
+IFELSE
+; expValue
+; end expValue
+; colValue
+POP S2
+; end colValue
+;; push identifier m_target
+GETGLOB 13
+ISNULL
+NOT
+PUSHCONT {
+	;; push identifier m_target
+	GETGLOB 13
+	DUP
+	ISNULL
+	THROWIF 63
+}
+PUSHCONT {
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+}
+IFELSE
+; expValue
+; end expValue
+; colValue
+NIP
+; end colValue
+; expValue
+; end expValue
+;; push identifier m_options
+GETGLOB 10
+; colValue
+POP S4
+; end colValue
+; end function getDebotOptions
+
+.macro setABI
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDREF
+ENDS
+;; param: dabi
+CALLREF {
+	CALL $setABI_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	setABI_internal
+.type	setABI_internal, @function
+CALL $setABI_internal_macro$
+
+.macro setABI_internal_macro
+;; param: dabi
+; function setABI
+GETGLOB 2
+;; ==
+GETGLOB 5
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	PUSHINT 0
+}
+IF
+EQUAL
+THROWIFNOT 100
+ACCEPT
+; expValue
+;; fetch m_options
+; end expValue
+GETGLOB 10
+PUSHINT 1
+OR
+; colValue
+SETGLOB 10
+; end colValue
+; expValue
+; end expValue
+;; push identifier dabi
+; colValue
+; end colValue
+; end function setABI
+SETGLOB 11
+
+.macro c7_to_c4
+GETGLOB 23
+GETGLOB 22
+GETGLOB 21
+GETGLOB 20
+GETGLOB 19
+GETGLOB 18
+GETGLOB 17
+GETGLOB 16
+GETGLOB 15
+GETGLOB 14
+GETGLOB 13
+GETGLOB 12
+GETGLOB 11
+GETGLOB 10
+GETGLOB 6
+GETGLOB 3
+GETGLOB 2
+NEWC
+STU 256
+STU 64
+STU 1
+STU 8
+SWAP
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	STSLICECONST 0
+}
+PUSHCONT {
+	NEWC
+	STREF
+	SWAP
+	STSLICECONST 1
+	STBREF
+}
+IFELSE
+SWAP
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	STSLICECONST 0
+}
+PUSHCONT {
+	NEWC
+	STREF
+	SWAP
+	STSLICECONST 1
+	STBREF
+}
+IFELSE
+SWAP
+DUP
+ISNULL
+PUSHCONT {
+	DROP
+	STSLICECONST 0
+}
+PUSHCONT {
+	NEWC
+	STSLICE
+	SWAP
+	STSLICECONST 1
+	STBREF
+}
+IFELSE
+STSLICE
+BLKSWAP 9, 1
+NEWC
+STU 128
+STU 128
+STSLICE
+BLKSWAP 6, 1
+NEWC
+STSLICE
+STREF
+STDICT
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+STU 256
+STU 32
+STBREFR
+STBREFR
+ENDC
+POP C4
+
+.macro c4_to_c7
+PUSHROOT
+CTOS        ; c4
+LDU 256      ; pubkey c4
+LDU 64      ; pubkey timestamp c4
+LDU 1       ; pubkey [timestamp] constructor_flag memory
+LDU 8
+LDOPTREF
+SWAP
+DUP
+ISNULL
+PUSHCONT {
+	CTOS
+	PLDREF
+}
+IFNOT
+SWAP
+LDOPTREF
+SWAP
+DUP
+ISNULL
+PUSHCONT {
+	CTOS
+	PLDREF
+}
+IFNOT
+SWAP
+LDOPTREF
+SWAP
+DUP
+ISNULL
+PUSHCONT {
+	CTOS
+	LDMSGADDR
+	DROP
+}
+IFNOT
+SWAP
+LDMSGADDR
+;; load next cell
+LDREF
+ENDS
+CTOS
+LDU 128
+LDU 128
+LDMSGADDR
+;; load next cell
+LDREF
+ENDS
+CTOS
+LDMSGADDR
+LDREF
+LDDICT
+LDU 32
+LDDICT
+ROTREV
+PAIR
+SWAP
+LDU 256
+LDU 32
+ENDS
+SETGLOB 23
+SETGLOB 22
+SETGLOB 21
+SETGLOB 20
+SETGLOB 19
+SETGLOB 18
+SETGLOB 17
+SETGLOB 16
+SETGLOB 15
+SETGLOB 14
+SETGLOB 13
+SETGLOB 12
+SETGLOB 11
+SETGLOB 10
+TRUE
+SETGLOB 8
+; pubkey [timestamp] constructor_flag
+SETGLOB 6   ; pubkey [timestamp]
+SETGLOB 3   ; D
+SETGLOB 2
+
+.macro c4_to_c7_with_init_storage
+PUSHROOT
+CTOS        ; c4
+DUP        ; c4 c4
+SBITS      ; c4 bits
+GTINT 1    ; c4 bits>1
+PUSHCONT {
+	LDU 256      ; pubkey c4
+	LDU 64      ; pubkey timestamp c4
+	LDU 1       ; pubkey [timestamp] constructor_flag memory
+	LDU 8
+	LDOPTREF
+	SWAP
+	DUP
+	ISNULL
+	PUSHCONT {
+		CTOS
+		PLDREF
+	}
+	IFNOT
+	SWAP
+	LDOPTREF
+	SWAP
+	DUP
+	ISNULL
+	PUSHCONT {
+		CTOS
+		PLDREF
+	}
+	IFNOT
+	SWAP
+	LDOPTREF
+	SWAP
+	DUP
+	ISNULL
+	PUSHCONT {
+		CTOS
+		LDMSGADDR
+		DROP
+	}
+	IFNOT
+	SWAP
+	LDMSGADDR
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+	LDU 128
+	LDMSGADDR
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
+	LDREF
+	LDDICT
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 256
+	LDU 32
+	ENDS
+	SETGLOB 23
+	SETGLOB 22
+	SETGLOB 21
+	SETGLOB 20
+	SETGLOB 19
+	SETGLOB 18
+	SETGLOB 17
+	SETGLOB 16
+	SETGLOB 15
+	SETGLOB 14
+	SETGLOB 13
+	SETGLOB 12
+	SETGLOB 11
+	SETGLOB 10
+	TRUE
+	SETGLOB 8
+	; pubkey [timestamp] constructor_flag
+	SETGLOB 6   ; pubkey [timestamp]
+	SETGLOB 3   ; D
+	SETGLOB 2
+}
+PUSHCONT {
+	PLDDICT   ; D
+	; init m_options
+	PUSHINT 0
+	SETGLOB 10
+	; init m_debotAbi
+	NULL
+	SETGLOB 11
+	; init m_targetAbi
+	NULL
+	SETGLOB 12
+	; init m_target
+	NULL
+	SETGLOB 13
+	; init m_VAdebotACTMmenuAddress
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	SETGLOB 14
+	; init GRAMS_INIT_VOTE
+	PUSHINT 0
+	SETGLOB 15
+	; init GRAMS_RESULT
+	PUSHINT 0
+	SETGLOB 16
+	; init m_DeAuditRoot
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	SETGLOB 17
+	; init m_participant
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	SETGLOB 18
+	; init m_icon
+	PUSHREF {
+	}
+	SETGLOB 19
+	; init voteD
+	NEWDICT
+	SETGLOB 20
+	; init voteKeysD
+	PUSHINT 0
+	NEWDICT
+	PAIR
+	SETGLOB 21
+	; init votingID
+	PUSHINT 0
+	SETGLOB 22
+	; init indexCur
+	PUSHINT 0
+	SETGLOB 23
+	; set contract pubkey
+	PUSHINT 0
+	SWAP
+	PUSHINT 64
+	DICTUGET
+	THROWIFNOT 61
+	PLDU 256
+	SETGLOB 2
+	PUSHINT 0 ; timestamp
+	SETGLOB 3
+	PUSHINT 0 ; constructor_flag
+	SETGLOB 6
+TRUE
+SETGLOB 8
+	;; init state var: GRAMS_INIT_VOTE
+	PUSHINT 700000000
+	SETGLOB 15
+	;; init state var: GRAMS_RESULT
+	PUSHINT 3100000000
+	SETGLOB 16
+	;; init state var: m_DeAuditRoot
+	;; address.makeAddrStd()
+	PUSHSLICE x80193b037653b97bea63b6446a49db1cb7b915e40e6201c53b012ce16a85856a045_
+	SETGLOB 17
+	;; init state var: m_participant
+	;; address.makeAddrStd()
+	PUSHSLICE x8013e50fe86abfd61a5b09947ff10325016622c36648c90d947f8cfaef29371f0bf_
+	SETGLOB 18
+}
+IFELSE
+
+.internal-alias :main_internal, 0
+.internal :main_internal
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Function: main_internal
+;; param: contract_balance
+;; param: msg_balance
+;; param: int_msg_info
+;; param: msg_body_slice
+;; param: transaction_type
+PUSH S2
+CTOS
+PLDU 4
+MODPOW2 1
+IFRET
+PUSH S1    ; body
+SEMPTY     ; isEmpty
+IFRET
+PUSH S1 ; body
+LDUQ 32  ; [funcId] body' ok
+THROWIFNOT 60 ; funcId body'
+PUSH S1 ; funcId body' funcId
+IFNOTRET
+SWAP
+CALLREF {
+	CALL $public_function_selector$
+}
+GETGLOB 7
+ISNULL
+THROWIF 60
+
+.internal-alias :main_external, -1
+.internal :main_external
+PUSH S1
+CALLREF {
+	CALL $c4_to_c7_with_init_storage$
+}
+LDU 1 ; haveSign msgSlice
+SWAP
+PUSHCONT {
+	PUSHINT 512
+	LDSLICEX ; signatureSlice msgSlice
+	DUP      ; signatureSlice msgSlice msgSlice
+	HASHSU   ; signatureSlice msgSlice hashMsgSlice
+	SWAP  ; signatureSlice hashMsgSlice msgSlice
+	LDU 1 ; signatureSlice hashMsgSlice havePubkey msgSlice
+	SWAP  ; signatureSlice hashMsgSlice msgSlice havePubkey
+	PUSHCONT {
+		LDU 256       ; signatureSlice hashMsgSlice pubkey msgSlice
+		XCHG s3
+		SWAP
+	}
+	PUSHCONT {
+		XCHG s2
+		GETGLOB 2
+	}
+	IFELSE
+	DUP
+	SETGLOB 5
+	CHKSIGNU      ; msgSlice isSigned
+	THROWIFNOT 40 ; msgSlice
+}
+PUSHCONT {
+	LDU 1      ; havePubkey msgSlice
+	SWAP       ; msgSlice havePubkey
+	THROWIF 58 ; msgSlice
+}
+IFELSE
+LDU 64                         ; timestamp msgSlice
+SWAP                           ; msgSlice timestamp
+CALL $replay_protection_macro$ ; msgSlice
+LDU 32  ; expireAt msgSlice
+SWAP    ; msgSlice expireAt
+NOW     ; msgSlice expireAt now
+GREATER ; msgSlice expireAt>now
+THROWIFNOT 57
+LDU  32 ; funcId body
+SWAP    ; body funcId
+CALLREF {
+	CALL $public_function_selector$
+}
+GETGLOB 7
+ISNULL
+THROWIF 60
+
+.globl	AddressInput_with_obj_get
+.type	AddressInput_with_obj_get, @function
+CALL $AddressInput_with_obj_get_macro$
+
+.macro AddressInput_with_obj_get_macro
+;; param: answerId
+;; param: prompt
+; function get
+;; address.makeAddrStd()
+PUSHSLICE x9c3afda37b1cc4610e222de8a45cb1be15278aa418ade95bc47de7b12335308ca77_
+;; decl: addr
+;; Remote call IAddressInput.get
+;; push identifier prompt
+;; push identifier answerId
+;; push identifier addr
+PUSH3 S1, S2, S0
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000421b400b_
+STSLICER
+STU 32
+STREF
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function get
+DROP2
+
+.globl	AddressInput_no_obj_get
+.type	AddressInput_no_obj_get, @function
+CALL $AddressInput_no_obj_get_macro$
+
+.macro AddressInput_no_obj_get_macro
+;; param: answerId
+;; param: prompt
+; function get
+;; address.makeAddrStd()
+PUSHSLICE x9c3afda37b1cc4610e222de8a45cb1be15278aa418ade95bc47de7b12335308ca77_
+;; decl: addr
+;; Remote call IAddressInput.get
+;; push identifier prompt
+;; push identifier answerId
+;; push identifier addr
+PUSH3 S1, S2, S0
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000421b400b_
+STSLICER
+STU 32
+STREF
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function get
+BLKDROP 3
+
+.globl	Menu_with_obj_select
+.type	Menu_with_obj_select, @function
+CALL $Menu_with_obj_select_macro$
+
+.macro Menu_with_obj_select_macro
+;; param: title
+;; param: description
+;; param: items
+; function select
+;; address.makeAddrStd()
+PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
+;; decl: addr
+;; Remote call IMenu.select
+;; push identifier items
+;; push identifier description
+;; push identifier title
+PUSH3 S1, S2, S3
+;; push identifier addr
+PUSH S3
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000d3028c73_
+STSLICER
+STREF
+STREF
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function select
+BLKDROP 3
+
+.globl	Menu_no_obj_select
+.type	Menu_no_obj_select, @function
+CALL $Menu_no_obj_select_macro$
+
+.macro Menu_no_obj_select_macro
+;; param: title
+;; param: description
+;; param: items
+; function select
+;; address.makeAddrStd()
+PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
+;; decl: addr
+;; Remote call IMenu.select
+;; push identifier items
+;; push identifier description
+;; push identifier title
+PUSH3 S1, S2, S3
+;; push identifier addr
+PUSH S3
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000d3028c73_
+STSLICER
+STREF
+STREF
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function select
+BLKDROP 4
+
+.globl	Terminal_with_obj_print
+.type	Terminal_with_obj_print, @function
+CALL $Terminal_with_obj_print_macro$
+
+.macro Terminal_with_obj_print_macro
+;; param: answerId
+;; param: message
+; function print
+;; address.makeAddrStd()
+PUSHSLICE x9c30f2ca6c6cddc430a5b6adb996c178ac8b316c3190cbf8a1916356e81774251c7_
+;; decl: addr
+;; Remote call ITerminal.print
+;; push identifier message
+;; push identifier answerId
+;; push identifier addr
+PUSH3 S1, S2, S0
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x398968000000000000000000000000000019cc9385_
+STSLICER
+STU 32
+STREF
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function print
+DROP2
+
+.globl	Terminal_no_obj_print
+.type	Terminal_no_obj_print, @function
+CALL $Terminal_no_obj_print_macro$
+
+.macro Terminal_no_obj_print_macro
+;; param: answerId
+;; param: message
+; function print
+;; address.makeAddrStd()
+PUSHSLICE x9c30f2ca6c6cddc430a5b6adb996c178ac8b316c3190cbf8a1916356e81774251c7_
+;; decl: addr
+;; Remote call ITerminal.print
+;; push identifier message
+;; push identifier answerId
+;; push identifier addr
+PUSH3 S1, S2, S0
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x398968000000000000000000000000000019cc9385_
+STSLICER
+STU 32
+STREF
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function print
+BLKDROP 3
+
+.macro public_function_selector
+DUP
+PUSHINT 1142181388
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 91894483
+	LEQ
+	IFJMPREF {
+		DUP
+		EQINT 1
+		IFJMPREF {
+			CALL $start$
+		}
+		DUP
+		PUSHINT 3563
+		EQUAL
+		IFJMPREF {
+			CALL $getDebotInfo$
+		}
+		DUP
+		PUSHINT 58632106
+		EQUAL
+		IFJMPREF {
+			CALL $voteFor$
+		}
+		DUP
+		PUSHINT 91894483
+		EQUAL
+		IFJMPREF {
+			CALL $showDADdata$
+		}
+	}
+	DUP
+	PUSHINT 371852816
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 198843378
+		EQUAL
+		IFJMPREF {
+			CALL $SCgetCurVote$
+		}
+		DUP
+		PUSHINT 258836457
+		EQUAL
+		IFJMPREF {
+			CALL $setIcon$
+		}
+		DUP
+		PUSHINT 343143896
+		EQUAL
+		IFJMPREF {
+			CALL $showVotings$
+		}
+		DUP
+		PUSHINT 371852816
+		EQUAL
+		IFJMPREF {
+			CALL $votingListMenu_getVoteStuctCur$
+		}
+	}
+	DUP
+	PUSHINT 1066399817
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 704346969
+		EQUAL
+		IFJMPREF {
+			CALL $preInd$
+		}
+		DUP
+		PUSHINT 925933973
+		EQUAL
+		IFJMPREF {
+			CALL $goToACTMdebot$
+		}
+		DUP
+		PUSHINT 963856191
+		EQUAL
+		IFJMPREF {
+			CALL $votingListMenu$
+		}
+		DUP
+		PUSHINT 1066399817
+		EQUAL
+		IFJMPREF {
+			CALL $showallV$
+		}
+	}
+	DUP
+	PUSHINT 1142181388
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 1087701879
+		EQUAL
+		IFJMPREF {
+			CALL $voteAgainst$
+		}
+		DUP
+		PUSHINT 1098082128
+		EQUAL
+		IFJMPREF {
+			CALL $toungAllV$
+		}
+		DUP
+		PUSHINT 1138950279
+		EQUAL
+		IFJMPREF {
+			CALL $premenu$
+		}
+		DUP
+		PUSHINT 1142181388
+		EQUAL
+		IFJMPREF {
+			CALL $votingListMenu_getVoteStuct$
+		}
+	}
+}
+DUP
+PUSHINT 2112671963
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1496812763
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 1184379414
+		EQUAL
+		IFJMPREF {
+			CALL $someError$
+		}
+		DUP
+		PUSHINT 1377733005
+		EQUAL
+		IFJMPREF {
+			CALL $onsetEditDebaddress$
+		}
+		DUP
+		PUSHINT 1482960138
+		EQUAL
+		IFJMPREF {
+			CALL $getRequiredInterfaces$
+		}
+		DUP
+		PUSHINT 1496812763
+		EQUAL
+		IFJMPREF {
+			CALL $setATaddress$
+		}
+	}
+	DUP
+	PUSHINT 2032787862
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 1535461694
+		EQUAL
+		IFJMPREF {
+			CALL $resultVote$
+		}
+		DUP
+		PUSHINT 1568115769
+		EQUAL
+		IFJMPREF {
+			CALL $setABI$
+		}
+		DUP
+		PUSHINT 1756716863
+		EQUAL
+		IFJMPREF {
+			CALL $constructor$
+		}
+		DUP
+		PUSHINT 2032787862
+		EQUAL
+		IFJMPREF {
+			CALL $prestart$
+		}
+	}
+	DUP
+	PUSHINT 2112671963
+	EQUAL
+	IFJMPREF {
+		CALL $getDebotOptions$
+	}
+}
