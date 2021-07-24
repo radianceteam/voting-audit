@@ -46,7 +46,7 @@ abstract contract Debot {
         targetAddr = m_target.hasValue() ? m_target.get() : address(0);
         options = m_options;
     }
-
+address m_ATdebotAddress;
     /// @notice Allow to set debot ABI. Do it before using debot.
     function setABI(string dabi) public {
         require(tvm.pubkey() == msg.pubkey(), 100);
