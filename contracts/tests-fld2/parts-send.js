@@ -34,8 +34,9 @@ async function main(client) {
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
   const rootAddr = JSON.parse(fs.readFileSync(pathJsonRoot,{encoding: "utf8"})).address;
   const rootAcc = new Account(DeAuditRootContract, {address: rootAddr,client,});
-
+  let indexP = 0;
   for (const item of resultArr) {
+    console.log(indexP);
     const clientKeys = item.keys;
     const clientAddress = item.address;
     let pubkey = '0x'+clientKeys.keys.public;
@@ -76,7 +77,7 @@ async function main(client) {
 
 
   } else {console.log('networkSelector is incorrect');}
-
+  indexP ++;
   }
 
 }

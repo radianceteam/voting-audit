@@ -30,4 +30,8 @@ interface IDeAudit {
 
   function regForValidationCallback(address addressValidator, address[] msgData) external;
 
+  function burnTokens(address[] addressParticipantArr, address gasPayeerAddress, bool statusWithraw) external;
+
+  function getRewardAndStakeBack() external;
+
 }

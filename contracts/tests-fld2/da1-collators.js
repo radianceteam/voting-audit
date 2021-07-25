@@ -78,6 +78,7 @@ async function main(client) {
   let indexParticipant = 17;
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
   console.log("resultArr.length:", resultArr.length);
+  let indexP = 0;
   for (const item of resultArr) {
     const participantAddr = item.address;
     const participantKeys = item.keys;
@@ -86,7 +87,7 @@ async function main(client) {
       signer: participantKeys,
       client,
     });
-
+    console.log("participant index:", indexP);
     console.log("participant address:", participantAddr);
 
     response = await participantAcc.runLocal("getBalance", {_answer_id:0});
@@ -109,7 +110,7 @@ async function main(client) {
     }
 
 
-
+   indexP ++;
 
   }
 

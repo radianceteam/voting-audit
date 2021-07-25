@@ -30,6 +30,7 @@ contract Participant is IParticipant {
 	}
 
 	mapping(address => Activity) public activities;
+	address[] public activeDeAudits;
 
 	address[] public walletsDC;
 
@@ -61,25 +62,27 @@ contract Participant is IParticipant {
 
 	// Init function.
 	constructor() public onlyDeAuditRoot {
-	  string generatedName = format("Participant {}", address(this));
+		string generatedName = format("Participant {}", address(this));
 		name = bytes(generatedName);
 		photoLink = bytes("no link");
 		dataLink = bytes("no link");
 	}
 
 	// Function to transfers plain transfers.
-	function sendTransfer(address dest, uint128 value, bool bounce) public pure checkOwnerAndAccept {
+	function sendTransfer(address dest, uint128 value, bool bounce) public pure checkOwnerAndAccept returns (uint8 status) {
 		dest.transfer(value, bounce, 0);
+		status = 1;
 	}
 
 	// Function to receive plain transfers.
 	receive() external {
 	}
 
-	function publishData(bytes publishName, bytes publishPhotoLink, bytes publishDataLink)  public checkOwnerAndAccept {
+	function publishData(bytes publishName, bytes publishPhotoLink, bytes publishDataLink)  public checkOwnerAndAccept returns (uint8 status) {
 		name = publishName;
 		photoLink = publishPhotoLink;
 		dataLink = publishDataLink;
+		status = 1;
 	}
 
 	function getPublishedData()  public view returns (
@@ -96,13 +99,15 @@ contract Participant is IParticipant {
 		pBalance = thisBalance();
 	}
 
-	function initVoteAddActionTeamMember(address participantAddr, uint128 grams)  public view checkOwnerAndAccept {
+	function initVoteAddActionTeamMember(address participantAddr, uint128 grams)  public view checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).initVoteAddActionTeamMember, participantAddr);
+		status = 1;
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function initVoteRemoveActionTeamMember(address participantAddr, uint128 grams) public view checkOwnerAndAccept {
+	function initVoteRemoveActionTeamMember(address participantAddr, uint128 grams) public view checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).initVoteRemoveActionTeamMember, participantAddr);
+		status = 1;
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
@@ -114,33 +119,39 @@ contract Participant is IParticipant {
 		uint128 colStake,
 		uint128 valStake,
 		uint128 grams
-	) public view checkOwnerAndAccept {
+	) public view checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).createDeAuditData, nameDeAuditData, timeStart, colPeriod, valPeriod, colStake, valStake);
+    status = 1;
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function initVoteDeAudut(address addrDeAuditData, uint128 grams)  public  view checkOwnerAndAccept {
+	function initVoteDeAudut(address addrDeAuditData, uint128 grams)  public  view checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).initVoteDeAudut, addrDeAuditData);
+		status = 1;
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function voteFor(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
+	function voteFor(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).voteFor, voteId);
+		status = 1;
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function voteAgainst(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
+	function voteAgainst(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).voteAgainst, voteId);
+		status = 1;
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function resultVote(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept {
+	function resultVote(uint256 voteId, uint128 grams)  public  view checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).resultVote, voteId);
+		status = 1;
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function sendTrigger(address addrDeAudit, address addrAct4, uint128 grams)  public view checkOwnerAndAccept {
+	function sendTrigger(address addrDeAudit, address addrAct4, uint128 grams)  public view checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IDeAuditRoot(rootDeAudit).sendTrigger, addrDeAudit, addrAct4);
+		status = 1;
 		rootDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
@@ -149,9 +160,10 @@ contract Participant is IParticipant {
 		initiatedDeAuditData[addressDeAuditData] = uint256(now);
 	}
 
-	function addDistrict(address addressDeAuditData, bytes nameDistrict, uint128 grams)  public view checkOwnerAndAccept {
+	function addDistrict(address addressDeAuditData, bytes nameDistrict, uint128 grams)  public view checkOwnerAndAccept returns (uint8 status) {
 		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
 		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addDistrict, nameDistrict);
+		status = 1;
 		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
@@ -160,9 +172,10 @@ contract Participant is IParticipant {
 		bytes nameMunicipalBody,
 		uint256 indexDistrict,
 		uint128 grams
-	)  public view checkOwnerAndAccept {
+	)  public view checkOwnerAndAccept returns (uint8 status) {
 		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
 		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addMunicipalBody, nameMunicipalBody, indexDistrict);
+		status = 1;
 		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
@@ -172,9 +185,10 @@ contract Participant is IParticipant {
 		uint256 indexDistrict,
 		uint256 indexMunicipalBody,
 		uint128 grams
-	)  public  view checkOwnerAndAccept {
+	)  public  view checkOwnerAndAccept returns (uint8 status) {
 		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
 		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addVotingPool, nameVotingPool, indexDistrict, indexMunicipalBody);
+		status = 1;
 		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
@@ -186,9 +200,10 @@ contract Participant is IParticipant {
 		uint256 indexMunicipalBody,
 		uint256 indexVotingPool,
 		uint128 grams
-	)   public  view checkOwnerAndAccept {
+	)   public  view checkOwnerAndAccept returns (uint8 status) {
 		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
 		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addVotingCenter, nameVotingCenter, location, indexDistrict, indexMunicipalBody, indexVotingPool);
+		status = 1;
 		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
@@ -196,8 +211,9 @@ contract Participant is IParticipant {
 		address addressDeAuditData,
 		bytes nameCandidate,
 		uint128 grams
-	) public pure checkOwnerAndAccept {
+	) public pure checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addCandidate, nameCandidate);
+		status = 1;
 		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
@@ -207,12 +223,13 @@ contract Participant is IParticipant {
 		bytes linkToCollationPhoto,
 		uint256[] voteMatrix,
 		uint128 grams
-	) public checkOwnerAndAccept {
+	) public checkOwnerAndAccept returns (uint8 status) {
 		Activity cv = activities[addressDeAudit];
 		cv.reg = true;
 		cv.atype = 0;
 		activities[addressDeAudit] = cv;
 		TvmCell body = tvm.encodeBody(IDeAudit(addressDeAudit).addCollation, indexVotingCenter, linkToCollationPhoto, voteMatrix);
+		status = 1;
 		addressDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
@@ -220,22 +237,25 @@ contract Participant is IParticipant {
 	function registrationForValidation(
 		address addressDeAudit,
 		uint128 grams
-	) public checkOwnerAndAccept {
+	) public checkOwnerAndAccept returns (uint8 status) {
 		Activity cv = activities[addressDeAudit];
 		cv.reg = true;
 		cv.atype = 1;
 		activities[addressDeAudit] = cv;
 		TvmCell body = tvm.encodeBody(IDeAudit(addressDeAudit).registrationForValidation);
+		status = 1;
 		addressDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function validateFor(address addrAct4, uint128 grams)  public  view checkOwnerAndAccept {
+	function validateFor(address addrAct4, uint128 grams)  public pure checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IAct4(addrAct4).voteFor);
+		status = 1;
 		addrAct4.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function validateAgainst(address addrAct4, uint128 grams)  public  view checkOwnerAndAccept {
+	function validateAgainst(address addrAct4, uint128 grams)  public pure checkOwnerAndAccept returns (uint8 status) {
 		TvmCell body = tvm.encodeBody(IAct4(addrAct4).voteAgainst);
+		status = 1;
 		addrAct4.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
@@ -246,7 +266,29 @@ contract Participant is IParticipant {
 		cv.act4Arr = act4Arr;
 		cv.wallet = walletDeAudit;
 		activities[addressDeAudit] = cv;
+		activeDeAudits.push(addressDeAudit);
 		walletsDC.push(walletDeAudit);
+	}
+
+	function getCurActivity(address curLaunchedDeAudit) public view returns (
+		bool reg,
+		uint8 atype,
+		address[] act4Arr,
+		address wallet,
+		address curDAactiv
+	) {
+		Activity curActiv = activities[curLaunchedDeAudit];
+		reg = curActiv.reg;
+		atype = curActiv.atype;
+		act4Arr = curActiv.act4Arr;
+		wallet = curActiv.wallet;
+		curDAactiv = curLaunchedDeAudit;
+	}
+
+	function getRewardAndStakeBack(address addressDeAudit, uint128 grams)  public pure checkOwnerAndAccept returns (uint8 status){
+		TvmCell body = tvm.encodeBody(IDeAudit(addressDeAudit).getRewardAndStakeBack);
+		status = 1;
+		addressDeAudit.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
 	// Function for get this contract TON gramms balance

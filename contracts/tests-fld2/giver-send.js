@@ -42,7 +42,7 @@ async function main(client) {
     // let destination = participantAddr;
 
     // let destination = response.decoded.output.actionTeamKeys[indexPartisipant];
-    let destination = '0:93ea7e6b031afcd09002ee0325c90b3760b433d381c13a2061af391eefb03fab';
+    let destination = '0:7ccb880e7677d8380399da46ec42026dff81aa3530048f0616f51b0e397f073e';
 
     console.log("Contract reacted to your destination]:", destination);
 

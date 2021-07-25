@@ -27,9 +27,9 @@ function toHex(input) {
   return String(output);
 }
 
-const indexKeysDeAuditData = 0;
+const indexKeysDeAuditData = 1;
 
-const indexKeysDeAudit = 0;
+const indexKeysDeAudit = 1;
 
 let indexParticipant = 16;
 
@@ -72,7 +72,7 @@ async function main(client) {
     });
     response = await participantAcc.run("registrationForValidation", {
       addressDeAudit:deauditAddr,
-      grams:12000000000
+      grams:18000000000
     });
     console.log("Contract reacted to your registrationForValidation:", response.decoded.output);
     indexParticipant ++;

@@ -12,28 +12,12 @@ const { DeAuditRootCode } = require("./DeAuditRootCode.js");
 
 
 const { DeAuditRootContract } = require("./DeAuditRoot.js");
-const { DeAuditDataContract } = require("./DeAuditData.js");
 const { ParticipantContract } = require("./Participant.js");
 
 const pathJsonRoot = './DeAuditRoot.json';
 const pathJsonParticipants = './Participants.json';
 
-const hex = require('ascii-hex');
-const hex2ascii = require('hex2ascii');
-
-function toHex(input) {
-  let output = '';
-  for (i = 0; i < input.length; i ++){output += hex(input[i]).toString(16)}
-  return String(output);
-}
-
-const indexKeysDeAuditData = 0;
-
-const indexKeysDeAudit = 0;
-
-let indexParticipant = 16;
-
-
+const indexPartisipant = 0;
 
 
 TonClient.useBinaryLibrary(libNode);
@@ -55,31 +39,50 @@ async function main(client) {
     client,
   });
 
-  response = await rootAcc.runLocal("keysDeAudit", {});
-  console.log("key DeAudit :",indexKeysDeAuditData,', address: ',response.decoded.output.keysDeAudit[indexKeysDeAudit]);
+  let pubkeyCreator = '0x'+rootKeys.keys.public;
+  response = await rootAcc.runLocal("getParticipantAddress", {_answer_id:0, pubkeyParticipant:pubkeyCreator});
+  console.log("creatorAddr:", response.decoded.output);
 
-  let deauditAddr = response.decoded.output.keysDeAudit[indexKeysDeAudit];
+  const creatorAddr = response.decoded.output.value0;
+  const creatorAcc = new Account(ParticipantContract, {
+    address: creatorAddr,
+    signer: rootKeys,
+    client,
+  });
 
-  while (indexParticipant < 32) {
-    console.log(indexParticipant);
-    let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
-    const participantAddr = resultArr[indexParticipant].address;
-    const participantKeys = resultArr[indexParticipant].keys;
-    const participantAcc = new Account(ParticipantContract, {
-      address: participantAddr,
-      signer: participantKeys,
-      client,
-    });
-    response = await participantAcc.run("registrationForValidation", {
-      addressDeAudit:deauditAddr,
-      grams:12000000000
-    });
-    console.log("Contract reacted to your registrationForValidation:", response.decoded.output);
-    indexParticipant ++;
-  }
+  response = await creatorAcc.runLocal("rootDeAudit", {});
+  console.log("Contract reacted to your rootDeAudit:", response.decoded.output);
+
+  response = await creatorAcc.runLocal("initiatedDeAuditData", {});
+  console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
 
 
 
+  let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
+  const participantAddress = resultArr[indexPartisipant].address;
+
+  response = await creatorAcc.run("initVoteAddActionTeamMember", {participantAddr:participantAddress,grams:1000000000});
+  console.log("Contract reacted to your initVoteAddActionTeamMember:", response.decoded.output);
+
+
+  // for (const item of resultArr) {
+  //   const participantAddress = item.address;
+  //   const participantKeys = item.keys;
+  //   let pubkey = '0x'+participantKeys.keys.public;
+  //
+  //   const participantAcc = new Account(ParticipantContract, {
+  //     address: participantAddress,
+  //     signer: participantKeys,
+  //     client,
+  //   });
+  //
+  //   response = await participantAcc.runLocal("rootDeAudit", {});
+  //   console.log("Contract reacted to your rootDeAudit:", response.decoded.output);
+  //
+  //   response = await participantAcc.runLocal("initiatedDeAuditData", {});
+  //   console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
+  //
+  // }
 
 
 

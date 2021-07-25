@@ -13,6 +13,7 @@ import "./interfaces/IExpectedWalletAddressCallback.sol";
 import "./interfaces/ITONTokenWallet.sol";
 import "./interfaces/ITokensReceivedCallback.sol";
 import "./interfaces/IBurnTokensCallback.sol";
+import "./interfaces/IBurnableByRootTokenRootContract.sol";
 
 contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 
@@ -28,7 +29,10 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 	uint128 static public valStake;
 	uint8 static public vcms;
 
+	bool public withdrawOpenStatus;
+
 	mapping (address => uint128) public stakeOf;
+	uint128 public totalStaked;
 	mapping (address => address) public walletOf;
 	mapping (address => address[]) public msgForParticipant;
 
@@ -86,8 +90,15 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 		_;
 	}
 
+	// Modifier
+	modifier onlyStakeHolder {
+		require(stakeOf.exists(msg.sender), 110);
+		_;
+	}
+
 	// Init function.
-	constructor() public {
+	constructor() public onlyDeAuditRoot {
+		withdrawOpenStatus = false;
 	}
 
 	function getDetails() override external view responsible returns (IDeAuditDetails) {
@@ -118,6 +129,7 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 		require(!(msg.value < (colStake + GRAMS_COLLATE)) && !stakeOf.exists(msg.sender), 107);
 		tvm.rawReserve(address(this).balance + colStake - msg.value, 2);
 		stakeOf[msg.sender] = colStake;
+		totalStaked += colStake;
 		TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).setCollation, msg.sender, indexVotingCenter, linkToCollationPhoto, voteMatrix, vcms);
 		dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
 	}
@@ -137,6 +149,7 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 			tvm.accept();
 			uint128 stakeValue = stakeOf[addressCollator];
 			delete stakeOf[addressCollator];
+			totalStaked -= stakeValue;
 			addressCollator.transfer({value: msg.value + stakeValue, flag: 0, bounce:true});
 		}
 	}
@@ -161,7 +174,9 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 		require(!stakeOf.exists(validator) && !(msgValue < valStake + GRAMS_VALIDATION_REG), 109);
 		uint128 qtyValidations = msgValue / (valStake + GRAMS_VALIDATION_REG);
 		tvm.rawReserve(address(this).balance + qtyValidations * valStake - msgValue, 2);
-		stakeOf[validator] = qtyValidations * valStake;
+		uint128 stakeValue = qtyValidations * valStake;
+		stakeOf[validator] = stakeValue;
+		totalStaked += stakeValue;
 		TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).setValidationForParticipant, validator, qtyValidations);
 		dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
 	}
@@ -169,33 +184,46 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 	function regForValidationCallback(address addressValidator, address[] msgData) public override onlyDeAuditData {
 		uint128 valueMsg = msg.value;
 		uint128 qtySettedVals = uint128(msgData.length);
-		uint128 returnValue = stakeOf[addressValidator] - (qtySettedVals * valStake);
-		if (returnValue > 0) {
-			tvm.rawReserve(address(this).balance - valueMsg - returnValue, 2);
-			msgForParticipant[addressValidator] = msgData;
-			uint128 gramsToNewWallet = valueMsg / 8;
-			uint128 gramsToRoot = gramsToNewWallet * 3;
-			TvmCell bodyD = tvm.encodeBody(IRootTokenContract(tokenDeAudit).deployEmptyWallet, gramsToNewWallet, 0, addressValidator, addressValidator);
-			tokenDeAudit.transfer({value:gramsToRoot, bounce:true, body:bodyD});
-			TvmCell bodyA = tvm.encodeBody(IRootTokenContract(tokenDeAudit).sendExpectedWalletAddress, 0, addressValidator, address(this));
-			tokenDeAudit.transfer({value: gramsToRoot, bounce:true, body:bodyA});
-			addressValidator.transfer({value: 0, flag: 128, bounce:true});
+		if (qtySettedVals > 0) {
+			uint128 returnValue = stakeOf[addressValidator] - (qtySettedVals * valStake);
+			if (returnValue > 0) {
+				tvm.rawReserve(address(this).balance - valueMsg - returnValue, 2);
+				stakeOf[addressValidator] -= returnValue;
+				msgForParticipant[addressValidator] = msgData;
+				uint128 gramsToNewWallet = valueMsg / 8;
+				uint128 gramsToRoot = gramsToNewWallet * 3;
+				TvmCell bodyD = tvm.encodeBody(IRootTokenContract(tokenDeAudit).deployEmptyWallet, gramsToNewWallet, 0, addressValidator, addressValidator);
+				tokenDeAudit.transfer({value:gramsToRoot, bounce:true, body:bodyD});
+				TvmCell bodyA = tvm.encodeBody(IRootTokenContract(tokenDeAudit).sendExpectedWalletAddress, 0, addressValidator, address(this));
+				tokenDeAudit.transfer({value: gramsToRoot, bounce:true, body:bodyA});
+				addressValidator.transfer({value: 0, flag: 128, bounce:true});
+			} else {
+				tvm.rawReserve(address(this).balance - valueMsg, 2);
+				msgForParticipant[addressValidator] = msgData;
+				uint128 gramsToNewWallet = valueMsg / 8;
+				uint128 gramsToRoot = gramsToNewWallet * 3;
+				TvmCell bodyD = tvm.encodeBody(IRootTokenContract(tokenDeAudit).deployEmptyWallet, gramsToNewWallet, 0, addressValidator, addressValidator);
+				tokenDeAudit.transfer({value:gramsToRoot, bounce:true, body:bodyD});
+				TvmCell bodyA = tvm.encodeBody(IRootTokenContract(tokenDeAudit).sendExpectedWalletAddress, 0, addressValidator, address(this));
+				tokenDeAudit.transfer({value: 0, flag: 128, bounce:true, body:bodyA});
+			}
 		} else {
-			tvm.rawReserve(address(this).balance - valueMsg, 2);
-			msgForParticipant[addressValidator] = msgData;
-			uint128 gramsToNewWallet = valueMsg / 8;
-			uint128 gramsToRoot = gramsToNewWallet * 3;
-			TvmCell bodyD = tvm.encodeBody(IRootTokenContract(tokenDeAudit).deployEmptyWallet, gramsToNewWallet, 0, addressValidator, addressValidator);
-			tokenDeAudit.transfer({value:gramsToRoot, bounce:true, body:bodyD});
-			TvmCell bodyA = tvm.encodeBody(IRootTokenContract(tokenDeAudit).sendExpectedWalletAddress, 0, addressValidator, address(this));
-			tokenDeAudit.transfer({value: 0, flag: 128, bounce:true, body:bodyA});
+			uint128 stakeValue = stakeOf[addressValidator];
+			delete stakeOf[addressValidator];
+			tvm.rawReserve(address(this).balance - valueMsg - stakeValue, 2);
+			addressValidator.transfer({value: 0, flag: 128, bounce:true});
 		}
 	}
 
 	function triggerToDeAuditData(address addrAct4, address member) public override onlyDeAuditRoot {
 		tvm.rawReserve(address(this).balance - msg.value, 2);
-		TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).triggerToAct4, addrAct4, member);
-		dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
+		uint256 ts = uint256(now);
+		if ( ts > (timeStart + colPeriod + valPeriod)) {
+			TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).triggerToAct4, addrAct4, member);
+			dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
+		} else {
+			member.transfer({value: 0, flag: 128, bounce:true});
+		}
 	}
 
 	// Function for get this contract TON gramms balance
@@ -206,6 +234,46 @@ contract DeAudit is IDeAudit, IExpectedWalletAddressCallback {
 	// Function for external get this contract TON gramms balance
 	function getBalance() public pure responsible returns (uint128) {
 		return { value: 0, bounce: false, flag: 64 } thisBalance();
+	}
+
+	function burnTokens(address[] addressParticipantArr, address gasPayeerAddress, bool statusWithraw) public override onlyDeAuditData {
+		uint128 msgValue = msg.value;
+		tvm.rawReserve(address(this).balance - msgValue, 2);
+		withdrawOpenStatus = statusWithraw;
+		if (addressParticipantArr.length > 0) {
+			uint128 msgToRootGrams = msgValue / (uint128(addressParticipantArr.length) + 1);
+			for (address participant : addressParticipantArr) {
+				uint128 participantStake = stakeOf[participant];
+				delete stakeOf[participant];
+				totalStaked -= participantStake;
+				TvmCell payload;
+				TvmCell body = tvm.encodeBody(IBurnableByRootTokenRootContract(tokenDeAudit).proxyBurn, participantStake, participant, gasPayeerAddress, address(0), payload);
+				tokenDeAudit.transfer({value:msgToRootGrams, flag: 0, bounce:true, body:body});
+			}
+			gasPayeerAddress.transfer({value: 0, flag: 128, bounce: true});
+		} else {
+			gasPayeerAddress.transfer({value: 0, flag: 128, bounce: true});
+		}
+	}
+
+	function getRewardAndStakeBack() public override onlyStakeHolder {
+		address participantAddr = msg.sender;
+		if (withdrawOpenStatus == true) {
+			uint128 participantShares = stakeOf[participantAddr];
+			uint128 totalShares = totalStaked;
+			uint128 balanceDeAudit = address(this).balance;
+			uint128 valueRewardAndStakeBack = participantShares * ( balanceDeAudit / totalShares );
+			tvm.rawReserve(address(this).balance - valueRewardAndStakeBack - msg.value, 2);
+			delete stakeOf[participantAddr];
+			totalStaked -= participantShares;
+	    participantAddr.transfer({value: valueRewardAndStakeBack, flag: 0, bounce: true});
+			TvmCell payload;
+			TvmCell body = tvm.encodeBody(IBurnableByRootTokenRootContract(tokenDeAudit).proxyBurn, participantShares, participantAddr, participantAddr, address(0), payload);
+			tokenDeAudit.transfer({value: 0, flag: 128, bounce: true, body:body});
+		} else {
+			tvm.rawReserve(address(this).balance - msg.value, 2);
+			participantAddr.transfer({value: 0, flag: 128, bounce: true});
+		}
 	}
 
 	function getDetails4Debot() public view returns (

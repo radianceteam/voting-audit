@@ -18,7 +18,7 @@ const { ParticipantContract } = require("./Participant.js");
 const { Act4Contract } = require("./Act4.js");
 const { TONTokenWalletContract } = require("./TONTokenWallet.js");
 
-const indexKeysDeAuditData = 3;
+const indexKeysDeAuditData = 1;
 const indexParticipant = 1;
 const indexVC = 0;
 

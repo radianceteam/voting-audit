@@ -27,9 +27,9 @@ function toHex(input) {
   return String(output);
 }
 
-const indexKeysDeAuditData = 0;
+const indexKeysDeAuditData = 3;
 
-const indexKeysDeAudit = 0;
+const indexKeysDeAudit = 3;
 
 let indexParticipant = 16;
 
@@ -70,12 +70,31 @@ async function main(client) {
       signer: participantKeys,
       client,
     });
-    response = await participantAcc.run("registrationForValidation", {
-      addressDeAudit:deauditAddr,
-      grams:12000000000
-    });
-    console.log("Contract reacted to your registrationForValidation:", response.decoded.output);
+
+    response = await participantAcc.runLocal("activities", {_answer_id:0});
+
+    if (response.decoded.output.activities[deauditAddr] !== undefined) {
+      let atype = response.decoded.output.activities[deauditAddr].atype;
+      let act4Arr = response.decoded.output.activities[deauditAddr].act4Arr;
+      console.log("participant act4Arr:", response.decoded.output.activities[deauditAddr].act4Arr);
+
+      if (act4Arr.length > 0 && atype == 1){
+        for (const item of act4Arr) {
+          response = await participantAcc.run("validateFor", {
+            addrAct4:item,
+            grams:5000000000
+          });
+          console.log("addrAct4: ", item);
+          console.log("validateFor: ", response.decoded.output);
+        }
+      }
+    }
+
+
+
+
     indexParticipant ++;
+
   }
 
 

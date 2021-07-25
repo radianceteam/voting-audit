@@ -1,6 +1,6 @@
-let y = 3;
-let n = 0;
-let t = 2;
+let y = 2;
+let n = 0
+let t = 4;
 
 // Vote count model selector
 // Majority = 0;
