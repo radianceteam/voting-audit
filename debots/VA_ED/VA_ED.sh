@@ -61,6 +61,7 @@ ATDEBOTADDR=$(cat ../VA_AT/address.log)
 echo DEPLOY DEBOT $DEBOT_ADDRESS
 $TOS --url $NETWORK deploy $DEBOT_NAME.tvc "{}" --sign $DEBOT_NAME.keys.json --abi $DEBOT_NAME.abi.json
 $TOS --url $NETWORK call $DEBOT_ADDRESS setABI "{\"dabi\":\"$DEBOT_ABI\",\"ATdebotAddress\":\"$ATDEBOTADDR\"}" --sign $DEBOT_NAME.keys.json --abi $DEBOT_NAME.abi.json
+# $TOS --url $NETWORK call $DEBOT_ADDRESS setABI "{\"dabi\":\"$DEBOT_ABI\"}" --sign $DEBOT_NAME.keys.json --abi $DEBOT_NAME.abi.json
 $TOS --url $NETWORK call $DEBOT_ADDRESS setIcon "{\"icon\":\"$ICON\"}" --sign $DEBOT_NAME.keys.json --abi $DEBOT_NAME.abi.json
 
 # tonos-cli setABI "{\"dabi\":\"$debot_abi\",\"ATdebotAddress\":\"0:75e125c75928eb2b3216c713cc4b04deaf4cc3dea1fe1cdcafbbfd96116fb873\"}" --sign VA_ED.keys.json --abi VA_ED.abi.json

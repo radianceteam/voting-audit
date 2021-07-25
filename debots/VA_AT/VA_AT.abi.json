@@ -278,7 +278,7 @@
 			]
 		},
 		{
-			"name": "romoveMember_sendMSG",
+			"name": "removeMember_sendMSG",
 			"inputs": [
 				{"name":"value","type":"address"}
 			],

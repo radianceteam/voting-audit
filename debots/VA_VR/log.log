@@ -1,0 +1,17 @@
+Config: default
+Input arguments:
+     tvc: VA_VR.tvc
+      wc: None
+    keys: VA_VR.keys.json
+init_data: None
+is_update_tvc: None
+
+Seed phrase: "coffee split album jaguar mesh easily void beyond return glass fetch decide"
+Raw address: 0:08c8efd560d93653c1799aef56454344e78811f062373f2f4d5b04dbd585f551
+testnet:
+Non-bounceable address (for init): 0QAIyO_VYNk2U8F5mu9WRUNE54gR8GI3Py9NWwTb1YX1UYRI
+Bounceable address (for later access): kQAIyO_VYNk2U8F5mu9WRUNE54gR8GI3Py9NWwTb1YX1UdmN
+mainnet:
+Non-bounceable address (for init): UQAIyO_VYNk2U8F5mu9WRUNE54gR8GI3Py9NWwTb1YX1UT_C
+Bounceable address (for later access): EQAIyO_VYNk2U8F5mu9WRUNE54gR8GI3Py9NWwTb1YX1UWIH
+Succeeded

@@ -363,8 +363,7 @@
 		{
 			"name": "setABI",
 			"inputs": [
-				{"name":"dabi","type":"bytes"},
-				{"name":"ATdebotAddress","type":"address"}
+				{"name":"dabi","type":"bytes"}
 			],
 			"outputs": [
 			]

@@ -1,0 +1,17 @@
+Config: default
+Input arguments:
+     tvc: VA_AT.tvc
+      wc: None
+    keys: VA_AT.keys.json
+init_data: None
+is_update_tvc: None
+
+Seed phrase: "ahead gun cheap april gym wish apology parrot magic marine alcohol coconut"
+Raw address: 0:0708ee1d5bc27b193f7b9768a71a23c3d6761de58e57def9a303b2ec0e2ee8fe
+testnet:
+Non-bounceable address (for init): 0QAHCO4dW8J7GT97l2inGiPD1nYd5Y5X3vmjA7LsDi7o_v3n
+Bounceable address (for later access): kQAHCO4dW8J7GT97l2inGiPD1nYd5Y5X3vmjA7LsDi7o_qAi
+mainnet:
+Non-bounceable address (for init): UQAHCO4dW8J7GT97l2inGiPD1nYd5Y5X3vmjA7LsDi7o_kZt
+Bounceable address (for later access): EQAHCO4dW8J7GT97l2inGiPD1nYd5Y5X3vmjA7LsDi7o_huo
+Succeeded

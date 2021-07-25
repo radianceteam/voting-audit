@@ -1,0 +1,17 @@
+Config: default
+Input arguments:
+     tvc: VA_ED.tvc
+      wc: None
+    keys: VA_ED.keys.json
+init_data: None
+is_update_tvc: None
+
+Seed phrase: "release wolf tobacco control popular need venture awesome reason sock future earth"
+Raw address: 0:aa2c5a1bff41cdfa2b584fc29feabf968242236979d102c43e6e051304de8354
+testnet:
+Non-bounceable address (for init): 0QCqLFob_0HN-itYT8Kf6r-WgkIjaXnRAsQ-bgUTBN6DVH0C
+Bounceable address (for later access): kQCqLFob_0HN-itYT8Kf6r-WgkIjaXnRAsQ-bgUTBN6DVCDH
+mainnet:
+Non-bounceable address (for init): UQCqLFob_0HN-itYT8Kf6r-WgkIjaXnRAsQ-bgUTBN6DVMaI
+Bounceable address (for later access): EQCqLFob_0HN-itYT8Kf6r-WgkIjaXnRAsQ-bgUTBN6DVJtN
+Succeeded

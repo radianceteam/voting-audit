@@ -442,7 +442,8 @@ address curDeAudit;
     go to core debot
 */
     function goToCore(uint32 index) public {
-        IVotingAuditDebot(MenuItem[] m_menu;).preSstart(m_participant);
+        start();
+        // IVotingAuditDebot(MenuItem[] m_menu;).preSstart(m_participant);
     }
 
 
@@ -462,7 +463,7 @@ address curDeAudit;
         AddressInput.get(tvm.functionId(addMember_sendMSG), "Enter candidate address to add:");
     }
     function InitRemoveVoting(uint32 index) public {
-        AddressInput.get(tvm.functionId(remoteMember_sendMSG), "Enter candidate address to remove:");
+        AddressInput.get(tvm.functionId(removeMember_sendMSG), "Enter candidate address to remove:");
     }
 
     address m_memberAddress;

@@ -19,6 +19,14 @@
 			]
 		},
 		{
+			"name": "getBalanc",
+			"inputs": [
+				{"name":"nanotokens","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "start",
 			"id": "0x1",
 			"inputs": [

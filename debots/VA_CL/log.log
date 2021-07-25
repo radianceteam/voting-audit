@@ -1,0 +1,17 @@
+Config: default
+Input arguments:
+     tvc: VA_CL.tvc
+      wc: None
+    keys: VA_CL.keys.json
+init_data: None
+is_update_tvc: None
+
+Seed phrase: "best ring uphold upset goat cruel protect cherry income grain retire hidden"
+Raw address: 0:6f9876bd63a496ef239d2b3495e16ae9eefb10ad845ab2bef1df582c5489ecc7
+testnet:
+Non-bounceable address (for init): 0QBvmHa9Y6SW7yOdKzSV4Wrp7vsQrYRasr7x31gsVInsx17A
+Bounceable address (for later access): kQBvmHa9Y6SW7yOdKzSV4Wrp7vsQrYRasr7x31gsVInsxwMF
+mainnet:
+Non-bounceable address (for init): UQBvmHa9Y6SW7yOdKzSV4Wrp7vsQrYRasr7x31gsVInsx-VK
+Bounceable address (for later access): EQBvmHa9Y6SW7yOdKzSV4Wrp7vsQrYRasr7x31gsVInsx7iP
+Succeeded

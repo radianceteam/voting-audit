@@ -1,0 +1,17 @@
+Config: default
+Input arguments:
+     tvc: VA_CR.tvc
+      wc: None
+    keys: VA_CR.keys.json
+init_data: None
+is_update_tvc: None
+
+Seed phrase: "fix soldier true man found time hub pact hidden jar update volcano"
+Raw address: 0:23e387c2b3eb13c5e3b0ba5514ab369d5d4ade735e910571b3c4ae64b53f441c
+testnet:
+Non-bounceable address (for init): 0QAj44fCs-sTxeOwulUUqzadXUrec16RBXGzxK5ktT9EHJjk
+Bounceable address (for later access): kQAj44fCs-sTxeOwulUUqzadXUrec16RBXGzxK5ktT9EHMUh
+mainnet:
+Non-bounceable address (for init): UQAj44fCs-sTxeOwulUUqzadXUrec16RBXGzxK5ktT9EHCNu
+Bounceable address (for later access): EQAj44fCs-sTxeOwulUUqzadXUrec16RBXGzxK5ktT9EHH6r
+Succeeded

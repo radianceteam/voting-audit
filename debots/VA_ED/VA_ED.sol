@@ -3,7 +3,7 @@ pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 pragma AbiHeader time;
 
-import "../Debot.sol";
+import "./Debot.sol";
 import "../Terminal.sol";
 import "../Menu.sol";
 

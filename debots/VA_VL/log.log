@@ -1,0 +1,17 @@
+Config: default
+Input arguments:
+     tvc: VA_VL.tvc
+      wc: None
+    keys: VA_VL.keys.json
+init_data: None
+is_update_tvc: None
+
+Seed phrase: "bicycle become tattoo produce track quick winter fall sing turkey obvious gain"
+Raw address: 0:93915466386dace63c3f3c2cc0be8d20378a05e0ef6f330309c9823968a42f40
+testnet:
+Non-bounceable address (for init): 0QCTkVRmOG2s5jw_PCzAvo0gN4oF4O9vMwMJyYI5aKQvQN7Z
+Bounceable address (for later access): kQCTkVRmOG2s5jw_PCzAvo0gN4oF4O9vMwMJyYI5aKQvQIMc
+mainnet:
+Non-bounceable address (for init): UQCTkVRmOG2s5jw_PCzAvo0gN4oF4O9vMwMJyYI5aKQvQGVT
+Bounceable address (for later access): EQCTkVRmOG2s5jw_PCzAvo0gN4oF4O9vMwMJyYI5aKQvQDiW
+Succeeded

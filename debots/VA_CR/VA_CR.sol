@@ -538,7 +538,7 @@ bool amot;
         Menu.select("Action Team menu", "", [
             MenuItem("Action team", "",tvm.functionId(isActionTeamMemberCheck)),
             MenuItem("Collator", "", tvm.functionId(goToCLdebot)),
-            MenuItem("Validator", "", tvm.functionId(onValidation)),
+            // MenuItem("Validator", "", tvm.functionId(onValidation)),
             MenuItem("return to main menu", "", tvm.functionId(mainMenu)),
             MenuItem("Quit", "", 0)
             ]);

@@ -51,6 +51,17 @@ interface IDeAuditData {
 
 interface IParticipant {
     function addCollation(address addressDeAudit, uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix, uint128 grams) external;
+
+	function getPublishedData() external returns (
+		bytes pName,
+		bytes pPhotoLink,
+		bytes pDataLink,
+		address pAddress,
+		uint128 pBalance
+	);
+
+	function publishData(bytes publishName, bytes publishPhotoLink, bytes publishDataLink) external;
+	    
 }
 
 interface IVotingAuditDebot {
