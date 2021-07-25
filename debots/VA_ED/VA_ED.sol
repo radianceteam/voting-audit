@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.45.0;
+pragma ton-solidity >=0.45.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 pragma AbiHeader time;
@@ -51,11 +51,14 @@ contract VotingAuditDebotED is Debot {
     //TODO for test only
     uint128 GRAMS_ADD = 700000000;
 //    address choosenDADaddress = address.makeAddrStd(0, 0xc9d81bb29dcbdf531db223524ed8e5bdc8af2073100e29d809670b542c2b5022);
-    address m_participant = address.makeAddrStd(0, 0x93ea7e6b031afcd09002ee0325c90b3760b433d381c13a2061af391eefb03fab);
+    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
     //END
     bytes m_icon;
 
-    address choosenDADaddress = address.makeAddrStd(0, 0xa3a7788399daf465b83835c2bbc06daaf43cadb5ccee019b12d642095a0cd339);
+    // address choosenDADaddress = address.makeAddrStd(0, 0x03f3f1930017d1f2820e5382d64d30aa10956600ad477fa679cbba6613ec0980);
+    // address choosenDADaddress = address.makeAddrStd(0, 0x76e15a530659ef5a06d999ffdad82b1bca9db0e8d1bc554fc7ea69a59889e993);
+    address choosenDADaddress = address.makeAddrStd(0, 0x6d600eef734b374e20447679b991b08d3cfa21984a1f617c4f8817e635dbd81f);
+
 
     uint256 m_masterPubKey;
     uint256 m_masterSecKey;

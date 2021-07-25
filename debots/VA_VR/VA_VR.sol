@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.45.0;
+pragma ton-solidity >=0.45.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 pragma AbiHeader time;
@@ -62,7 +62,7 @@ contract VotingAuditDebot is Debot {
     address m_coreDebot;
 
     address DeAuditRoot = address.makeAddrStd(0, 0xaaa43758f17b6ad589924ed8dad5b7bbfcfbdbb6661135944f435b93ae542efe);
-    address m_participant = address.makeAddrStd(0, 0x382ab4c1252638cfdde3364fbe7510d5a6a53863c62a913e99c3613ea6543ed0);
+    address m_participant = address.makeAddrStd(0, 0xb650ffed4b577a17297fc3351aa7006a6d4c9b94170febc0453dab1a2df8e6cc);
     //END
     bytes m_icon;
 

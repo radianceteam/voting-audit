@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.45.0;
+pragma ton-solidity >=0.45.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 pragma AbiHeader time;
@@ -77,8 +77,8 @@ contract VotingAuditDebotACTMmenu is Debot {
     uint128 GRAMS_INIT_VOTE = 600000000;
     uint128 GRAMS_CREATE_DEAUDIT = 1100000000;
 
-    address DeAuditRoot = address.makeAddrStd(0, 0xc9d81bb29dcbdf531db223524ed8e5bdc8af2073100e29d809670b542c2b5022);
-    address m_participant = address.makeAddrStd(0, 0x3f76291c7867a31d252db80d741a891305de823b1e9276c844c7acb41ae21d68);
+    address DeAuditRoot = address.makeAddrStd(0, 0xaaa43758f17b6ad589924ed8dad5b7bbfcfbdbb6661135944f435b93ae542efe);
+    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
 
     bytes m_icon;
 
@@ -462,12 +462,12 @@ address curDeAudit;
         AddressInput.get(tvm.functionId(addMember_sendMSG), "Enter candidate address to add:");
     }
     function InitRemoveVoting(uint32 index) public {
-        AddressInput.get(tvm.functionId(addMember_sendMSG), "Enter candidate address to remove:");
+        AddressInput.get(tvm.functionId(remoteMember_sendMSG), "Enter candidate address to remove:");
     }
 
     address m_memberAddress;
 
-    function romoveMember_sendMSG(address value) public {
+    function removeMember_sendMSG(address value) public {
         m_memberAddress = value;
 
         optional(uint256) pubkey;

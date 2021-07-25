@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.45.0;
+pragma ton-solidity >=0.45.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 pragma AbiHeader time;
@@ -54,8 +54,11 @@ contract VotingAuditDebot is Debot {
     address m_ATdebAddress;
     address m_CLdebAddress;
 
-    address DeAuditRoot = address.makeAddrStd(0, 0xc9d81bb29dcbdf531db223524ed8e5bdc8af2073100e29d809670b542c2b5022);
-    address m_participant = address.makeAddrStd(0, 0x9f287f4355feb0d2d84ca3ff8819280b31161b3246486ca3fc67d77949b8f85f);
+    // address DeAuditRoot = address.makeAddrStd(0, 0xc9d81bb29dcbdf531db223524ed8e5bdc8af2073100e29d809670b542c2b5022);
+    address DeAuditRoot = address.makeAddrStd(0, 0xaaa43758f17b6ad589924ed8dad5b7bbfcfbdbb6661135944f435b93ae542efe);
+
+    // address m_participant = address.makeAddrStd(0, 0x9f287f4355feb0d2d84ca3ff8819280b31161b3246486ca3fc67d77949b8f85f);
+    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
     //END
     bytes m_icon;
 
@@ -611,3 +614,5 @@ bool amot;
 }
 
 
+// tonos-cli --url https://gql.custler.net debot fetch 0:7c7a1be1b3f079b68a404586614c387d07b144c7957553867c5b479ececd1efc
+// document cereal deliver blind kiwi rapid must enhance exclude tenant baby oxygen

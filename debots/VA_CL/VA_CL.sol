@@ -1,4 +1,4 @@
-pragma ton-solidity ^0.45.0;
+pragma ton-solidity >=0.45.0;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 pragma AbiHeader time;
@@ -61,8 +61,11 @@ contract VotingAuditDebotACTMmenu is Debot {
 
 //    address m_coreDebot;
 
-    address DeAuditRoot = address.makeAddrStd(0, 0xc9d81bb29dcbdf531db223524ed8e5bdc8af2073100e29d809670b542c2b5022);
-    address m_participant = address.makeAddrStd(0, 0xae3a13bc14f021a61cbcd96b80363a28c1b9fd0730a0c5fc39776852d57a62ad);
+    // address DeAuditRoot = address.makeAddrStd(0, 0xc9d81bb29dcbdf531db223524ed8e5bdc8af2073100e29d809670b542c2b5022);
+    address DeAuditRoot = address.makeAddrStd(0, 0xaaa43758f17b6ad589924ed8dad5b7bbfcfbdbb6661135944f435b93ae542efe);
+
+    // address m_participant = address.makeAddrStd(0, 0xae3a13bc14f021a61cbcd96b80363a28c1b9fd0730a0c5fc39776852d57a62ad);
+    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
 
     bytes m_icon;
 
@@ -318,7 +321,11 @@ contract VotingAuditDebotACTMmenu is Debot {
         votingCenterD[votingCenterCurrentKeyD] = vc;
     }
 
-    address testDAD = address.makeAddrStd(0, 0xe97bb59a278124af5d1fe4aa92ca997aa68c244478c4a6b505bb09e33c158780);
+    // address testDAD = address.makeAddrStd(0, 0xe97bb59a278124af5d1fe4aa92ca997aa68c244478c4a6b505bb09e33c158780);
+    // address testDAD = address.makeAddrStd(0, 0xff86e42ba525b6509f9dc5347b559d8d6400c551d80f829e00128fd85fa96550);
+    address testDAD = address.makeAddrStd(0, 0x56769171fc62f13bee3ae14d098aa12fb0c690a4f3b87bbf6036b87920acd7e2);
+    
+
     function fVC(uint32 index) public {
         fetchVC(testDAD);
         CLmenu();
@@ -330,7 +337,7 @@ contract VotingAuditDebotACTMmenu is Debot {
     function CLmenu() public {
         Menu.select("Welcome to CL menu", "", [
             MenuItem("Fetch data", "",tvm.functionId(pstart)),
-            MenuItem("show user data", "",tvm.functionId(showUserData)),
+            MenuItem("show user data", "",tvm.functionId(showUserData)),    
             MenuItem("Fetch VC", "",tvm.functionId(fVC)),
             MenuItem("Fetch CD", "",tvm.functionId(fCD)),
             MenuItem("add collation", "", tvm.functionId(onAddCollation)),
