@@ -232,21 +232,21 @@ uint128 userBalance;
             uint256 time = uint256(now);
 
                 if(time < cp.timeStart){
-                    status = "not started";
+                    status = "Wait to start";
                 }else if(time > cp.timeStart && time < cp.colPeriod){
-                    status = "between start and col period";
+                    status = "Collation period";
                 }else if(time > cp.colPeriod && time < cp.valPeriod){
-                    status = "between col and val period";
+                    status = "Validation period";
                 }else{
-                    status = "ended";
+                    status = "Ended";
                 }
 
-                string curVdata = format("=======\nDAname: {}\ntimeStart:{}\ncolPeriod: {}\nvalPeriod: {}\nstatus:{}\n\n",cp.name, cp.timeStart, cp.colPeriod,cp.valPeriod,status);
+                string curVdata = format("-- \nDeAudit Name: {}\nStart time:{}\n Collation period: {}\nValidation period: {}\nStatus:{}\n\n",cp.name, cp.timeStart, cp.colPeriod,cp.valPeriod,status);
                 m_menu.push(MenuItem(curVdata,"",tvm.functionId(showVotingAuditss)));
             }
 
             m_menu.push(MenuItem("Back to voting list menu", "", tvm.functionId(preStart)));
-            Menu.select("Choose voting:", "",m_menu);
+            Menu.select("Choose Voting audit:", "",m_menu);
     }
 
     address cureDA;
@@ -308,9 +308,9 @@ uint128 userBalance;
         curDA cr = DeAudits[cureDA];
 
 
-        Terminal.print(0,format("============cr.name: {}==============\ncr.sequentialNumber: {}\ncr.timeStart: {}\ncr.colPeriod: {}\ncr.valPeriod: {}\ncolStake: {}\nvalStake: {}\ncr.totalSupply: {}\ncr.DADname: {}\n========================",
-            cr.sequentialNumber,
+        Terminal.print(0,format("-- {} -- \nSequential number: {}\nStart time: {}\nCollation period: {}\nValidation period: {}\nCollation period: {}\nValidation stake: {}\nTotal supply: {}\nDeAudit Data Name: {}\n --",
             cr.name,
+            cr.sequentialNumber,
             cr.timeStart,
             cr.colPeriod,
             cr.valPeriod,
@@ -399,7 +399,7 @@ uint128 userBalance;
     }
     function SCcheckPubKey(bool status, address participant) public {
         if(status){
-            Terminal.print(0,"checked success, going to members menu");
+            Terminal.print(0,"Check passed. Go to members menu");
             getAddresPart();
         }else{
             ConfirmInput.get(tvm.functionId(checkDeployAnswer), "You do not have deployed participant, would you like to deploy?");
@@ -414,7 +414,7 @@ uint128 userBalance;
     }
 
     function getAddresPart() public {
-        Terminal.print(0,"getting your address");
+        Terminal.print(0,"Getting your address. . .");
         optional(uint256) pubkey;
         IDeAuditRoot(DeAuditRoot).getParticipantAddress{
         abiVer : 2,
@@ -429,12 +429,12 @@ uint128 userBalance;
     }
     function SCgetAddresPart(address value0) public {
         m_participant = value0;
-        Terminal.print(tvm.functionId(membersMenu),format("getting your address success, address {}",m_participant));
+        Terminal.print(tvm.functionId(membersMenu),format("Address got success > {}",m_participant));
     }
 
 
 function deploy_genAddr() public {
-    Terminal.print(0,"getting participang address");
+    Terminal.print(0,"Getting participant address. . .");
     optional(uint256) pubkey;
         IDeAuditRoot(DeAuditRoot).getParticipantAddress{
         abiVer : 2,
@@ -450,7 +450,7 @@ function deploy_genAddr() public {
 
     function getParticipantAddressCallback(address value0) public {
         m_participant = value0;
-        Terminal.print(0,format("getParticipantAddress success, your address {}, now set your giver address and transfer 10 ton to votingRoot as registration fee: {}",m_participant,DeAuditRoot));
+        Terminal.print(0,format("Participant address got > {}. \n Now set your giver address and transfer 10 ton to votingRoot as registration fee: {}",m_participant,DeAuditRoot));
         AddressInput.get(tvm.functionId(onGetGiverAddress), "Enter giver address");
     }
 
@@ -473,7 +473,7 @@ function deploy_genAddr() public {
     }
     function setGiverSuccess() public {
         Menu.select("Checking registration fee payed","",[
-            MenuItem("check pls", "", tvm.functionId(getBalanceOf)),
+            MenuItem("Check", "", tvm.functionId(getBalanceOf)),
             MenuItem("Return to main menu", "", tvm.functionId(mainMenu))
             ]);
     }
@@ -501,17 +501,17 @@ bool amot;
         amot = balances.exists(giver);
 
         if(amot){
-            Terminal.print(0,"true - deploy call now");
+            Terminal.print(0,"All's good. Start deploy!");
             deployCall();
         }else{
-            Terminal.print(0,"balanceOf not filled with your giver yet, try again");
+            Terminal.print(0,"Balance not filled with your giver yet, try again");
             setGiverSuccess();
         }
 
     }
 
     function deployCall() public {
-        Terminal.print(0,"deploy call");
+        Terminal.print(0,"Deploying. . .");
         optional(uint256) pubkey;
         IDeAuditRoot(DeAuditRoot).deployParticipant{
         abiVer : 2,
@@ -527,7 +527,7 @@ bool amot;
     address dp;
     function deployParticipantSuccess(address deployedAddress,bool statusDeploy) public {
         dp = deployedAddress;
-        Terminal.print(0,format("Success deployed. going to membersMenu, deployedAddress - {}", dp));
+        Terminal.print(0,format("Deployed success! Go to Members Menu, your Participant address > {}", dp));
         membersMenu();
     }
 
@@ -535,11 +535,11 @@ bool amot;
 
         Terminal.print(0,format("Your balance: {}",userBalance));
 
-        Menu.select("Action Team menu", "", [
+        Menu.select("Role menu", "", [
             MenuItem("Action team", "",tvm.functionId(isActionTeamMemberCheck)),
             MenuItem("Collator", "", tvm.functionId(goToCLdebot)),
             // MenuItem("Validator", "", tvm.functionId(onValidation)),
-            MenuItem("return to main menu", "", tvm.functionId(mainMenu)),
+            MenuItem("Return to main menu", "", tvm.functionId(mainMenu)),
             MenuItem("Quit", "", 0)
             ]);
     }
@@ -570,7 +570,7 @@ bool amot;
         if(status){
             enterATMdebot();
         }else{
-            Terminal.print(0,"you have no permission");
+            Terminal.print(0,"You don't have permission");
             membersMenu();
         }
     }
@@ -595,10 +595,10 @@ bool amot;
         string name, string version, string publisher, string caption, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
-        name = "Radiance Voting Audit DeBot - Core";
+        name = "Radiance Voting Audit DeBot";
         version = "0.1.0";
         publisher = "Radiance Team";
-        caption = "DeBot for DeAudit by Radiance Team";
+        caption = "DeBot for DeAudit by Radiance Team (Core)";
         author = "Radiance Team";
         support = address.makeAddrStd(0, 0x841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94);
         hello = "That's debot for Voting Audit. Developed by Radiance Team";

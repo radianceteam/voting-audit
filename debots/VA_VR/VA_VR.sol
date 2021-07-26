@@ -234,11 +234,11 @@ contract VotingAuditDebot is Debot {
     }
 
     function mainMenu() public {
-        Menu.select("Validator menu", "", [
-            MenuItem("fetch data", "", tvm.functionId(preStart)),
-            MenuItem("Register on DA", "", tvm.functionId(DAmenu)),
-            MenuItem("validate", "", tvm.functionId(onValidate)),
-            MenuItem("return to role menu", "", tvm.functionId(goToCore)),
+        Menu.select("Welcome to Validator menu", "", [
+            MenuItem("Fetch data", "", tvm.functionId(preStart)),
+            MenuItem("Register on DeAudit", "", tvm.functionId(DAmenu)),
+            MenuItem("Validate", "", tvm.functionId(onValidate)),
+            MenuItem("Return to role menu", "", tvm.functionId(goToCore)),
             MenuItem("Quit", "", 0)
             ]);
     }
@@ -256,11 +256,11 @@ contract VotingAuditDebot is Debot {
             for(uint8 i = 0; i < activeDeAuditsD.length; i++){
             address actCurDA = activeDeAuditsD[i];
             curDA da = DeAudits[actCurDA];
-            string curVdata = format("====De Audit data name: {}====\n",da.name);
+            string curVdata = format("-- DeAudit Data name: {}",da.name);
             m_menu.push(MenuItem(curVdata,"",tvm.functionId(onsetDaD)));
             }
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(preStart)));
-        Menu.select("Choose De Audit:", "",m_menu);
+        Menu.select("Choose DeAudit:", "",m_menu);
     }
 
 address curDa;
@@ -272,7 +272,7 @@ address curDa;
 
             for(uint8 i = 0; i < curACT4.length; i++){
                address curACT4adr = curACT4[i];
-                string curVdata = format("====ACT4 address choose one: {}====\n",curACT4adr);
+                string curVdata = format("-- Act4 address choose one: {}====\n",curACT4adr);
                 m_menu.push(MenuItem(curVdata,"",tvm.functionId(onGetCollatorPhotoLink)));
                 }
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(preStart)));
@@ -342,9 +342,9 @@ bytes[] additionalPhotoLinkArrD;
 }
 function act4Validmenu() public {
     MenuItem[] m_menu;
-        m_menu.push(MenuItem("show act4 data", "", tvm.functionId(showACT4dt)));
-        m_menu.push(MenuItem("vote for", "", tvm.functionId(VoteForValidator)));
-        m_menu.push(MenuItem("vote against", "", tvm.functionId(VoteAgainstValidator)));
+        m_menu.push(MenuItem("Show Act4 Data", "", tvm.functionId(showACT4dt)));
+        m_menu.push(MenuItem("Vote for", "", tvm.functionId(VoteForValidator)));
+        m_menu.push(MenuItem("Vote against", "", tvm.functionId(VoteAgainstValidator)));
 
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(preStart)));
     Menu.select("Act4 voting:", "",m_menu);
@@ -352,16 +352,16 @@ function act4Validmenu() public {
     }
 
 function showACT4dt(uint32 index) public {
-    Terminal.print(0,format("**** photo link of act4: \n{}\n",curPhotoLinkActivs));
+    Terminal.print(0,format("-- Photo link of Act4: \n{}\n",curPhotoLinkActivs));
 
     for(uint8 i = 0; i < voteMatrixD.length; i++){
         uint256 curVoteFromMatrix = voteMatrixD[i];
-        Terminal.print(0,format("****\nindex of candidate: {}\namount of votes: {}\n***\n",i, curVoteFromMatrix));
+        Terminal.print(0,format("-- Index of candidate: {}\nAmount of votes: {}",i, curVoteFromMatrix));
     }
 
     for(uint8 k = 0; k < additionalPhotoLinkArrD.length; k++){
         bytes curAdditPhotoLink = additionalPhotoLinkArrD[k];
-        Terminal.print(0,format("*** additional photo link: {}\n",curAdditPhotoLink));
+        Terminal.print(0,format("-- Additional photo link: {}\n",curAdditPhotoLink));
     }
     act4Validmenu();
 }
@@ -370,7 +370,7 @@ function showACT4dt(uint32 index) public {
     Callers
 */
     function VoteForValidator(uint128 value) public {
-        Terminal.print(0,format("=====You are going to vote for: {}", curACT4adrACT));
+        Terminal.print(0,format("-- You are going to vote for: {}", curACT4adrACT));
 
         optional(uint256) pubkey;
         IParticipant(m_participant).validateFor{
@@ -388,7 +388,7 @@ function showACT4dt(uint32 index) public {
     }
     function VoteAgainstValidator(uint128 value) public {
 
-        Terminal.print(0,format("=====You are going to vote against: {}", curACT4adrACT));
+        Terminal.print(0,format("-- You are going to vote against: {}", curACT4adrACT));
 
         optional(uint256) pubkey;
         IParticipant(m_participant).validateAgainst{
@@ -420,21 +420,21 @@ function showACT4dt(uint32 index) public {
             uint256 time = uint256(now);
 
                 if(time < cp.timeStart){
-                    status = "not started";
+                    status = "Wait to start";
                 }else if(time > cp.timeStart && time < (cp.timeStart + cp.colPeriod)){
-                    status = "between start and col period";
+                    status = "Collation period";
                 }else if(time > (cp.timeStart + cp.colPeriod) && time < (cp.timeStart + cp.colPeriod + cp.valPeriod)){
-                    status = "between col and val period";
+                    status = "Validation period";
                 }else{
-                    status = "ended";
+                    status = "End";
                 }
 
-                string curVdata = format("=======\nDAname: {}\ntimeStart:{}\ncolPeriod: {}\nvalPeriod: {}\nvalStake: {}\nstatus:{}\n\n",cp.name, cp.timeStart, cp.colPeriod,cp.valPeriod,cp.valStake,status);
+                string curVdata = format("-- DeAudit name: {}\nStart time: {}\nCollation period: {}\nValidation period: {}\nValidation stake: {}\nStatus:{}\n\n",cp.name, cp.timeStart, cp.colPeriod,cp.valPeriod,cp.valStake,status);
                 m_menu.push(MenuItem(curVdata,"",tvm.functionId(showVotingAuditss)));
             }
 
             m_menu.push(MenuItem("Back to validator menu", "", tvm.functionId(preStart)));
-            Menu.select("Choose DA:", "",m_menu);
+            Menu.select("Choose DeAudit:", "",m_menu);
     }
 
 address cureDA;
@@ -449,9 +449,9 @@ bytes nameDD;
         uint256 time = uint256(now);
 
         if(time > (cr.timeStart + cr.colPeriod) && time < (cr.timeStart + cr.colPeriod + cr.valPeriod)){
-            AmountInput.get(tvm.functionId(setValStake), format("====Validation stake is: {} for 1 valid====\n",valSt),0,0,10000000000000);
+            AmountInput.get(tvm.functionId(setValStake), format("-- Validation stake is: {} for 1 valid====\n",valSt),0,0,10000000000000);
         }else{
-            Terminal.print(0,"You need to choose deAudit that is between col and val period");
+            Terminal.print(0,"You need to choose DeAudit that is collation period");
             DAmenu(0);
         }
 
@@ -460,7 +460,7 @@ bytes nameDD;
 uint128 curGramsForSend;
     function setValStake(uint128 value) public {
         curGramsForSend = value;
-        Terminal.print(0,format("=====You are going to take part in <<<{}>>>, it*s address: {}, stake for 1 validation is {}, you are going to send {}=====\n", nameDD, cureDA, valSt,curGramsForSend));
+        Terminal.print(0,format("-- You are going to take part in <<<{}>>>, it's address: {}, stake for 1 validation is {}, you are going to send {}=====\n", nameDD, cureDA, valSt,curGramsForSend));
     setValStakeCall();
     }
     function setValStakeCall() public {
@@ -491,13 +491,13 @@ uint128 curGramsForSend;
         string name, string version, string publisher, string caption, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
-        name = "Radiance Voting Audit DeBot - Validator";
+        name = "Radiance Voting Audit DeBot [Validator]";
         version = "0.1.0";
         publisher = "Radiance Team";
-        caption = "DeBot for DeAudit by Radiance Team";
+        caption = "DeBot for Validator of Voting Audit Debots by Radiance Team.";
         author = "Radiance Team";
         support = address.makeAddrStd(0, 0x841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94);
-        hello = "That's debot for Voting Audit. Developed by Radiance Team";
+        hello = "Please note that this is part of the Radiance Voting Audit debots. Use Core Voting Audit Debot for easy navigation";
         language = "en";
         dabi = m_debotAbi.get();
         icon = m_icon;

@@ -159,14 +159,14 @@ contract VotingAuditDebotVL is Debot {
     }
     function votingListMenu() public {
         Menu.select("Choose voting type", "", [
-            MenuItem("fetch data", "",tvm.functionId(preInd)),
+            MenuItem("Fetch data", "",tvm.functionId(preInd)),
             MenuItem("DEV set AT debot address", "", tvm.functionId(setATaddress)),
             MenuItem("dev show all data", "",tvm.functionId(showVotings)),
 //            MenuItem("DEP add action team member", "",tvm.functionId(votingAddMember)),
 //            MenuItem("DEP Remove action team member", "", tvm.functionId(votingRemoveMember)),
 //            MenuItem("DEP launched deaudit votings", "", tvm.functionId(launchedV)),
-            MenuItem("show all votings", "", tvm.functionId(showallV)),
-            MenuItem("return to previous menu", "", tvm.functionId(goToACTMdebot)),
+            MenuItem("Show all votings", "", tvm.functionId(showallV)),
+            MenuItem("Return to previous menu", "", tvm.functionId(goToACTMdebot)),
             MenuItem("Quit", "", 0)
             ]);
         }
@@ -187,16 +187,16 @@ contract VotingAuditDebotVL is Debot {
 
                 string complete;
                 if(cp.completed == true){
-                    complete = "true";
+                    complete = "Completed";
                 }else{
-                    complete = "false";
+                    complete = "Don't completed";
                 }
 
-                    string curVdata = format("======\nVoting for this address: {} ---- status :{}\n curK: {}\nvotingID: {}\ninitiator:{}\nstartTime: {}\nduration: {}\nyesCount: {}\nnoCount: {}\n actionType:{}",addrData, complete,curK,votingID, cp.initiator, cp.startTime, cp.duration,cp.yesCount,cp.noCount,cp.actionType);
+                    string curVdata = format("-- Voting for this address: {} \n Status: {}\n Key: {}\nVoting ID: {}\nInitiator: {}\nStart time: {}\nDuration: {}\nYes count: {}\nNo count: {}\n Action type:{}",addrData, complete,curK,votingID, cp.initiator, cp.startTime, cp.duration,cp.yesCount,cp.noCount,cp.actionType);
                     m_menu.push(MenuItem(curVdata,"",tvm.functionId(toungAllV)));
 
             }
-            m_menu.push(MenuItem("Back to voting list menu add", "", tvm.functionId(preInd)));
+            m_menu.push(MenuItem("Back to voting list menu", "", tvm.functionId(preInd)));
             Menu.select("Choose voting:", "",m_menu);
 
     }
@@ -208,21 +208,21 @@ uint32 indexCur;
         VoteD cp = voteD[votingID];
         MenuItem[] m_menu;
         if(cp.completed){
-            Terminal.print(0, "/n/n***This Voting completed, choose another one***/n/n");
+            Terminal.print(0, "This DeAudit completed, please choose another one. \n");
             showallV(0);
         }else{
 
-                m_menu.push(MenuItem("vote for","",tvm.functionId(voteFor)));
-                m_menu.push(MenuItem("vote against","",tvm.functionId(voteAgainst)));
-                m_menu.push(MenuItem("result vote","",tvm.functionId(resultVote)));
+                m_menu.push(MenuItem("Vote for","",tvm.functionId(voteFor)));
+                m_menu.push(MenuItem("Aote against","",tvm.functionId(voteAgainst)));
+                m_menu.push(MenuItem("Result vote","",tvm.functionId(resultVote)));
 
                 if(cp.actionType == 2){
-                    m_menu.push(MenuItem("show deauditData", "",tvm.functionId(showDADdata)));
+                    m_menu.push(MenuItem("Show DeAudit Data", "",tvm.functionId(showDADdata)));
                 }
 
-                m_menu.push(MenuItem("return to voting list menu","",tvm.functionId(premenu)));
+                m_menu.push(MenuItem("Return to voting list menu","",tvm.functionId(premenu)));
                 m_menu.push(MenuItem("Quit","",0));
-                string title = format("initiator: {} voting id: {}",cp.initiator, votingID);
+                string title = format("Initiator: {} \n Voting id: {}",cp.initiator, votingID);
                 Menu.select(title,"",m_menu);
         }
     }
@@ -249,11 +249,12 @@ uint32 indexCur;
         VoteD cr = voteD[voteKeysD[i]];
         string complete;
         if(cr.completed == true){
-                    complete = "true";
+                    complete = "Completed";
                 }else{
-                    complete = "false";
+                    complete = "Don't completed";
                 }
-        Terminal.print(0,format("======\ncr.initiator: {}\ncr.startTime: {}\ncr.duration: {}\ncr.vcms: {}\ncr.yesCount: {}\ncr.noCount: {}\ncr.actionType: {}\ncr.completed: {}\n",cr.initiator,cr.startTime,cr.duration,cr.vcms,cr.yesCount,cr.noCount,cr.actionType,complete));
+        //Voting for this address: {} \n Status: {}\n Key: {}\nVoting ID: {}\nInitiator: {}\nStart time: {}\nDuration: {}\nYes count: {}\nNo count: {}\n Action type:{}
+        Terminal.print(0,format("-- \nInitiator: {}\nStart time: {}\nDuration: {}\nVote Count Model Selector: {}\nYes count: {}\nNo count: {}\nAction type: {}\nCompleted: {}\n",cr.initiator,cr.startTime,cr.duration,cr.vcms,cr.yesCount,cr.noCount,cr.actionType,complete));
     }
     votingListMenu();
     }
@@ -375,11 +376,11 @@ uint32 indexCur;
         VoteD cr = voteD[votingID];
         string completes;
         if(cr.completed == true){
-            completes = "true";
+            completes = "Completed";
         }else{
-            completes = "false";
+            completes = "Don't completed";
         }
-            Terminal.print(0,format("======\ncr.initiator: {}\ncr.startTime: {}\ncr.duration: {}\ncr.vcms: {}\ncr.yesCount: {}\ncr.noCount: {}\ncr.actionType: {}\ncr.completed: {}",cr.initiator,cr.startTime,cr.duration,cr.vcms,cr.yesCount,cr.noCount,cr.actionType,completes));
+            Terminal.print(0,format("-- \nInitiator: {}\nStart time: {}\nDuration: {}\nVote Count Model Selector: {}\nYes count: {}\nNo count: {}\nAction type: {}\nCompleted: {}\n",cr.initiator,cr.startTime,cr.duration,cr.vcms,cr.yesCount,cr.noCount,cr.actionType,completes));
 
         toungAllV(indexCur);
 
@@ -447,13 +448,13 @@ uint32 indexCur;
         string name, string version, string publisher, string caption, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
-        name = "Radiance Voting Audit DeBot ACTM_votingList";
+        name = "Radiance Voting Audit DeBot [Voting List]";
         version = "0.1.0";
         publisher = "Radiance Team";
-        caption = "DeBot for DeAudit by Radiance Team";
+        caption = "DeBot for Voting List of Voting Audit Debots by Radiance Team.";
         author = "Radiance Team";
         support = address.makeAddrStd(0, 0x841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94);
-        hello = "That's debot for Voting Audit. Developed by Radiance Team";
+        hello = "Please note that this is part of the Radiance Voting Audit debots. Use Core Voting Audit Debot for easy navigation";
         language = "en";
         dabi = m_debotAbi.get();
         icon = m_icon;

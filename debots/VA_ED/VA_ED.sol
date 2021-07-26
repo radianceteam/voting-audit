@@ -269,15 +269,15 @@ contract VotingAuditDebotED is Debot {
 
     function editDeAudit() public {
 
-        Menu.select("editDeauditDataMenu", "", [
+        Menu.select("Welcome to Edit DeAudit Data menu", "", [
             MenuItem("DEV fetch data", "",tvm.functionId(prestart)),
             MenuItem("DEV show data", "",tvm.functionId(devshow)),
-            MenuItem("add district", "",tvm.functionId(onAddDistrictSetName)),
-            MenuItem("Add candidate", "", tvm.functionId(onAddCandidateName)),
-            MenuItem("add municipal body", "", tvm.functionId(onCurItemCheck)),
-            MenuItem("add voting pool", "", tvm.functionId(onCurItemCheck)),
-            MenuItem("add voting center", "", tvm.functionId(onCurItemCheck)),
-            MenuItem("return to main menu", "", tvm.functionId(goToATdebot)),
+            MenuItem("Add District", "",tvm.functionId(onAddDistrictSetName)),
+            MenuItem("Add Candidate", "", tvm.functionId(onAddCandidateName)),
+            MenuItem("Add Municipal body", "", tvm.functionId(onCurItemCheck)),
+            MenuItem("Add Voting pool", "", tvm.functionId(onCurItemCheck)),
+            MenuItem("Add Voting center", "", tvm.functionId(onCurItemCheck)),
+            MenuItem("Return to main menu", "", tvm.functionId(goToATdebot)),
             MenuItem("Quit", "", 0)
             ]);
     }
@@ -343,7 +343,7 @@ contract VotingAuditDebotED is Debot {
     function setDistrictCall(string value) public {
         bytes nameDistr = bytes(value);
 
-        Terminal.print(0, format("\n***** Touched DeAuditData: {}, District name: {},grams for call: {}\n",choosenDADaddress,nameDistr,GRAMS_ADD));
+        Terminal.print(0, format("-- Selected DeAudit Data: {} \n District name: {} \n Grams for call: {}\n",choosenDADaddress,nameDistr,GRAMS_ADD));
         optional(uint256) pubkey;
         IParticipant(m_participant).addDistrict{
         abiVer : 2,
@@ -369,7 +369,7 @@ contract VotingAuditDebotED is Debot {
 
     function setCandidateName(string value) public {
         bytes nameCandidate = bytes(value);
-        Terminal.print(0, format("\n***** Touched DeAuditData: {}, Candidate name: {},grams for add: {}\n",choosenDADaddress,nameCandidate,GRAMS_ADD));
+        Terminal.print(0, format("\n -- Selected DeAudit Data: {} \n Candidate name: {} \n Grams for call: {}\n",choosenDADaddress,nameCandidate,GRAMS_ADD));
         optional(uint256) pubkey;
         IParticipant(m_participant).addCandidate{
         abiVer : 2,
@@ -415,7 +415,7 @@ uint32 toundVPID;
             uint256 curDistr = districtsD[i];
             DistrictD cp = districtD[curDistr];
 
-            string curVdata = format("*****\nDistrict name:{} District index: {}\n====\n",cp.name,curDistr);
+            string curVdata = format("-- \n District name: {} \n District index: {}",cp.name,curDistr);
             m_menu.push(MenuItem(curVdata,"",tvm.functionId(setTouchedDistrict)));
 
         }
@@ -428,7 +428,7 @@ uint256 curDistrIndexD;
     function setTouchedDistrict(uint32 index) public {
         index = index;
         curDistrIndexD = districtsD[index];
-        Terminal.print(toundDistrictsID, format("----You touched District index: {}\n", curDistrIndexD));
+        Terminal.print(toundDistrictsID, format("-- You select District with index: {}\n", curDistrIndexD));
 
     }
 
@@ -448,34 +448,33 @@ uint256[] MBarr;
 
         MBarr = dt.municipalBodiesArr;
         for(uint8 i = 0; i < MBarr.length; i++){
-            uint256 curBlyatMBindex = MBarr[i];
-            MunicipalBodyD curStrOfMB = MBD[curBlyatMBindex];
-            Municipals mp = MBforstruct[curBlyatMBindex];
+            uint256 currentMunicipalBodyIndex = MBarr[i];
+            MunicipalBodyD curStrOfMB = MBD[currentMunicipalBodyIndex];
+            Municipals mp = MBforstruct[currentMunicipalBodyIndex];
             mp.name = curStrOfMB.name;
-            mp.MBindex = curBlyatMBindex;
-            MBforstruct[curBlyatMBindex] = mp;
-            Terminal.print(0,format("==== mp.name:{}, mp.MBindex:{}, curBlyatMBindex:{}",mp.name,mp.MBindex,curBlyatMBindex));
+            mp.MBindex = currentMunicipalBodyIndex;
+            MBforstruct[currentMunicipalBodyIndex] = mp;
+            Terminal.print(0,format("-- Municipal Body Name: {} \n Municipal Body index: {}",mp.name,mp.MBindex));
         }
 
 
         for(uint8 k = 0; k < MBarr.length; k++){
             uint256 curmbar = MBarr[k];
             Municipals curStr = MBforstruct[curmbar];
-            string curVdata = format("***** Municipal body name: {}, MB index: {}\nposition in menu: {}\n", curStr.name, curStr.MBindex, curmbar);
+            string curVdata = format("-- Municipal Body name: {} \n Municipal Body index: {}", curStr.name, curStr.MBindex);
             m_menu.push(MenuItem(curVdata,"",tvm.functionId(setTouchedMB)));
         }
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(prestart)));
-        Menu.select("Choose Municipal bodyB:", "",m_menu);
+        Menu.select("Choose Municipal Body:", "",m_menu);
     }
 
 uint256 curMBIndexD;
 
     function setTouchedMB(uint32 index) public {
-        Terminal.print(0, format("** index: {}", index));
         uint256 curmbar = MBarr[index];
         Municipals mbtouchedIndex = MBforstruct[curmbar];
         curMBIndexD = mbtouchedIndex.MBindex;
-        Terminal.print(toundMBID, format("\n ----You touched Municipal body index: {}\nits name: {}\n", curMBIndexD,mbtouchedIndex.name));
+        Terminal.print(toundMBID, format("-- \n You select Municipal body with name {} (index: {})", curMBIndexD,mbtouchedIndex.name));
     }
 
 
@@ -494,7 +493,7 @@ uint256 curMBIndexD;
 
 
 
-        Terminal.print(0, format("dt nameee: {}\n***", dt.name));
+        Terminal.print(0, format("Municipal Body name: {}\n--", dt.name));
 
         VParray = dt.votingPoolsArr;
         for(uint8 i = 0; i < VParray.length; i++){
@@ -504,7 +503,7 @@ uint256 curMBIndexD;
             vpC.name = curStrOfMB.name;
             vpC.VPindex = curVPindex;
             votpoolsMAP[curVPindex] = vpC;
-            Terminal.print(0,format("==== vpC.name:{}, vpC.VPindex:{}",vpC.name,vpC.VPindex));
+            Terminal.print(0,format("-- Voting Pool name: {} \n Voting pool index:{}",vpC.name,vpC.VPindex));
         }
 
         for(uint8 i = 0; i < VParray.length; i++){
@@ -512,7 +511,7 @@ uint256 curMBIndexD;
             uint256 curVP = VParray[i];
             VotingPoolD vp = votingPoolD[curVP];
 
-            string curVdata = format("\n***** Voting pool name: {}, VP index: {}\n",vp.name, curVP);
+            string curVdata = format("-- Voting pool name: {}, Voting pool index: {}\n",vp.name, curVP);
             m_menu.push(MenuItem(curVdata,"",tvm.functionId(setTouchedVP)));
 
         }
@@ -528,7 +527,7 @@ uint256 curVPIndexD;
         uint256 curVPi = VParray[index];
         votpools vptouchedIndex = votpoolsMAP[curVPi];
         curVPIndexD = vptouchedIndex.VPindex;
-        Terminal.print(toundVPID, format("\n ----You touched Voting pool index: {}\nits name: {}\n", curVPIndexD,vptouchedIndex.name));
+        Terminal.print(toundVPID, format("-- You select Voting pool with name {} (index: {})", curVPIndexD,vptouchedIndex.name));
     }
 
 /*
@@ -562,7 +561,7 @@ uint256 curVPIndexD;
 */
 
     function touchCurVotingVP() functionID(0x22) public {
-        Terminal.print(0, format("choosenDADaddress: {},curDistrIndexD: {},curMBIndexD: {},GRAMS_ADD: {}",choosenDADaddress,curDistrIndexD,curMBIndexD,GRAMS_ADD));
+        Terminal.print(0, format("Chosen DeAudit Data Address: {} \n Current district index: {} \n Current Municipal Body index {} \n Grams for call: {}",choosenDADaddress,curDistrIndexD,curMBIndexD,GRAMS_ADD));
         Terminal.input(tvm.functionId(setVPname), "Enter Voting pool name: ", false);
     }
 
@@ -596,7 +595,7 @@ bytes VCname;
 
     function setLocationVC(string value) public {
         VCname = bytes(value);
-        Terminal.print(0, format("VCname: {}, choosenDADaddress: {},curDistrIndexD: {},curMBIndexD: {},curVPIndexD:{}, GRAMS_ADD: {}",VCname, choosenDADaddress,curDistrIndexD,curMBIndexD,curVPIndexD,GRAMS_ADD));
+        Terminal.print(0, format("Voting center: {} \n DeAudit Data Address: {} \n Current District Index: {} \n Current Municipal Body Index: {}\n Current Voting Pool Index: {}\n Grams for call: {}",VCname, choosenDADaddress,curDistrIndexD,curMBIndexD,curVPIndexD,GRAMS_ADD));
         Terminal.input(tvm.functionId(setVCname), "Enter Voting Center location", false);
     }
 
@@ -631,13 +630,13 @@ bytes VCname;
         string name, string version, string publisher, string caption, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
-        name = "Radiance Voting Audit DeBot ACTM";
+        name = "Radiance Voting Audit DeBot [Edit DeAudit Data]";
         version = "0.1.0";
         publisher = "Radiance Team";
-        caption = "DeBot for DeAudit by Radiance Team";
+        caption = "DeBot for Edit DeAudit Data of Voting Audit Debots by Radiance Team.";
         author = "Radiance Team";
         support = address.makeAddrStd(0, 0x841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94);
-        hello = "That's debot for Voting Audit. Developed by Radiance Team";
+        hello = "Please note that this is part of the Radiance Voting Audit debots. Use Core Voting Audit Debot for easy navigation";
         language = "en";
         dabi = m_debotAbi.get();
         icon = m_icon;

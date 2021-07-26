@@ -67,7 +67,7 @@ interface IVotingAuditDebotED {
     function startGlobal(address partAddress, address choosenDAD) external;
 }
 
-contract VotingAuditDebotACTMmenu is Debot {
+contract ActionTeamVotingAuditDebot is Debot {
 
     address m_VotingAuditDebotVLaddress;
     address m_coreDebot;
@@ -91,9 +91,9 @@ contract VotingAuditDebotACTMmenu is Debot {
         bytes name;
     }
 
-/*
-    Here is deadits data
-*/
+    /*
+        Here is deadits data
+    */
     mapping(address => DetailsParamDeAudit) public paramDeAuditDeAudit;
     address[] public keysDeAuditD;
 
@@ -117,23 +117,24 @@ contract VotingAuditDebotACTMmenu is Debot {
     }
     function preStart(address partic) public {
         m_participant = partic;
-        fetchDAD();
-        atmenu();
+        fetchDeAuditData();
+        actionTeamMenu();
     }
     function pstart(uint32 index) public {
-        fetchDAD();
-        atmenu();
+        fetchDeAuditData();
+        actionTeamMenu();
     }
 
     function start() public functionID(0x01) override {
-        fetchDAD();
-        fetchDA();
-        atmenu();
+        fetchDeAuditData();
+        fetchDeAudits();
+        actionTeamMenu();
     }
-/*
-    FETCH DA
-*/
-    function fetchDA() public {
+
+    /*
+        FETCH DeAudits
+    */
+    function fetchDeAudits() public {
         optional(uint256) pubkey;
         IDeAuditRoot(DeAuditRoot).keysDeAudit{
         abiVer : 2,
@@ -142,36 +143,35 @@ contract VotingAuditDebotACTMmenu is Debot {
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCfetchDA),
+        callbackId : tvm.functionId(fetchDeAuditsCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCfetchDA(address[] keysDeAudit) public {
+    function fetchDeAuditsCallback(address[] keysDeAudit) public {
         keysDeAuditD = keysDeAudit;
 
         for(uint8 i = 0; i < keysDeAuditD.length; i++){
-            address curDA = keysDeAuditD[i];
-            getDAdata(curDA);
+            address currentDeAudit = keysDeAuditD[i];
+            getDeAuditData(currentDeAudit);
         }
     }
 
-    function getDAdata(address curDA) public {
-
+    function getDeAuditData(address currentDeAudit) public {
         optional(uint256) pubkey;
-        IDeAudit(curDA).getDetails4Debot{
+        IDeAudit(currentDeAudit).getDetails4Debot{
         abiVer : 2,
         extMsg : true,
         sign : false,
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCgetDAdata),
+        callbackId : tvm.functionId(getDeAuditDataCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCgetDAdata(
+    function getDeAuditDataCallback(
         uint32 sequentialNumber4Debot,
         bytes  name4Debot,
         address rootDeAudit4Debot,
@@ -196,10 +196,11 @@ contract VotingAuditDebotACTMmenu is Debot {
         dd.valStake = valStake4Debot;
         paramDeAuditDeAudit[msg.sender] = dd;
     }
-/*
-    Fetch dad
-*/
-    function fetchDAD() public {
+
+    /*
+        Fetch DeAudit Data
+    */
+    function fetchDeAuditData() public {
         optional(uint256) pubkey;
         IDeAuditRoot(DeAuditRoot).keysDeAuditData{
         abiVer : 2,
@@ -208,41 +209,41 @@ contract VotingAuditDebotACTMmenu is Debot {
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCfetchDAD),
+        callbackId : tvm.functionId(fetchDeAuditDataCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCfetchDAD(address[] keysDeAuditData) public {
+    function fetchDeAuditDataCallback(address[] keysDeAuditData) public {
         keysDeAuditDataD = keysDeAuditData;
 
         for(uint8 i = 0; i < keysDeAuditDataD.length; i++){
-            address curDAD = keysDeAuditDataD[i];
-            getDADid(curDAD);
-            getDADinitiator(curDAD);
-            getDADname(curDAD);
+            address deAuditDataAddress = keysDeAuditDataD[i];
+            getDeAuditDataFromID(deAuditDataAddress);
+            getInitiatorOfDeAuditByAddress(deAuditDataAddress);
+            getNameOfDeAuditByAddress(deAuditDataAddress);
         }
     }
 
-/*
-    fetch ID
-*/
-   function getDADid(address curDAD) public {
+    /*
+        fetch ID
+    */
+   function getDeAuditDataFromID(address deAuditDataAddress) public {
 
         optional(uint256) pubkey;
-        IDeAuditData(curDAD).idDeAuditData{
+        IDeAuditData(deAuditDataAddress).idDeAuditData{
         abiVer : 2,
         extMsg : true,
         sign : false,
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCgetDADid),
+        callbackId : tvm.functionId(getDeAuditDataFromIDCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCgetDADid(
+    function getDeAuditDataFromIDCallback(
         uint256 idDeAuditData
     ) public {
         DADdata dd = dadData[msg.sender];
@@ -252,22 +253,22 @@ contract VotingAuditDebotACTMmenu is Debot {
 /*
     fetch initiator
 */
-    function getDADinitiator(address curDAD) public {
+    function getInitiatorOfDeAuditByAddress(address deAuditDataAddress) public {
 
         optional(uint256) pubkey;
-        IDeAuditData(curDAD).initiator{
+        IDeAuditData(deAuditDataAddress).initiator{
         abiVer : 2,
         extMsg : true,
         sign : false,
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCgetDADinitiator),
+        callbackId : tvm.functionId(getInitiatorOfDeAuditByAddressCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCgetDADinitiator(
+    function getInitiatorOfDeAuditByAddressCallback(
         address initiator
     ) public {
         DADdata dd = dadData[msg.sender];
@@ -277,22 +278,22 @@ contract VotingAuditDebotACTMmenu is Debot {
 /*
     fetch name
 */
-    function getDADname(address curDAD) public {
+    function getNameOfDeAuditByAddress(address deAuditDataAddress) public {
 
         optional(uint256) pubkey;
-        IDeAuditData(curDAD).name{
+        IDeAuditData(deAuditDataAddress).name{
         abiVer : 2,
         extMsg : true,
         sign : false,
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCgetDADname),
+        callbackId : tvm.functionId(getNameOfDeAuditByAddressCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCgetDADname(
+    function getNameOfDeAuditByAddressCallback(
         bytes name
     ) public {
         DADdata dd = dadData[msg.sender];
@@ -301,18 +302,18 @@ contract VotingAuditDebotACTMmenu is Debot {
     }
 
 
-    function atmenu() public {
+    function actionTeamMenu() public {
         Menu.select("Welcome to Action team menu", "", [
-            MenuItem("DEV set core debot address", "", tvm.functionId(setACTMdebAddress)),
-            MenuItem("dev refresh data", "",tvm.functionId(pstart)),
-            MenuItem("sendTrigger", "",tvm.functionId(onSendTrigger)),
-            MenuItem("Add member", "",tvm.functionId(initAddVoting)),
-            MenuItem("Remove member", "", tvm.functionId(InitRemoveVoting)),
-            MenuItem("createDeAuditData", "", tvm.functionId(enterDeAuditDataNameInput)),
-            MenuItem("edit deAuditdata", "", tvm.functionId(onToEDdebot)),
-            MenuItem("init DeAudit", "", tvm.functionId(initDeauditDataMenuInput)),
-            MenuItem("voting list", "", tvm.functionId(goToVLdebot)),
-            MenuItem("return to main menu", "", tvm.functionId(goToCore)),
+            MenuItem("[DEV] Set core debot address", "", tvm.functionId(setACTMdebAddress)),
+            MenuItem("[DEV] Refresh data", "",tvm.functionId(pstart)),
+            MenuItem("Create DeAudit Data", "", tvm.functionId(enterDeAuditDataNameInput)),
+            MenuItem("Edit DeAudit Data", "", tvm.functionId(goToEditDeBot)),
+            MenuItem("Add member to Action Team", "",tvm.functionId(initAddVoting)),
+            MenuItem("Remove member from Action Team", "", tvm.functionId(InitRemoveVoting)),
+            MenuItem("Force Finish DeAudit", "",tvm.functionId(sendTriggerMenu)),
+            MenuItem("Initiate DeAudit", "", tvm.functionId(initDeauditDataMenuInput)),
+            MenuItem("Display Votings", "", tvm.functionId(goToVLdebot)),
+            MenuItem("Return to main menu", "", tvm.functionId(goToCore)),
             MenuItem("Quit", "", 0)
             ]);
     }
@@ -321,28 +322,28 @@ contract VotingAuditDebotACTMmenu is Debot {
 */
 
 
-    function onSendTrigger(uint32 index) public {
+    function sendTriggerMenu(uint32 index) public {
 //        fetchVCbyDA();
         MenuItem[] m_menu;
         for(uint8 i = 0; i < keysDeAuditD.length; i++){
-            address curDad = keysDeAuditD[i];
-            DetailsParamDeAudit dd = paramDeAuditDeAudit[curDad];
+            address currentDeAudit = keysDeAuditD[i];
+            DetailsParamDeAudit dd = paramDeAuditDeAudit[currentDeAudit];
 
-            string curVdata = format("====De Audit data name: {}dDAD address: {}====\n",dd.name,curDad);
-            m_menu.push(MenuItem(curVdata,"",tvm.functionId(onsetDaD)));
+            string curVdata = format("— DeAudit Data name: {} \n DeAudit Data address: {} —\n",dd.name, currentDeAudit);
+            m_menu.push(MenuItem(curVdata,"",tvm.functionId(sendTriggerMenuDeAuditDataChooseCallback)));
         }
-        m_menu.push(MenuItem("Back to menu", "", tvm.functionId(atmenu)));
-        Menu.select("Choose De Audit:", "",m_menu);
+        m_menu.push(MenuItem("Back to menu", "", tvm.functionId(actionTeamMenu)));
+        Menu.select("Choose DeAudit Data or back to menu:", "",m_menu);
 
     }
 
-address curDeAudit;
-       function onsetDaD(uint32 index) public {
+    address curDeAudit;
+       function sendTriggerMenuDeAuditDataChooseCallback(uint32 index) public {
            curDeAudit = keysDeAuditD[index];
-           AddressInput.get(tvm.functionId(onsetVC),"Set ACT4 address: ");
+           AddressInput.get(tvm.functionId(Act4EnterCallback),"Please, enter ACT4 address ");
        }
     address curACT4;
-    function onsetVC(address value) public {
+    function Act4EnterCallback(address value) public {
         curACT4 = value;
 
             optional(uint256) pubkey;
@@ -353,33 +354,33 @@ address curDeAudit;
             pubkey : pubkey,
             time : uint64(now),
             expire: 0x123,
-            callbackId : 0,
+            callbackId : 0, // TODO: Change to empty function or ATMenu
             onErrorId : tvm.functionId(someError)
             }(curDeAudit,curACT4,GRAMS_TRIGGER);
 
-            atmenu();
+            actionTeamMenu();
     }
 
 /*
     go to ED debot
 */
 
-    function onToEDdebot(uint32 index) public {
+    function goToEditDeBot(uint32 index) public {
         MenuItem[] m_menu;
         for(uint8 i = 0; i < keysDeAuditDataD.length; i++){
-            address curDad = keysDeAuditDataD[i];
-            DADdata dd = dadData[curDad];
+            address currentDeAudit = keysDeAuditDataD[i];
+            DADdata dd = dadData[currentDeAudit];
 
-            string curVdata = format("====De Audit name: {} DAD address: {} DAD initiator: {} DAD id: {}====\n",dd.name,curDad, dd.initiator, dd.idDeAuditData);
-            m_menu.push(MenuItem(curVdata,"",tvm.functionId(setDAD)));
+            string curVdata = format("— {} \n Address: {} \n Initiator: {} \n ID: {} —\n",dd.name, currentDeAudit, dd.initiator, dd.idDeAuditData);
+            m_menu.push(MenuItem(curVdata,"",tvm.functionId(selectDeAuditOnGoToEditDebot)));
         }
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(pstart)));
-        Menu.select("Choose DAD:", "",m_menu);
+        Menu.select("Choose DeAudit or back to menu:", "",m_menu);
     }
 
     address curDADaddress;
 
-    function setDAD(uint32 index) public {
+    function selectDeAuditOnGoToEditDebot(uint32 index) public {
         curDADaddress = keysDeAuditDataD[index];
 
         optional(uint256) pubkey;
@@ -390,20 +391,20 @@ address curDeAudit;
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCsetDAD),
+        callbackId : tvm.functionId(selectDeAuditOnGoToEditDebotCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
-    function SCsetDAD(address initiator) public {
+    function selectDeAuditOnGoToEditDebotCallback(address initiator) public {
         if(initiator == m_participant){
-            goToEDdebot();
+            goToEditDebot();
         }else{
-            Terminal.print(tvm.functionId(atmenu),"Warning: You are not initiator of this DAD");
+            Terminal.print(tvm.functionId(actionTeamMenu),"Error! Please, enter keys of DeAudit initiator.");
         }
     }
 
 
-    function goToEDdebot() public {
+    function goToEditDebot() public {
         IVotingAuditDebotED(m_EditDebot).startGlobal(m_participant, curDADaddress);
     }
 
@@ -460,10 +461,10 @@ address curDeAudit;
     Add/remove members
 */
     function initAddVoting(uint32 index) public {
-        AddressInput.get(tvm.functionId(addMember_sendMSG), "Enter candidate address to add:");
+        AddressInput.get(tvm.functionId(addMember_sendMSG), "Please, enter candidate address to add:");
     }
     function InitRemoveVoting(uint32 index) public {
-        AddressInput.get(tvm.functionId(removeMember_sendMSG), "Enter candidate address to remove:");
+        AddressInput.get(tvm.functionId(removeMember_sendMSG), "Please, enter candidate address to remove:");
     }
 
     address m_memberAddress;
@@ -515,12 +516,12 @@ address curDeAudit;
     uint128 valStake;
 
     function enterDeAuditDataNameInput(uint32 index) public {
-        Terminal.input(tvm.functionId(enterDeAuditDataName), "Enter DeAudit Name", false);
+        Terminal.input(tvm.functionId(enterDeAuditDataName), "Please, enter DeAudit Name", false);
     }
 
     function enterDeAuditDataName(string value) public {
         nameDeAudit = bytes(value);
-        Terminal.input(tvm.functionId(enterDeAuditStartTime), "Enter start time of DeAudit (timestamp)", false);
+        Terminal.input(tvm.functionId(enterDeAuditStartTime), "Please, enter start time (in future) of DeAudit (timestamp)", false);
     }
 
     function enterDeAuditStartTime(string value) public {
@@ -528,7 +529,7 @@ address curDeAudit;
         bool status;
         (res, status) = stoi(value);
         timeStart = uint256(res);
-        Terminal.input(tvm.functionId(enterDeAuditCollationPeriod), "Enter collation period of DeAudit (timestamp)", false);
+        Terminal.input(tvm.functionId(enterDeAuditCollationPeriod), "Please, enter collation period of DeAudit in seconds (ex. 3600 sec = 1 hour)", false);
     }
 
     function enterDeAuditCollationPeriod(string value) public {
@@ -536,7 +537,7 @@ address curDeAudit;
         bool status;
         (res, status) = stoi(value);
         colPeriod = uint256(res);
-        Terminal.input(tvm.functionId(enterDeAuditValidationPeriod), "Enter validation period of DeAudit (timestamp)", false);
+        Terminal.input(tvm.functionId(enterDeAuditValidationPeriod), "Please, enter validation period of DeAudit in seconds (ex. 3600 sec = 1 hour)", false);
     }
 
     function enterDeAuditValidationPeriod(string value) public {
@@ -544,7 +545,7 @@ address curDeAudit;
         bool status;
         (res, status) = stoi(value);
         valPeriod = uint256(res);
-        Terminal.input(tvm.functionId(enterDeAuditCollationStake), "Enter collation stake of DeAudit", false);
+        Terminal.input(tvm.functionId(enterDeAuditCollationStake), "Please, enter collation stake of DeAudit (in grams)", false);
     }
 
     function enterDeAuditCollationStake(string value) public {
@@ -552,7 +553,7 @@ address curDeAudit;
         bool status;
         (res, status) = stoi(value);
         colStake = uint128(res);
-        Terminal.input(tvm.functionId(enterDeAuditValueStake), "Enter value of DeAudit stake", false);
+        Terminal.input(tvm.functionId(enterDeAuditValueStake), "Please, enter stake value of DeAudit (in grams)", false);
     }
 
     function enterDeAuditValueStake(string value) public {
@@ -590,7 +591,7 @@ address curDeAudit;
     init de Audit
 */
     function initDeauditDataMenuInput(uint32 index) public {
-        AddressInput.get(tvm.functionId(initDeauditData), "Enter DeAudit Data address for Init:");
+        AddressInput.get(tvm.functionId(initDeauditData), "Please, enter address of DeAudit Data for initialization:");
     }
 
     function initDeauditData(address value) public {
@@ -626,13 +627,13 @@ address curDeAudit;
         string name, string version, string publisher, string caption, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
-        name = "Radiance Voting Audit DeBot ACTM";
+        name = "Radiance Voting Audit DeBot [Action Team]";
         version = "0.1.0";
         publisher = "Radiance Team";
-        caption = "DeBot for DeAudit by Radiance Team";
+        caption = "DeBot for Action Team of Voting Audit Debots by Radiance Team.";
         author = "Radiance Team";
         support = address.makeAddrStd(0, 0x841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94);
-        hello = "That's debot for Voting Audit. Developed by Radiance Team";
+        hello = "Please note that this is part of the Radiance Voting Audit debots. Use Core Voting Audit Debot for easy navigation";
         language = "en";
         dabi = m_debotAbi.get();
         icon = m_icon;

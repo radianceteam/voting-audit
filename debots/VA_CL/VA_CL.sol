@@ -132,16 +132,16 @@ contract VotingAuditDebotACTMmenu is Debot {
     }
     function preStart(address partic) public {
         m_participant = partic;
-        fetchDA();
+        fetchDeAudits();
         CLmenu();
     }
     function pstart(uint32 index) public {
-        fetchDA();
+        fetchDeAudits();
         CLmenu();
     }
 
     function start() public functionID(0x01) override {
-        fetchDA();
+        fetchDeAudits();
         CLmenu();
     }
 
@@ -149,32 +149,32 @@ contract VotingAuditDebotACTMmenu is Debot {
     FETCH CANDIDATES
 */
 
-    function fetchCD(address deAuditAddress) public {
-        Terminal.print(0,format("fetchCD, deAuditAddress: {}", deAuditAddress));
+    function fetchCandidates(address deAuditDataAddress) public {
+        Terminal.print(0,format("Fetch candidates. Please wait. DeAudit Data Address: {}", deAuditDataAddress));
         optional(uint256) pubkey;
-        IDeAuditData(deAuditAddress).candidateKeys{
+        IDeAuditData(deAuditDataAddress).candidateKeys{
         abiVer : 2,
         extMsg : true,
         sign : false,
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCfetchCD),
+        callbackId : tvm.functionId(fetchCandidatesCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCfetchCD(uint256[] candidateKeys) public {
+    function fetchCandidatesCallback(uint256[] candidateKeys) public {
         candidateKeysD = candidateKeys;
 
         for(uint8 i = 0; i < candidateKeysD.length; i++){
             uint256 curCD = candidateKeysD[i];
-            getCDdata(curCD);
+            getCandidateData(curCD);
         }
     }
 
-    function getCDdata(uint256 curDAD) public {
-        Terminal.print(0,format("getCDdata, curDAD: {}", curDAD));
+    function getCandidateData(uint256 currentCandidate) public {
+        Terminal.print(0,format("Get Candidate Data. Address of Candidate: {}", currentCandidate));
 
         optional(uint256) pubkey;
         IDeAuditData(testDAD).getCandidate4Debot{
@@ -186,7 +186,7 @@ contract VotingAuditDebotACTMmenu is Debot {
         expire: 0x123,
         callbackId : tvm.functionId(SCgetCDdata),
         onErrorId : tvm.functionId(someError)
-        }(curDAD);
+        }(currentCandidate);
     }
 
     function SCgetCDdata(
@@ -202,7 +202,7 @@ contract VotingAuditDebotACTMmenu is Debot {
 /*
     FETCH DA
 */
-    function fetchDA() public {
+    function fetchDeAudits() public {
         optional(uint256) pubkey;
         IDeAuditRoot(DeAuditRoot).keysDeAudit{
         abiVer : 2,
@@ -211,36 +211,36 @@ contract VotingAuditDebotACTMmenu is Debot {
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCfetchDA),
+        callbackId : tvm.functionId(fetchDeAuditsCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCfetchDA(address[] keysDeAudit) public {
+    function fetchDeAuditsCallback(address[] keysDeAudit) public {
         keysDeAuditDataD = keysDeAudit;
 
         for(uint8 i = 0; i < keysDeAuditDataD.length; i++){
             address curDAD = keysDeAuditDataD[i];
-            getDADdata(curDAD);
+            getDeAuditData(curDAD);
         }
     }
 
-    function getDADdata(address curDAD) public {
+    function getDeAuditData(address currentDeAuditDataID) public {
 
         optional(uint256) pubkey;
-        IDeAudit(curDAD).getDetails4Debot{
+        IDeAudit(currentDeAuditDataID).getDetails4Debot{
         abiVer : 2,
         extMsg : true,
         sign : false,
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCgetDADdata),
+        callbackId : tvm.functionId(getDeAuditDataCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCgetDADdata(
+    function getDeAuditDataCallback(
         uint32 sequentialNumber4Debot,
         bytes  name4Debot,
         address rootDeAudit4Debot,
@@ -269,32 +269,32 @@ contract VotingAuditDebotACTMmenu is Debot {
     fetch VC
 */
 
-    function fetchVC(address DADaddress) public {
-        Terminal.print(0,format("fetchVC, DADaddress: {}", DADaddress));
+    function fetchVotingCenters(address deAuditDataAddress) public {
+        Terminal.print(0,format("Fetch voting centers. Current DeAudit Data address: {}", deAuditDataAddress));
 
         optional(uint256) pubkey;
-        IDeAuditData(DADaddress).votingCenterKeys{
+        IDeAuditData(deAuditDataAddress).votingCenterKeys{
         abiVer : 2,
         extMsg : true,
         sign : false,
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCfetchVC),
+        callbackId : tvm.functionId(fetchVotingCentersCallback),
         onErrorId : tvm.functionId(someError)
         }();
     }
 
-    function SCfetchVC(uint256[] votingCenterKeys) public {
+    function fetchVotingCentersCallback(uint256[] votingCenterKeys) public {
         votingCenterKeysD = votingCenterKeys;
 
         for(uint8 i = 0; i < votingCenterKeysD.length; i++){
             uint256 curVC = votingCenterKeysD[i];
-            getVCdata(curVC);
+            getVotingCenterData(curVC);
         }
     }
-    function getVCdata(uint256 curVC) public {
-        Terminal.print(0,format("getVCdata, curVC: {}", curVC));
+    function getVotingCenterData(uint256 curVC) public {
+        Terminal.print(0,format("Get Voting Center data. Current Voting Center: {}", curVC));
 
         optional(uint256) pubkey;
         IDeAuditData(testDAD).getVotingCenter4Debot{
@@ -304,12 +304,12 @@ contract VotingAuditDebotACTMmenu is Debot {
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(SCgetVCstruct),
+        callbackId : tvm.functionId(getVotingCenterDataCallback),
         onErrorId : tvm.functionId(someError)
         }(curVC);
     }
 
-    function SCgetVCstruct(
+    function getVotingCenterDataCallback(
         bytes name4Debot,
         bytes location4Debot,
         uint256[] votes4Debot,
@@ -329,7 +329,7 @@ contract VotingAuditDebotACTMmenu is Debot {
         vc.idDistrict = idDistrict4Debot;
         vc.act4Arr = act4Arr4Debot;
         for(uint8 i = 0; i < act4Arr4Debot.length; i++){
-            Terminal.print(0,format("act4: {}", act4Arr4Debot[i]));
+            Terminal.print(0,format("Act4 address: {}", act4Arr4Debot[i]));
         }
 //        vc.countAdditionlPhotoLinks = countAdditionlPhotoLinks4Debot;
         votingCenterD[votingCenterCurrentKeyD] = vc;
@@ -344,21 +344,21 @@ contract VotingAuditDebotACTMmenu is Debot {
     
 
     function fVC(uint32 index) public {
-        fetchVC(testDAD);
+        fetchVotingCenters(testDAD);
         CLmenu();
     }
     function fCD(uint32 index) public {
-        fetchCD(testDAD);
+        fetchCandidates(testDAD);
         CLmenu();
     }
     function CLmenu() public {
-        Menu.select("Welcome to CL menu", "", [
-            MenuItem("Fetch data", "",tvm.functionId(pstart)),
-            MenuItem("show user data", "",tvm.functionId(showUserData)),    
-            MenuItem("Fetch VC", "",tvm.functionId(fVC)),
-            MenuItem("Fetch CD", "",tvm.functionId(fCD)),
-            MenuItem("add collation", "", tvm.functionId(onAddCollation)),
-            MenuItem("return to main menu", "", tvm.functionId(goToCore)),
+        Menu.select("Welcome to Collator menu", "", [
+            MenuItem("Fetch DeAudits", "",tvm.functionId(pstart)),
+            MenuItem("Show user data", "",tvm.functionId(showUserData)),
+            MenuItem("Show Voting Centers", "",tvm.functionId(fVC)),
+            MenuItem("Show Candidates", "",tvm.functionId(fCD)),
+            MenuItem("Add collation", "", tvm.functionId(onAddCollation)),
+            MenuItem("Return to main menu", "", tvm.functionId(goToCore)),
             MenuItem("Quit", "", 0)
             ]);
     }
@@ -387,34 +387,34 @@ contract VotingAuditDebotACTMmenu is Debot {
         address pAddress,
         uint128 pBalance
     )  public {
-        Terminal.print(0,format("***USER DATA\nyour name: {}\nphoto link: {}\ndata link: {}\nyour address: {}\n balance: {}\nEND***\n",pName,pPhotoLink,pDataLink,pAddress,pBalance));
+        Terminal.print(0,format("-- About user \n User name: {}\n Photo link: {}\n Published data: {}\n Address: {}\n Balance: {}\n -- \n",pName,pPhotoLink,pDataLink,pAddress,pBalance));
 
         MenuItem[] m_menu;
-            m_menu.push(MenuItem("Edit user data", "", tvm.functionId(onEditUserData)));
+            m_menu.push(MenuItem("Edit", "", tvm.functionId(onEditUserData)));
             m_menu.push(MenuItem("Return to menu", "", tvm.functionId(CLmenu)));
         Menu.select("Choose: ", "",m_menu);
     }
 
     function onEditUserData(uint32 index) public {
-        Terminal.input(tvm.functionId(onSetName), "----\nYour name?\n\n",false);
+        Terminal.input(tvm.functionId(onSetName), "-- What your name?\n\n",false);
     }
 bytes userName;
     function onSetName(string value) public {
         userName = bytes(value);
 
-        Terminal.input(tvm.functionId(onAddPhotoLink), "----\nAdd your photo link:\n\n",false);
+        Terminal.input(tvm.functionId(onAddPhotoLink), "-- Set account photo (link on photo).\n\n",false);
     }
 bytes PhotoLink;
     function onAddPhotoLink(string value) public {
         PhotoLink = bytes(value);
 
-        Terminal.input(tvm.functionId(onAddPublishedDataLink), "----\nAdd your published data link:\n\n",false);
+        Terminal.input(tvm.functionId(onAddPublishedDataLink), "-- Set published data (link).\n\n",false);
     }
 bytes PublishedDataLink;
     function onAddPublishedDataLink(string value) public {
         PublishedDataLink = bytes(value);
 
-        Terminal.print(0,format("***** your userName: {}\n photo link: {}\n published data link: {}\n*****\n", userName,PhotoLink,PublishedDataLink));
+        Terminal.print(0,format("-- Updated data: \n User name: {}\n Photo link: {}\n Published data: {}\n -- \n", userName,PhotoLink,PublishedDataLink));
 
         optional(uint256) pubkey;
         IParticipant(m_participant).publishData{
@@ -444,18 +444,18 @@ bytes PublishedDataLink;
                     status = "Collation";
                     da.status = status;
                     paramDeAuditD[curDA] = da;
-                    string curVdata = format("***** Status: COLLATION PERIOD, DeAudit name: {} DA sequentialNumber: {} da.colStake: {} DA address: {}\n",da.name, da.sequentialNumber,da.colStake,curDA);
-                    m_menu.push(MenuItem(curVdata,"",tvm.functionId(setTouchedDA)));
+                    string curVdata = format("-- Status: COLLATION PERIOD \n DeAudit name: {} \nDeAudit sequential number: {} \nDeAudit Collation Stake: {} \nDeAudit address: {}\n",da.name, da.sequentialNumber,da.colStake,curDA);
+                    m_menu.push(MenuItem(curVdata,"",tvm.functionId(chooseDeAudit)));
                 }else{
                     status = "All other";
                     da.status = status;
                     paramDeAuditD[curDA] = da;
-                    string curVdata = format("***** DeAudit name: {} DA sequentialNumber: {} da.colStake: {} DA address: {}\n",da.name, da.sequentialNumber,da.colStake,curDA);
-                    m_menu.push(MenuItem(curVdata,"",tvm.functionId(setTouchedDA)));
+                    string curVdata = format("-- DeAudit name: {} \n DeAudit sequential number: {} \nDeAudit Collation Stake: {} \nDeAudit address: {}\n",da.name, da.sequentialNumber,da.colStake,curDA);
+                    m_menu.push(MenuItem(curVdata,"",tvm.functionId(chooseDeAudit)));
                 }
         }
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(pstart)));
-        Menu.select("Choose DA:", "",m_menu);
+        Menu.select("Choose DeAudit:", "",m_menu);
     }
 
 
@@ -463,23 +463,23 @@ address curDAAddressD;
 uint256 curSN;
 uint128 CLstake;
 address curDADadd;
-    function setTouchedDA(uint32 index) public {
+    function chooseDeAudit(uint32 index) public {
         index = index;
         curDAAddressD = keysDeAuditDataD[index];
         DetailsParamD da = paramDeAuditD[curDAAddressD];
 
         if(da.status != "Collation"){
-            Terminal.print(0, "Error take from collation pariod available");
+            Terminal.print(0, "Error! Only at collation period you can add collation.");
             onAddCollation(1);
         }else{
             curSN = da.sequentialNumber;
             CLstake = uint128(da.colStake);
             curDADadd = da.dataDeAudit;
-            Terminal.print(0, format("DAD address: {}",curDADadd));
+            Terminal.print(0, format("DeAudit Data address: {}",curDADadd));
 
-            fetchCD(curDADadd);
-            fetchVC(curDADadd);
-            Terminal.print(tvm.functionId(onSetLink), format("\n=====Success=====\nyou touched DeAudit name: {} DA sequentialNumber: {} da.colStake: {} DAcurindex: {}\n",da.name, curSN,curDADadd,curDAAddressD));
+            fetchCandidates(curDADadd);
+            fetchVotingCenters(curDADadd);
+            Terminal.print(tvm.functionId(onSetLink), format("\n-- Success --\nSelected DeAudit with name: {} \nDeAudit sequential number: {} \nDeAudit Collation Stake: {} \nDeAudit address: {}\n",da.name, curSN,curDADadd,curDAAddressD));
         }
     }
 
@@ -489,11 +489,11 @@ address curDADadd;
             uint256 curVC = votingCenterKeysD[i];
             VotingCenterD vc = votingCenterD[curVC];
 
-            string curVdata = format("*****Voting Center name: {}  touched VC location: {}, VC index:{}\n",vc.name, vc.location, curVC);
+            string curVdata = format("-- Voting Center name: {} \nVoting Center location: {}, Voting Center index:{}\n",vc.name, vc.location, curVC);
             m_menu.push(MenuItem(curVdata,"",tvm.functionId(setTouchedVC)));
         }
         m_menu.push(MenuItem("Back menu", "", tvm.functionId(pstart)));
-        Menu.select("Choose VC:", "",m_menu);
+        Menu.select("Choose Voting Center:", "",m_menu);
     }
 
 uint256 curVCIndexD;
@@ -502,12 +502,12 @@ uint256 curVCIndexD;
         index = index;
         curVCIndexD = votingCenterKeysD[index];
         VotingCenterD vc = votingCenterD[curVCIndexD];
-        Terminal.print(tvm.functionId(onSetVoteMatrix), format("\n=====Success=====\nyou touched Voting Center name: {}  Touched VC location: {}, Touched VC index:{}\n",vc.name, vc.location, curVCIndexD));
+        Terminal.print(tvm.functionId(onSetVoteMatrix), format("\n-- Success --\n Selected Voting Center with name: {} \nVoting Center location: {}, Voting Center index:{}\n",vc.name, vc.location, curVCIndexD));
     }
 
 
     function onSetLink() public {
-        Terminal.input(tvm.functionId(setLink), "----\nSet link to your collation:\n\n",false);
+        Terminal.input(tvm.functionId(setLink), "--\nPlease, set link to your collation:\n\n",false);
     }
 bytes link;
     function setLink(string value) public {
@@ -522,13 +522,13 @@ bytes link;
             uint256 curCD = candidateKeysD[i];
             CandidateD cd = candidateD[curCD];
 
-            string curVdata = format("***** Candidate name: {} Cur candidate index: {}\n",cd.name,curCD);
+            string curVdata = format("-- Candidate name: {} \n Current candidate index: {}\n",cd.name,curCD);
             m_menu.push(MenuItem(curVdata,"",tvm.functionId(setTouchedCD)));
         }
         m_menu.push(MenuItem("Set link", "", tvm.functionId(onSetLink)));
-        m_menu.push(MenuItem("Deploy Act4", "", tvm.functionId(addCandOnchainCheck)));
-        m_menu.push(MenuItem("Back menu", "", tvm.functionId(pstart)));
-        Menu.select("Choose candidate:", "",m_menu);
+        m_menu.push(MenuItem("Deploy Act4", "", tvm.functionId(addCandidateOnChainCheck)));
+        m_menu.push(MenuItem("Back to menu", "", tvm.functionId(pstart)));
+        Menu.select("Choose Candidate:", "",m_menu);
     }
 
 
@@ -541,7 +541,7 @@ bytes canName;
         CandidateD cd = candidateD[curCDIndexD];
         canName = cd.name;
 
-        AmountInput.get(tvm.functionId(saveCandidateVotes), format("====\ncCandidate name: {}\nCandidate index: {}\n====\n",cd.name, curCDIndexD),0,0,1000000000000);
+        AmountInput.get(tvm.functionId(saveCandidateVotes), format("-- Please enter count of votes candidate with name: {} \nCandidate index: {}\n====\n",cd.name, curCDIndexD),0,0,1000000000000);
     }
     function saveCandidateVotes(uint128 value) public {
         uint256 newValue = uint256(value);
@@ -550,20 +550,20 @@ bytes canName;
         cd.curVotes = newValue;
         candidateD[curCDIndexD] = cd;
 
-        Terminal.print(tvm.functionId(onSetVoteMatrix), format("\n=====Success=====\nyou touched candidate name: {}\n touched votes: {}\n", canName,value));
+        Terminal.print(tvm.functionId(onSetVoteMatrix), format("\n-- Success --\n Saved candidate with name {}. \n Count votes of candidate:  {}\n", canName,value));
     }
 
 uint256[] VoteMatrixD;
-    function addCandOnchainCheck(uint32 index) public {
+    function addCandidateOnChainCheck(uint32 index) public {
             for(uint8 i = 0; i < candidateKeysD.length; i++){
                 CandidateD cd = candidateD[i];
                 VoteMatrixD.push(cd.curVotes);
-                Terminal.print(0, format("cd name: {}, votes amount:{}\n",cd.name,cd.curVotes));
+                Terminal.print(0, format("Candidate name: {} \n Votes count:{}\n",cd.name,cd.curVotes));
             }
 
-        Terminal.print(0, format("DeAudit address: {} Voting center index: {} your link: {} stake: {}",curDAAddressD,curVCIndexD,link,CLstake));
+        Terminal.print(0, format("DeAudit address: {} \n Voting Center index: {} \n Link: {} \n Stake: {}",curDAAddressD,curVCIndexD,link,CLstake));
         if(candidateKeysD.length != VoteMatrixD.length){
-            Terminal.print(tvm.functionId(onSetVoteMatrix), "Error - you are not setted all candidates");
+            Terminal.print(tvm.functionId(onSetVoteMatrix), "Error - you are not set all candidates");
         }else{
             ConfirmInput.get(tvm.functionId(checkAns), "Are you sure to deploy?");
 
@@ -616,13 +616,13 @@ uint256[] VoteMatrixD;
         string name, string version, string publisher, string caption, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
-        name = "Radiance Voting Audit DeBot ACTM";
+        name = "Radiance Voting Audit DeBot [Collator]";
         version = "0.1.0";
         publisher = "Radiance Team";
-        caption = "DeBot for DeAudit by Radiance Team";
+        caption = "DeBot for Collator of Voting Audit Debots by Radiance Team.";
         author = "Radiance Team";
         support = address.makeAddrStd(0, 0x841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94);
-        hello = "That's debot for Voting Audit. Developed by Radiance Team";
+        hello = "Please note that this is part of the Radiance Voting Audit debots. Use Core Voting Audit Debot for easy navigation";
         language = "en";
         dabi = m_debotAbi.get();
         icon = m_icon;
