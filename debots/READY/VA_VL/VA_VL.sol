@@ -78,7 +78,7 @@ contract VotingAuditDebotVL is Debot {
     function prestart(address m_participantC) public {
         m_participant = m_participantC;
         m_VAdebotACTMmenuAddress = msg.sender;
-        Terminal.print(0,format("m_VAdebotACTMmenuAddress:{}",m_VAdebotACTMmenuAddress));
+        // Terminal.print(0,format("m_VAdebotACTMmenuAddress:{}",m_VAdebotACTMmenuAddress));
 //        m_DeAuditRoot = DeAuditRoot;
         start();
     }
@@ -446,7 +446,7 @@ uint32 indexCur;
         string name, string version, string publisher, string caption, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
-        name = "Radiance Voting Audit DeBot ACTM_votingList";
+        name = "Radiance Voting Audit DeBot [Voting List]";
         version = "0.1.0";
         publisher = "Radiance Team";
         caption = "DeBot for DeAudit by Radiance Team";

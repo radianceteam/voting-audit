@@ -615,7 +615,7 @@ bool amot;
         string name, string version, string publisher, string caption, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
-        name = "Radiance Voting Audit DeBot - Core";
+        name = "Radiance Voting Audit DeBot [Core]";
         version = "0.1.0";
         publisher = "Radiance Team";
         caption = "DeBot for DeAudit by Radiance Team";

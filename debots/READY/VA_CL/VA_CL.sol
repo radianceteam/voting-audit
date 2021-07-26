@@ -602,7 +602,7 @@ uint256[] VoteMatrixD;
         string name, string version, string publisher, string caption, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
-        name = "Radiance Voting Audit DeBot ACTM";
+        name = "Radiance Voting Audit DeBot [Collator]";
         version = "0.1.0";
         publisher = "Radiance Team";
         caption = "DeBot for DeAudit by Radiance Team";
