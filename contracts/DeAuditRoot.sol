@@ -59,7 +59,6 @@ contract DeAuditRoot is IDeAuditRoot {
 	uint8 public voteCountModel;
 	uint256 public limitVFC;
 
-
 	struct Vote {
 		address initiator;
 		uint256 startTime;
@@ -81,7 +80,6 @@ contract DeAuditRoot is IDeAuditRoot {
 	uint128 constant public GRAMS_CREATE = 1 ton;
 	uint128 constant public GRAMS_INIT_VOTE = 0.5 ton;
 	uint128 constant public GRAMS_TRIGGER = 1.5 ton;
-
 
 
 	// Vote count model selector
@@ -322,7 +320,7 @@ contract DeAuditRoot is IDeAuditRoot {
 	}
 
 	function initVoteAddActionTeamMember(address addressParticipant) public override OnlyActionTeamMember {
-		require(!(msg.value < GRAMS_INIT_VOTE), 106);
+		require(!(msg.value < GRAMS_INIT_VOTE) && !actionTeam.exists(addressParticipant), 106);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address member = msg.sender;
 		uint256 voteId = createVoteId();
@@ -343,7 +341,7 @@ contract DeAuditRoot is IDeAuditRoot {
 	}
 
 	function initVoteRemoveActionTeamMember(address addressParticipant) public override OnlyActionTeamMember {
-		require(!(msg.value < GRAMS_INIT_VOTE), 106);
+		require(!(msg.value < GRAMS_INIT_VOTE) && actionTeam.exists(addressParticipant), 106);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address member = msg.sender;
 		uint256 voteId = createVoteId();
@@ -364,7 +362,7 @@ contract DeAuditRoot is IDeAuditRoot {
 	}
 
 	function initVoteDeAudut(address addrDeAuditData) public override OnlyActionTeamMember {
-		require(!(msg.value < GRAMS_INIT_VOTE), 106);
+		require(!(msg.value < GRAMS_INIT_VOTE) && paramDeAudit.exists(addrDeAuditData), 106);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address member = msg.sender;
 		uint256 voteId = createVoteId();

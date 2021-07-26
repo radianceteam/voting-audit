@@ -14,15 +14,16 @@ contract Act4 is IAct4 {
 	address static public rootDeAudit;
 	address static public dataDeAudit;
 	uint256 static public idVotingCenter;
-	uint256 static public vcms;
+	uint8 static public vcms;
+	uint256 static public lvfc;
 	address static public collator;
 	bytes static public collatorPhotoLink;
 	uint256[] static public voteMatrix;
 
 	mapping(address => bool) public validator;
 	uint256 public countValidators;
-	uint256 public countValidationsFor;
-	uint256 public countValidationsAgainst;
+	address[] public validatorsFor;
+	address[] public validatorsAgainst;
 
 	uint128 constant public GRAMS_VALIDATE = 0.5 ton;
 
@@ -57,8 +58,6 @@ contract Act4 is IAct4 {
 	// Init function.
 	constructor() public onlyDeAuditData {
 		countValidators = 0;
-		countValidationsFor = 0;
-		countValidationsAgainst = 0;
 	}
 
 	// Function to receive plain transfers.
@@ -67,11 +66,17 @@ contract Act4 is IAct4 {
 
 	function trigger(address member) public override onlyDeAuditData {
 		tvm.rawReserve(address(this).balance - msg.value, 2);
-	// Here logic for cancel Act4 by Action Team
-	// 1)  send msg to DeAuditData for delete collator
-	// 2)  send msg to DeAuditData for burn collator's tokens
-	// 2)  send msg to DeAuditData for burn valaidator's tokens and return stacke
-		member.transfer({value: 0, flag: 128, bounce:true});
+		uint32 yesCount = uint32(validatorsFor.length);
+		uint32 noCount = uint32(validatorsAgainst.length);
+		uint32 totalVoters = uint32(countValidators);
+		bool resultCalculateVotes = calculateVotes(yesCount, noCount, totalVoters, vcms);
+		if (resultCalculateVotes == true){
+			TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).receivePositivResultFromAct4, voteMatrix, validatorsAgainst, member);
+			dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
+		} else {
+			TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).receiveNegativeResultFromAct4, collator, validatorsFor, member);
+			dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
+		}
 	}
 
 	// Vote count model selector
@@ -90,13 +95,31 @@ contract Act4 is IAct4 {
 		return passed;
 	}
 
+	function amountOfVoters() private inline view returns (uint256) {
+		return validatorsFor.length + validatorsAgainst.length;
+	}
+
 	function voteFor() public override onlyValidatorOnce {
 		require(!(msg.value < GRAMS_VALIDATE), 104);
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address cv = msg.sender;
     validator[cv] = true;
-		countValidationsFor ++;
-		cv.transfer({ value: 0, flag: 128});
+		validatorsFor.push(cv);
+		if (amountOfVoters() < lvfc) {
+			cv.transfer({ value: 0, flag: 128});
+		} else {
+			uint32 yesCount = uint32(validatorsFor.length);
+			uint32 noCount = uint32(validatorsAgainst.length);
+			uint32 totalVoters = uint32(countValidators);
+			bool resultCalculateVotes = calculateVotes(yesCount, noCount, totalVoters, vcms);
+			if (resultCalculateVotes == true){
+				TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).receivePositivResultFromAct4, voteMatrix, validatorsAgainst, cv);
+				dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
+			} else {
+				TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).receiveNegativeResultFromAct4, collator, validatorsFor, cv);
+				dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
+			}
+		}
 	}
 
 	function voteAgainst() public override onlyValidatorOnce {
@@ -104,8 +127,36 @@ contract Act4 is IAct4 {
 		tvm.rawReserve(address(this).balance - msg.value, 2);
 		address cv = msg.sender;
     validator[cv] = true;
-		countValidationsAgainst ++;
-		cv.transfer({ value: 0, flag: 128});
+		validatorsAgainst.push(cv);
+		if (amountOfVoters() < lvfc) {
+			cv.transfer({ value: 0, flag: 128});
+		} else {
+			uint32 yesCount = uint32(validatorsFor.length);
+			uint32 noCount = uint32(validatorsAgainst.length);
+			uint32 totalVoters = uint32(countValidators);
+			bool resultCalculateVotes = calculateVotes(yesCount, noCount, totalVoters, vcms);
+			if (resultCalculateVotes == true){
+				TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).receivePositivResultFromAct4, voteMatrix, validatorsAgainst, cv);
+				dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
+			} else {
+				TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).receiveNegativeResultFromAct4, collator, validatorsFor, cv);
+				dataDeAudit.transfer({value: 0, flag: 128, bounce:true, body:body});
+			}
+		}
+	}
+
+	function resultVote(uint128 gramsToDeAuditData, address gasPayeerAddr) private view inline {
+		uint32 yesCount = uint32(validatorsFor.length);
+		uint32 noCount = uint32(validatorsAgainst.length);
+		uint32 totalVoters = uint32(countValidators);
+		bool resultCalculateVotes = calculateVotes(yesCount, noCount, totalVoters, vcms);
+		if (resultCalculateVotes == true){
+			TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).receivePositivResultFromAct4, voteMatrix, validatorsAgainst, gasPayeerAddr);
+			dataDeAudit.transfer({value: gramsToDeAuditData, flag: 0, bounce:true, body:body});
+		} else {
+			TvmCell body = tvm.encodeBody(IDeAuditData(dataDeAudit).receiveNegativeResultFromAct4, collator, validatorsFor, gasPayeerAddr);
+			dataDeAudit.transfer({value: gramsToDeAuditData, flag: 0, bounce:true, body:body});
+		}
 	}
 
 	function setValidator(address participant) public override onlyDeAuditData {

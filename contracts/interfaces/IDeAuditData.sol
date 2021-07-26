@@ -13,4 +13,6 @@ interface IDeAuditData {
   function setCollation(address collator, uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix, uint8 vcms) external;
   function setValidationForParticipant(address participantAddr, uint128 qtyValidations) external;
   function triggerToAct4(address addrAct4, address member) external;
+  function receivePositivResultFromAct4(uint256[] voteMatrix, address[] validatorsFBT, address gasPayeerAddr) external;
+  function receiveNegativeResultFromAct4(address collatorFBT, address[] validatorsFBT, address gasPayeerAddr) external;
 }

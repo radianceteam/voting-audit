@@ -42,6 +42,13 @@ async function main(client) {
   response = await rootAcc.run("setCodeDeAudit", {code:DeAuditRootCode.deaudit});
   console.log("Contract reacted to your setCodeDeAudit:", response.decoded.output);
 
+  // response = await rootAcc.run("setCodePaticipant", {code:DeAuditRootCode.participant});
+  // console.log("Contract reacted to your setCodePaticipant:", response.decoded.output);
+  //
+  // response = await rootAcc.run("setCodeAct4", {code:DeAuditRootCode.act4});
+  // console.log("Contract reacted to your setCodeAct4:", response.decoded.output);
+
+
 
 
 }

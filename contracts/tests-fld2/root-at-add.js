@@ -43,23 +43,24 @@ async function main(client) {
   response = await rootAcc.runLocal("getParticipantAddress", {_answer_id:0, pubkeyParticipant:pubkeyCreator});
   console.log("creatorAddr:", response.decoded.output);
 
-  const creatorAddr = response.decoded.output.value0;
   const creatorAcc = new Account(ParticipantContract, {
-    address: creatorAddr,
+    address: response.decoded.output.value0,
     signer: rootKeys,
     client,
   });
 
-  response = await creatorAcc.runLocal("rootDeAudit", {});
-  console.log("Contract reacted to your rootDeAudit:", response.decoded.output);
-
-  response = await creatorAcc.runLocal("initiatedDeAuditData", {});
-  console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
+  // response = await creatorAcc.runLocal("rootDeAudit", {});
+  // console.log("Contract reacted to your rootDeAudit:", response.decoded.output);
+  //
+  // response = await creatorAcc.runLocal("initiatedDeAuditData", {});
+  // console.log("Contract reacted to your initiatedDeAuditData:", response.decoded.output);
 
 
 
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
   const participantAddress = resultArr[indexPartisipant].address;
+  console.log("participantAddress:", participantAddress);
+
 
   response = await creatorAcc.run("initVoteAddActionTeamMember", {participantAddr:participantAddress,grams:1000000000});
   console.log("Contract reacted to your initVoteAddActionTeamMember:", response.decoded.output);
