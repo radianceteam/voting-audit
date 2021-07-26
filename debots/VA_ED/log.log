@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "release wolf tobacco control popular need venture awesome reason sock future earth"
-Raw address: 0:aa2c5a1bff41cdfa2b584fc29feabf968242236979d102c43e6e051304de8354
+Seed phrase: "rapid brisk roof universe clip poet economy spread nothing lawsuit cram blame"
+Raw address: 0:6e653b6810ff6ad6a5ec8be1436b2aae57b47de932c948c8aa78142281740a9b
 testnet:
-Non-bounceable address (for init): 0QCqLFob_0HN-itYT8Kf6r-WgkIjaXnRAsQ-bgUTBN6DVH0C
-Bounceable address (for later access): kQCqLFob_0HN-itYT8Kf6r-WgkIjaXnRAsQ-bgUTBN6DVCDH
+Non-bounceable address (for init): 0QBuZTtoEP9q1qXsi-FDayquV7R96TLJSMiqeBQigXQKm3zk
+Bounceable address (for later access): kQBuZTtoEP9q1qXsi-FDayquV7R96TLJSMiqeBQigXQKmyEh
 mainnet:
-Non-bounceable address (for init): UQCqLFob_0HN-itYT8Kf6r-WgkIjaXnRAsQ-bgUTBN6DVMaI
-Bounceable address (for later access): EQCqLFob_0HN-itYT8Kf6r-WgkIjaXnRAsQ-bgUTBN6DVJtN
+Non-bounceable address (for init): UQBuZTtoEP9q1qXsi-FDayquV7R96TLJSMiqeBQigXQKm8du
+Bounceable address (for later access): EQBuZTtoEP9q1qXsi-FDayquV7R96TLJSMiqeBQigXQKm5qr
 Succeeded

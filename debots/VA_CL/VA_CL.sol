@@ -328,13 +328,19 @@ contract VotingAuditDebotACTMmenu is Debot {
         vc.idMunicipalBody = idMunicipalBody4Debot;
         vc.idDistrict = idDistrict4Debot;
         vc.act4Arr = act4Arr4Debot;
+        for(uint8 i = 0; i < act4Arr4Debot.length; i++){
+            Terminal.print(0,format("act4: {}", act4Arr4Debot[i]));
+        }
 //        vc.countAdditionlPhotoLinks = countAdditionlPhotoLinks4Debot;
         votingCenterD[votingCenterCurrentKeyD] = vc;
     }
 
     // address testDAD = address.makeAddrStd(0, 0xe97bb59a278124af5d1fe4aa92ca997aa68c244478c4a6b505bb09e33c158780);
     // address testDAD = address.makeAddrStd(0, 0xff86e42ba525b6509f9dc5347b559d8d6400c551d80f829e00128fd85fa96550);
-    address testDAD = address.makeAddrStd(0, 0x56769171fc62f13bee3ae14d098aa12fb0c690a4f3b87bbf6036b87920acd7e2);
+    // address testDAD = address.makeAddrStd(0, 0x56769171fc62f13bee3ae14d098aa12fb0c690a4f3b87bbf6036b87920acd7e2);
+    // address testDAD = address.makeAddrStd(0, 0x756e4071ea0490577db4124d99e80977837e5f72e8caded5ac1e06a92ee1ac54);
+    // address testDAD = address.makeAddrStd(0, 0xff86e42ba525b6509f9dc5347b559d8d6400c551d80f829e00128fd85fa96550);
+    address testDAD = address.makeAddrStd(0, 0x6754d9bf46fa49c3c69bb66589c60a9a7f2270fe1b56298dc748e7932c14a788);
     
 
     function fVC(uint32 index) public {

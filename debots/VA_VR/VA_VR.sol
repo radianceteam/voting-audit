@@ -62,7 +62,7 @@ contract VotingAuditDebot is Debot {
     address m_coreDebot;
 
     address DeAuditRoot = address.makeAddrStd(0, 0xaaa43758f17b6ad589924ed8dad5b7bbfcfbdbb6661135944f435b93ae542efe);
-    address m_participant = address.makeAddrStd(0, 0xb650ffed4b577a17297fc3351aa7006a6d4c9b94170febc0453dab1a2df8e6cc);
+    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
     //END
     bytes m_icon;
 

@@ -57,8 +57,8 @@ contract VotingAuditDebotED is Debot {
 
     // address choosenDADaddress = address.makeAddrStd(0, 0x03f3f1930017d1f2820e5382d64d30aa10956600ad477fa679cbba6613ec0980);
     // address choosenDADaddress = address.makeAddrStd(0, 0x76e15a530659ef5a06d999ffdad82b1bca9db0e8d1bc554fc7ea69a59889e993);
-    address choosenDADaddress = address.makeAddrStd(0, 0x6d600eef734b374e20447679b991b08d3cfa21984a1f617c4f8817e635dbd81f);
-
+    // address choosenDADaddress = address.makeAddrStd(0, 0x6d600eef734b374e20447679b991b08d3cfa21984a1f617c4f8817e635dbd81f);
+    address choosenDADaddress = address.makeAddrStd(0, 0x6754d9bf46fa49c3c69bb66589c60a9a7f2270fe1b56298dc748e7932c14a788);
 
     uint256 m_masterPubKey;
     uint256 m_masterSecKey;

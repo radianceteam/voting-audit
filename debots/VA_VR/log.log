@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "coffee split album jaguar mesh easily void beyond return glass fetch decide"
-Raw address: 0:08c8efd560d93653c1799aef56454344e78811f062373f2f4d5b04dbd585f551
+Seed phrase: "high slice reopen charge drastic pink misery mirror venue enforce unhappy sheriff"
+Raw address: 0:279ba4e74014c43f14cef3d26f86700f56c15ef3e46ec457e848489ff3928bc2
 testnet:
-Non-bounceable address (for init): 0QAIyO_VYNk2U8F5mu9WRUNE54gR8GI3Py9NWwTb1YX1UYRI
-Bounceable address (for later access): kQAIyO_VYNk2U8F5mu9WRUNE54gR8GI3Py9NWwTb1YX1UdmN
+Non-bounceable address (for init): 0QAnm6TnQBTEPxTO89JvhnAPVsFe8-RuxFfoSEif85KLwgyf
+Bounceable address (for later access): kQAnm6TnQBTEPxTO89JvhnAPVsFe8-RuxFfoSEif85KLwlFa
 mainnet:
-Non-bounceable address (for init): UQAIyO_VYNk2U8F5mu9WRUNE54gR8GI3Py9NWwTb1YX1UT_C
-Bounceable address (for later access): EQAIyO_VYNk2U8F5mu9WRUNE54gR8GI3Py9NWwTb1YX1UWIH
+Non-bounceable address (for init): UQAnm6TnQBTEPxTO89JvhnAPVsFe8-RuxFfoSEif85KLwrcV
+Bounceable address (for later access): EQAnm6TnQBTEPxTO89JvhnAPVsFe8-RuxFfoSEif85KLwurQ
 Succeeded
