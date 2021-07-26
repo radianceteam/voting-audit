@@ -77,8 +77,8 @@ contract VotingAuditDebotACTMmenu is Debot {
     uint128 GRAMS_INIT_VOTE = 600000000;
     uint128 GRAMS_CREATE_DEAUDIT = 1100000000;
 
-    address DeAuditRoot = address.makeAddrStd(0, 0xaaa43758f17b6ad589924ed8dad5b7bbfcfbdbb6661135944f435b93ae542efe);
-    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
+    address DeAuditRoot = address.makeAddrStd(0, 0xeb29541ddefbe0d27642d031c2831b7f573952f3a002fb5b3a9308f7362c225c);
+    address m_participant = address.makeAddrStd(0, 0x3f9a896c0da1e0ed3efbe26a6a501020b1dd81d589f43e9f551dcdd529c5593b);
 
     bytes m_icon;
 
