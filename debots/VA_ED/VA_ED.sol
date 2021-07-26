@@ -51,7 +51,7 @@ contract VotingAuditDebotED is Debot {
     //TODO for test only
     uint128 GRAMS_ADD = 700000000;
 //    address choosenDADaddress = address.makeAddrStd(0, 0xc9d81bb29dcbdf531db223524ed8e5bdc8af2073100e29d809670b542c2b5022);
-    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
+    address m_participant = address.makeAddrStd(0, 0x3f9a896c0da1e0ed3efbe26a6a501020b1dd81d589f43e9f551dcdd529c5593b);
     //END
     bytes m_icon;
 
