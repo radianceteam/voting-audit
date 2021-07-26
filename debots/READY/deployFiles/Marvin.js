@@ -1,0 +1,48 @@
+const MarvinContract = {
+    abi: {
+        "ABI version": 2,
+        "header": [
+            "time"
+        ],
+        "functions": [
+            {
+                "name": "grant",
+                "inputs": [
+                    {
+                        "name": "addr",
+                        "type": "address"
+                    }
+                ],
+                "outputs": []
+            },
+            {
+                "name": "blackList",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "suspended",
+                        "type": "address[]"
+                    }
+                ]
+            },
+            {
+                "name": "doubleCheck",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "suspended",
+                        "type": "address[]"
+                    }
+                ]
+            },
+            {
+                "name": "constructor",
+                "inputs": [],
+                "outputs": []
+            }
+        ],
+        "data": [],
+        "events": []
+    },
+};
+module.exports = { MarvinContract };
