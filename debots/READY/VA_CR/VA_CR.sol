@@ -54,9 +54,9 @@ interface IRootTokenContract {
 
 contract VotingAuditDebot is Debot {
 
-    address DeAuditRoot = address.makeAddrStd(0, 0xaaa43758f17b6ad589924ed8dad5b7bbfcfbdbb6661135944f435b93ae542efe);
-    address m_participant = address.makeAddrStd(0, 0x93ea7e6b031afcd09002ee0325c90b3760b433d381c13a2061af391eefb03fab);
-    //END
+    address DeAuditRoot = address.makeAddrStd(0, 0xeb29541ddefbe0d27642d031c2831b7f573952f3a002fb5b3a9308f7362c225c);
+//    address m_participant = address.makeAddrStd(0, 0x93ea7e6b031afcd09002ee0325c90b3760b433d381c13a2061af391eefb03fab);
+address m_participant;
     bytes m_icon;
 
     string m_seedphrase;

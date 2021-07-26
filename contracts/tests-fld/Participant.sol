@@ -160,10 +160,11 @@ contract Participant is IParticipant {
 		bytes nameMunicipalBody,
 		uint256 indexDistrict,
 		uint128 grams
-	)  public view checkOwnerAndAccept {
+	)  public view checkOwnerAndAccept returns (string status) {
 		require(initiatedDeAuditData.exists(addressDeAuditData), 103);
 		TvmCell body = tvm.encodeBody(IDeAuditData(addressDeAuditData).addMunicipalBody, nameMunicipalBody, indexDistrict);
 		addressDeAuditData.transfer({value:grams, flag:0, bounce:true, body:body});
+		status = "Success";
 	}
 
 	function addVotingPool(

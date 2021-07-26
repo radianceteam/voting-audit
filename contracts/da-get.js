@@ -3,7 +3,7 @@ const { libNode } = require("@tonclient/lib-node");
 const { Account } = require("@tonclient/appkit");
 const fs = require('fs');
 const dotenv = require('dotenv').config();
-const networks = ["http://localhost",'net.ton.dev','main.ton.dev','rustnet.ton.dev'];
+const networks = ["http://localhost",'net.ton.dev','main.ton.dev','gql.castler.net'];
 const hello = ["Hello localhost TON!","Hello dev net TON!","Hello main net TON!","Hello rust dev net TON!"];
 const networkSelector = process.env.NET_SELECTOR;
 
@@ -233,7 +233,7 @@ async function main(client) {
 }
 
 (async () => {
-  const client = new TonClient({network: { endpoints: [networks[networkSelector]],},});
+  const client = new TonClient({network: { endpoints: [networks[3]],},});
   try {
     console.log(hello[networkSelector]);
     await main(client);

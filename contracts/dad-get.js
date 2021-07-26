@@ -85,7 +85,7 @@ async function main(client) {
 
 
   const deauditdataAcc = new Account(DeAuditDataContract, {
-    address: deauditDataAddr1,
+    address: "0:ea7967d5f213b327b0b243960b01bb8933a7c74dbf8887376c157d2b5e51ea78",
     // signer: participantKeys,
     client,
   });

@@ -234,7 +234,7 @@ contract Participant is IParticipant {
 		addrAct4.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
 
-	function validateAgainst(address addrAct4, uint128 grams)  public  view checkOwnerAndAccept {
+	function registrationForValidation(address addrAct4, uint128 grams)  public  view checkOwnerAndAccept {
 		TvmCell body = tvm.encodeBody(IAct4(addrAct4).voteAgainst);
 		addrAct4.transfer({value:grams, flag:0, bounce:true, body:body});
 	}
@@ -247,6 +247,21 @@ contract Participant is IParticipant {
 		cv.wallet = walletDeAudit;
 		activities[addressDeAudit] = cv;
 		walletsDC.push(walletDeAudit);
+	}
+
+	function getCurActivity(uint256 curLaunchedDeAudit) public view returns (
+			bool reg;
+			uint8 atype;
+			address[] act4Arr;
+			address wallet;
+			address curDAactiv;
+		) {
+			Activity curActiv = activities[curLaunchedDeAudit];
+			reg = curActiv.reg;
+			atype = curActiv.atype;
+			act4Arr = curActiv.act4Arr;
+			wallet = curActiv.wallet;
+			curDAactiv = curLaunchedDeAudit;
 	}
 
 	// Function for get this contract TON gramms balance

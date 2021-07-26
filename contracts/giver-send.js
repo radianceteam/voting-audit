@@ -3,9 +3,9 @@ const { libNode } = require("@tonclient/lib-node");
 const { Account } = require("@tonclient/appkit");
 const { GiverContract } = require("./Giver.js");
 const dotenv = require('dotenv').config();
-const networks = ["http://localhost",'net.ton.dev','main.ton.dev','rustnet.ton.dev','https://gql.custler.net'];
+const networks = ["http://localhost",'net.ton.dev','main.ton.dev','rustnet.ton.dev','gql.custler.net'];
 const hello = ["Hello localhost TON!","Hello dev net TON!","Hello main net TON!","Hello rust dev net TON!","Hello fld dev net TON!"];
-const networkSelector = process.env.NET_SELECTOR;
+const networkSelector = 4;
 
 const fs = require('fs');
 // const pathJsonR = './GiverContractRTD.json';
@@ -40,7 +40,7 @@ async function main(client) {
 
 
     // const giverAddr = JSON.parse(fs.readFileSync('./GiverContractFLD.json',{encoding: "utf8"})).address;
-    const giverKeys = JSON.parse(fs.readFileSync('./GiverContractNTD.json',{encoding: "utf8"})).keys;
+    const giverKeys = JSON.parse(fs.readFileSync('./GiverContractFLD.json',{encoding: "utf8"})).keys;
     // const giverAddr = JSON.parse(fs.readFileSync(pathJsonClient,{encoding: "utf8"})).address;
 
     const giverAcc = new Account(GiverContract, {
@@ -52,7 +52,7 @@ async function main(client) {
     console.log(`address of the GiverContract: ${giverAddr}`);
 
     // Call `sendTransaction` function
-    response = await giverAcc.run("sendTransaction", {dest:destination,value:gramms,bounce:false});
+    response = await giverAcc.run("sendTransaction", {dest:"0:a9daef03520d8682c19ef6a18a44902522ee64d704598da06658abb1c0ba947b",value:gramms,bounce:false});
     console.log(`Contract run sendTransaction with output ${response.decoded.output}, ${response.transaction.id}`);
 
     // Execute `getBalance` get method  (execute the message locally on TVM)

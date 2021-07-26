@@ -83,11 +83,15 @@ async function main(client) {
   console.log("Contract reacted to your keysDeAuditData:", keysDeAuditData[indexKeysDeAuditData]);
 
 
-  let deauditDataAddr1 = keysDeAuditData[indexKeysDeAuditData];
+  let deauditDataAddr1 = keysDeAuditData[0];
 
-
+  // '0:a3a7788399daf465b83835c2bbc06daaf43cadb5ccee019b12d642095a0cd339',
+  //     '0:6245a4d0a2e08c623044304f2e1145e117d21710143adaf85c81746b31a01e05',
+  //     '0:bf4ce2e897e441f14df2674ee88763fe1af0e60ed0a0392d52e6e3943f447176',
+  //     '0:76e15a530659ef5a06d999ffdad82b1bca9db0e8d1bc554fc7ea69a59889e993',
+  //     '0:6d600eef734b374e20447679b991b08d3cfa21984a1f617c4f8817e635dbd81f'
   const deauditdataAcc = new Account(DeAuditDataContract, {
-    address: deauditDataAddr1,
+    address: "0:a3a7788399daf465b83835c2bbc06daaf43cadb5ccee019b12d642095a0cd339",
     // signer: participantKeys,
     client,
   });

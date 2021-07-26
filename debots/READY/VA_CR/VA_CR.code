@@ -4925,12 +4925,8 @@ TRUE
 SETGLOB 8
 	;; init state var: DeAuditRoot
 	;; address.makeAddrStd()
-	PUSHSLICE x80155486eb1e2f6d5ab13249db1b5ab6f77f9f7b76ccc226b289e86b7275ca85dfd_
+	PUSHSLICE x801d652a83bbdf7c1a4ec85a063850636feae72a5e74005f6b6752611ee6c5844b9_
 	SETGLOB 17
-	;; init state var: m_participant
-	;; address.makeAddrStd()
-	PUSHSLICE x80127d4fcd60635f9a12005dc064b92166ec16867a703827440c35e723ddf607f57_
-	SETGLOB 18
 }
 IFELSE
 
@@ -5022,196 +5018,6 @@ CALLREF {
 GETGLOB 7
 ISNULL
 THROWIF 60
-
-.globl	AddressInput_with_obj_get
-.type	AddressInput_with_obj_get, @function
-CALL $AddressInput_with_obj_get_macro$
-
-.macro AddressInput_with_obj_get_macro
-;; param: answerId
-;; param: prompt
-; function get
-;; address.makeAddrStd()
-PUSHSLICE x9c3afda37b1cc4610e222de8a45cb1be15278aa418ade95bc47de7b12335308ca77_
-;; decl: addr
-;; Remote call IAddressInput.get
-;; push identifier prompt
-;; push identifier answerId
-;; push identifier addr
-PUSH3 S1, S2, S0
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000421b400b_
-STSLICER
-STU 32
-STREF
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function get
-DROP2
-
-.globl	AddressInput_no_obj_get
-.type	AddressInput_no_obj_get, @function
-CALL $AddressInput_no_obj_get_macro$
-
-.macro AddressInput_no_obj_get_macro
-;; param: answerId
-;; param: prompt
-; function get
-;; address.makeAddrStd()
-PUSHSLICE x9c3afda37b1cc4610e222de8a45cb1be15278aa418ade95bc47de7b12335308ca77_
-;; decl: addr
-;; Remote call IAddressInput.get
-;; push identifier prompt
-;; push identifier answerId
-;; push identifier addr
-PUSH3 S1, S2, S0
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000421b400b_
-STSLICER
-STU 32
-STREF
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function get
-BLKDROP 3
-
-.globl	ConfirmInput_with_obj_get
-.type	ConfirmInput_with_obj_get, @function
-CALL $ConfirmInput_with_obj_get_macro$
-
-.macro ConfirmInput_with_obj_get_macro
-;; param: answerId
-;; param: prompt
-; function get
-;; address.makeAddrStd()
-PUSHSLICE x9c22cca7d5e6992428ce241e4d0ba84bff2c7b6b976b54ced4c545c677f87ed0515_
-;; decl: addr
-;; Remote call IConfirmInput.get
-;; push identifier prompt
-;; push identifier answerId
-;; push identifier addr
-PUSH3 S1, S2, S0
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000869219e5_
-STSLICER
-STU 32
-STREF
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function get
-DROP2
-
-.globl	ConfirmInput_no_obj_get
-.type	ConfirmInput_no_obj_get, @function
-CALL $ConfirmInput_no_obj_get_macro$
-
-.macro ConfirmInput_no_obj_get_macro
-;; param: answerId
-;; param: prompt
-; function get
-;; address.makeAddrStd()
-PUSHSLICE x9c22cca7d5e6992428ce241e4d0ba84bff2c7b6b976b54ced4c545c677f87ed0515_
-;; decl: addr
-;; Remote call IConfirmInput.get
-;; push identifier prompt
-;; push identifier answerId
-;; push identifier addr
-PUSH3 S1, S2, S0
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000869219e5_
-STSLICER
-STU 32
-STREF
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function get
-BLKDROP 3
-
-.globl	Menu_with_obj_select
-.type	Menu_with_obj_select, @function
-CALL $Menu_with_obj_select_macro$
-
-.macro Menu_with_obj_select_macro
-;; param: title
-;; param: description
-;; param: items
-; function select
-;; address.makeAddrStd()
-PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
-;; decl: addr
-;; Remote call IMenu.select
-;; push identifier items
-;; push identifier description
-;; push identifier title
-PUSH3 S1, S2, S3
-;; push identifier addr
-PUSH S3
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000d3028c73_
-STSLICER
-STREF
-STREF
-SWAP
-UNPAIR
-XCHG s2
-STU 32
-STDICT
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function select
-BLKDROP 3
-
-.globl	Menu_no_obj_select
-.type	Menu_no_obj_select, @function
-CALL $Menu_no_obj_select_macro$
-
-.macro Menu_no_obj_select_macro
-;; param: title
-;; param: description
-;; param: items
-; function select
-;; address.makeAddrStd()
-PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
-;; decl: addr
-;; Remote call IMenu.select
-;; push identifier items
-;; push identifier description
-;; push identifier title
-PUSH3 S1, S2, S3
-;; push identifier addr
-PUSH S3
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000d3028c73_
-STSLICER
-STREF
-STREF
-SWAP
-UNPAIR
-XCHG s2
-STU 32
-STDICT
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function select
-BLKDROP 4
 
 .globl	Sdk_with_obj_getBalance
 .type	Sdk_with_obj_getBalance, @function
@@ -5774,6 +5580,196 @@ PUSHINT 0
 SENDRAWMSG
 ; end function print
 BLKDROP 3
+
+.globl	AddressInput_with_obj_get
+.type	AddressInput_with_obj_get, @function
+CALL $AddressInput_with_obj_get_macro$
+
+.macro AddressInput_with_obj_get_macro
+;; param: answerId
+;; param: prompt
+; function get
+;; address.makeAddrStd()
+PUSHSLICE x9c3afda37b1cc4610e222de8a45cb1be15278aa418ade95bc47de7b12335308ca77_
+;; decl: addr
+;; Remote call IAddressInput.get
+;; push identifier prompt
+;; push identifier answerId
+;; push identifier addr
+PUSH3 S1, S2, S0
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000421b400b_
+STSLICER
+STU 32
+STREF
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function get
+DROP2
+
+.globl	AddressInput_no_obj_get
+.type	AddressInput_no_obj_get, @function
+CALL $AddressInput_no_obj_get_macro$
+
+.macro AddressInput_no_obj_get_macro
+;; param: answerId
+;; param: prompt
+; function get
+;; address.makeAddrStd()
+PUSHSLICE x9c3afda37b1cc4610e222de8a45cb1be15278aa418ade95bc47de7b12335308ca77_
+;; decl: addr
+;; Remote call IAddressInput.get
+;; push identifier prompt
+;; push identifier answerId
+;; push identifier addr
+PUSH3 S1, S2, S0
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000421b400b_
+STSLICER
+STU 32
+STREF
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function get
+BLKDROP 3
+
+.globl	ConfirmInput_with_obj_get
+.type	ConfirmInput_with_obj_get, @function
+CALL $ConfirmInput_with_obj_get_macro$
+
+.macro ConfirmInput_with_obj_get_macro
+;; param: answerId
+;; param: prompt
+; function get
+;; address.makeAddrStd()
+PUSHSLICE x9c22cca7d5e6992428ce241e4d0ba84bff2c7b6b976b54ced4c545c677f87ed0515_
+;; decl: addr
+;; Remote call IConfirmInput.get
+;; push identifier prompt
+;; push identifier answerId
+;; push identifier addr
+PUSH3 S1, S2, S0
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000869219e5_
+STSLICER
+STU 32
+STREF
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function get
+DROP2
+
+.globl	ConfirmInput_no_obj_get
+.type	ConfirmInput_no_obj_get, @function
+CALL $ConfirmInput_no_obj_get_macro$
+
+.macro ConfirmInput_no_obj_get_macro
+;; param: answerId
+;; param: prompt
+; function get
+;; address.makeAddrStd()
+PUSHSLICE x9c22cca7d5e6992428ce241e4d0ba84bff2c7b6b976b54ced4c545c677f87ed0515_
+;; decl: addr
+;; Remote call IConfirmInput.get
+;; push identifier prompt
+;; push identifier answerId
+;; push identifier addr
+PUSH3 S1, S2, S0
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000869219e5_
+STSLICER
+STU 32
+STREF
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function get
+BLKDROP 3
+
+.globl	Menu_with_obj_select
+.type	Menu_with_obj_select, @function
+CALL $Menu_with_obj_select_macro$
+
+.macro Menu_with_obj_select_macro
+;; param: title
+;; param: description
+;; param: items
+; function select
+;; address.makeAddrStd()
+PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
+;; decl: addr
+;; Remote call IMenu.select
+;; push identifier items
+;; push identifier description
+;; push identifier title
+PUSH3 S1, S2, S3
+;; push identifier addr
+PUSH S3
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000d3028c73_
+STSLICER
+STREF
+STREF
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function select
+BLKDROP 3
+
+.globl	Menu_no_obj_select
+.type	Menu_no_obj_select, @function
+CALL $Menu_no_obj_select_macro$
+
+.macro Menu_no_obj_select_macro
+;; param: title
+;; param: description
+;; param: items
+; function select
+;; address.makeAddrStd()
+PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
+;; decl: addr
+;; Remote call IMenu.select
+;; push identifier items
+;; push identifier description
+;; push identifier title
+PUSH3 S1, S2, S3
+;; push identifier addr
+PUSH S3
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000d3028c73_
+STSLICER
+STREF
+STREF
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function select
+BLKDROP 4
 
 .macro public_function_selector
 DUP

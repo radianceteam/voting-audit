@@ -3,7 +3,7 @@ const { libNode } = require("@tonclient/lib-node");
 const { Account } = require("@tonclient/appkit");
 const fs = require('fs');
 const dotenv = require('dotenv').config();
-const networks = ["http://localhost",'net.ton.dev','main.ton.dev','rustnet.ton.dev'];
+const networks = ["http://localhost",'net.ton.dev','fld.ton.dev','gql.castler.net'];
 const hello = ["Hello localhost TON!","Hello dev net TON!","Hello main net TON!","Hello rust dev net TON!"];
 const networkSelector = process.env.NET_SELECTOR;
 
@@ -44,7 +44,7 @@ async function logEvents(params, response_type) {
 async function main(client) {
   let response;
   const rootAddr = JSON.parse(fs.readFileSync(pathJsonRoot,{encoding: "utf8"})).address;
-  const rootAcc = new Account(DeAuditRootContract, {address:rootAddr,client,});
+  const rootAcc = new Account(DeAuditRootContract, {address:"0:96f39ad41e187a90bf45c7f80b370da825e188435a6cc1a4b8b4c42511f58616",client,});
   console.log("DeAuditRoot address:", rootAddr);
 
 
@@ -128,7 +128,7 @@ async function main(client) {
 }
 
 (async () => {
-  const client = new TonClient({network: { endpoints: [networks[networkSelector]],},});
+  const client = new TonClient({network: { endpoints: [networks[1]],},});
   try {
     console.log(hello[networkSelector]);
     await main(client);

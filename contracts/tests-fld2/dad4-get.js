@@ -87,7 +87,7 @@ async function main(client) {
 
 
   const deauditdataAcc = new Account(DeAuditDataContract, {
-    address: deauditDataAddr1,
+    address: "0:a3a7788399daf465b83835c2bbc06daaf43cadb5ccee019b12d642095a0cd339",
     // signer: participantKeys,
     client,
   });
@@ -147,6 +147,7 @@ async function main(client) {
   console.log("Contract reacted to your municipalBody:", response.decoded.output);
   let municipalBody = response.decoded.output.municipalBody;
 
+  console.log("ttt",municipalBody["0x0000000000000000000000000000000000000000000000000000000000000006"].votingPoolsArr);
   for (const item of municipalBodyKeys) {
     console.log(hex2ascii(municipalBody[item].name));
   }

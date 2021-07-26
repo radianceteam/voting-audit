@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "description": "Radiance voting-audit core smartcontracts",
     "main": "",
+    "client": "npm start --prefix client",
     "scripts": {
         "start": "index.js"
     },
@@ -15,11 +16,10 @@
         "@tonclient/lib-node": "^1.16.0",
         "@tonclient/lib-web": "^1.16.0",
         "ascii-hex": "^1.0.1",
+        "core-util-is": "^1.0.2",
         "dotenv": "^9.0.2",
         "express": "^4.17.1",
         "hex2ascii": "^0.0.3",
-        "mocha": "^9.0.0",
-        "mocha-logger": "^1.0.7",
         "shelljs": "^0.8.4",
         "tondev": "^0.7.4"
     },

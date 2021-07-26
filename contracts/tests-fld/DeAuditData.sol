@@ -487,6 +487,4 @@ contract DeAuditData is IDeAuditData {
     votes4Debot = curCandidate.votes;
     candidateCurrentKeyD = candidateCurrentKey;
   }
-
-
 }
