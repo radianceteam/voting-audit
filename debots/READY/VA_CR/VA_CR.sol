@@ -306,18 +306,6 @@ uint128 userBalance;
         curDA cr = DeAudits[cureDA];
 
 
-============Voting # 4=================
-
-
-Sequential Number: Voting DeAudit TEST # 4, deploed: 26 Jul 2021 0:52:27
-Time Start (timestamp sec): 1627249947
-Collation Period (timestamp sec): 60
-Validation Period (timestamp sec): 2592000
-Collation Stake (TON Crystal): 3000000000
-Collation Stake (TON Crystal): 1000000000
-Total Supply for curent DeAudit (TON Crystal): 128000000000
-Name: Voting DeAudit TEST # 4, deploed: 26 Jul 2021 0:52:27
-
         Terminal.print(0,format("============Voting # {}=================\n(timestamp - number second from 00:00:00 31.12.1969)\n========================================\nSequential Number: {}\nTime Start (timestamp sec): {}\nCollation Period (timestamp sec): {}\nValidation Period (timestamp sec): {}\nCollation Stake (TON Crystal): {}\nCollation Stake (TON Crystal): {}\nTotal Supply for curent DeAudit (TON Crystal): {}\nName: {}\n========================",
             cr.sequentialNumber,
             cr.name,
