@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "rapid brisk roof universe clip poet economy spread nothing lawsuit cram blame"
-Raw address: 0:6e653b6810ff6ad6a5ec8be1436b2aae57b47de932c948c8aa78142281740a9b
+Seed phrase: "limit distance festival subject silly roof drill joy income catalog letter mango"
+Raw address: 0:116432c22311d6747296749761ad6a6ff305e901cabfd54db7c2c3afd4bebb12
 testnet:
-Non-bounceable address (for init): 0QBuZTtoEP9q1qXsi-FDayquV7R96TLJSMiqeBQigXQKm3zk
-Bounceable address (for later access): kQBuZTtoEP9q1qXsi-FDayquV7R96TLJSMiqeBQigXQKmyEh
+Non-bounceable address (for init): 0QARZDLCIxHWdHKWdJdhrWpv8wXpAcq_1U23wsOv1L67EkhK
+Bounceable address (for later access): kQARZDLCIxHWdHKWdJdhrWpv8wXpAcq_1U23wsOv1L67EhWP
 mainnet:
-Non-bounceable address (for init): UQBuZTtoEP9q1qXsi-FDayquV7R96TLJSMiqeBQigXQKm8du
-Bounceable address (for later access): EQBuZTtoEP9q1qXsi-FDayquV7R96TLJSMiqeBQigXQKm5qr
+Non-bounceable address (for init): UQARZDLCIxHWdHKWdJdhrWpv8wXpAcq_1U23wsOv1L67EvPA
+Bounceable address (for later access): EQARZDLCIxHWdHKWdJdhrWpv8wXpAcq_1U23wsOv1L67Eq4F
 Succeeded

@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "fix soldier true man found time hub pact hidden jar update volcano"
-Raw address: 0:23e387c2b3eb13c5e3b0ba5514ab369d5d4ade735e910571b3c4ae64b53f441c
+Seed phrase: "green bottom kit thought search mouse hair first trap clever bleak suffer"
+Raw address: 0:9b1ddc8b079591cf1a85fc9a7f9c74a8eed272137c9cfee3c28d49c1a6f00072
 testnet:
-Non-bounceable address (for init): 0QAj44fCs-sTxeOwulUUqzadXUrec16RBXGzxK5ktT9EHJjk
-Bounceable address (for later access): kQAj44fCs-sTxeOwulUUqzadXUrec16RBXGzxK5ktT9EHMUh
+Non-bounceable address (for init): 0QCbHdyLB5WRzxqF_Jp_nHSo7tJyE3yc_uPCjUnBpvAAcoT0
+Bounceable address (for later access): kQCbHdyLB5WRzxqF_Jp_nHSo7tJyE3yc_uPCjUnBpvAActkx
 mainnet:
-Non-bounceable address (for init): UQAj44fCs-sTxeOwulUUqzadXUrec16RBXGzxK5ktT9EHCNu
-Bounceable address (for later access): EQAj44fCs-sTxeOwulUUqzadXUrec16RBXGzxK5ktT9EHH6r
+Non-bounceable address (for init): UQCbHdyLB5WRzxqF_Jp_nHSo7tJyE3yc_uPCjUnBpvAAcj9-
+Bounceable address (for later access): EQCbHdyLB5WRzxqF_Jp_nHSo7tJyE3yc_uPCjUnBpvAAcmK7
 Succeeded

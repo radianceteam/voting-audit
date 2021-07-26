@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "bicycle become tattoo produce track quick winter fall sing turkey obvious gain"
-Raw address: 0:93915466386dace63c3f3c2cc0be8d20378a05e0ef6f330309c9823968a42f40
+Seed phrase: "before female ring urban soft balcony scrap member laundry sad carpet flash"
+Raw address: 0:e8d681f9f007fb46096f6dfb2de65d7b4c897f542d639ef9e1a53917d1765825
 testnet:
-Non-bounceable address (for init): 0QCTkVRmOG2s5jw_PCzAvo0gN4oF4O9vMwMJyYI5aKQvQN7Z
-Bounceable address (for later access): kQCTkVRmOG2s5jw_PCzAvo0gN4oF4O9vMwMJyYI5aKQvQIMc
+Non-bounceable address (for init): 0QDo1oH58Af7Rglvbfst5l17TIl_VC1jnvnhpTkX0XZYJdU4
+Bounceable address (for later access): kQDo1oH58Af7Rglvbfst5l17TIl_VC1jnvnhpTkX0XZYJYj9
 mainnet:
-Non-bounceable address (for init): UQCTkVRmOG2s5jw_PCzAvo0gN4oF4O9vMwMJyYI5aKQvQGVT
-Bounceable address (for later access): EQCTkVRmOG2s5jw_PCzAvo0gN4oF4O9vMwMJyYI5aKQvQDiW
+Non-bounceable address (for init): UQDo1oH58Af7Rglvbfst5l17TIl_VC1jnvnhpTkX0XZYJW6y
+Bounceable address (for later access): EQDo1oH58Af7Rglvbfst5l17TIl_VC1jnvnhpTkX0XZYJTN3
 Succeeded

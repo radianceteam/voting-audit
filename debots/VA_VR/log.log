@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "high slice reopen charge drastic pink misery mirror venue enforce unhappy sheriff"
-Raw address: 0:279ba4e74014c43f14cef3d26f86700f56c15ef3e46ec457e848489ff3928bc2
+Seed phrase: "photo guitar cousin whale twist hurt sphere expect major fine beyond room"
+Raw address: 0:85b58a73b84415a9ab0899f22b60bfdc2e0153234f0f4be6fa2397e7874d5e9d
 testnet:
-Non-bounceable address (for init): 0QAnm6TnQBTEPxTO89JvhnAPVsFe8-RuxFfoSEif85KLwgyf
-Bounceable address (for later access): kQAnm6TnQBTEPxTO89JvhnAPVsFe8-RuxFfoSEif85KLwlFa
+Non-bounceable address (for init): 0QCFtYpzuEQVqasImfIrYL_cLgFTI08PS-b6I5fnh01enfzY
+Bounceable address (for later access): kQCFtYpzuEQVqasImfIrYL_cLgFTI08PS-b6I5fnh01enaEd
 mainnet:
-Non-bounceable address (for init): UQAnm6TnQBTEPxTO89JvhnAPVsFe8-RuxFfoSEif85KLwrcV
-Bounceable address (for later access): EQAnm6TnQBTEPxTO89JvhnAPVsFe8-RuxFfoSEif85KLwurQ
+Non-bounceable address (for init): UQCFtYpzuEQVqasImfIrYL_cLgFTI08PS-b6I5fnh01enUdS
+Bounceable address (for later access): EQCFtYpzuEQVqasImfIrYL_cLgFTI08PS-b6I5fnh01enRqX
 Succeeded

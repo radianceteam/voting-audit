@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "ahead gun cheap april gym wish apology parrot magic marine alcohol coconut"
-Raw address: 0:0708ee1d5bc27b193f7b9768a71a23c3d6761de58e57def9a303b2ec0e2ee8fe
+Seed phrase: "vivid pepper glimpse fly spin shoe north have female change seed october"
+Raw address: 0:a0c478de5229e4903231a78deee43afeb274a3d9f63b99e41771dc3b07637ad2
 testnet:
-Non-bounceable address (for init): 0QAHCO4dW8J7GT97l2inGiPD1nYd5Y5X3vmjA7LsDi7o_v3n
-Bounceable address (for later access): kQAHCO4dW8J7GT97l2inGiPD1nYd5Y5X3vmjA7LsDi7o_qAi
+Non-bounceable address (for init): 0QCgxHjeUinkkDIxp43u5Dr-snSj2fY7meQXcdw7B2N60ie5
+Bounceable address (for later access): kQCgxHjeUinkkDIxp43u5Dr-snSj2fY7meQXcdw7B2N60np8
 mainnet:
-Non-bounceable address (for init): UQAHCO4dW8J7GT97l2inGiPD1nYd5Y5X3vmjA7LsDi7o_kZt
-Bounceable address (for later access): EQAHCO4dW8J7GT97l2inGiPD1nYd5Y5X3vmjA7LsDi7o_huo
+Non-bounceable address (for init): UQCgxHjeUinkkDIxp43u5Dr-snSj2fY7meQXcdw7B2N60pwz
+Bounceable address (for later access): EQCgxHjeUinkkDIxp43u5Dr-snSj2fY7meQXcdw7B2N60sH2
 Succeeded

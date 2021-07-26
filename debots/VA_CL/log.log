@@ -6,12 +6,12 @@ Input arguments:
 init_data: None
 is_update_tvc: None
 
-Seed phrase: "staff profit fiscal ticket shift exit tube soon ghost manual cherry coil"
-Raw address: 0:a6378f63a2cd524cbd1f14b3797c52ba5ac550db5c7ddef69de1648feeb0427b
+Seed phrase: "actual water slow ozone flat receive reduce enrich welcome exit roast cook"
+Raw address: 0:7e1a85cb8c347ab080de78e5a5f2c0a81a6a314330152a26513b5d12cfe2fa1a
 testnet:
-Non-bounceable address (for init): 0QCmN49jos1STL0fFLN5fFK6WsVQ21x93vad4WSP7rBCe0Vr
-Bounceable address (for later access): kQCmN49jos1STL0fFLN5fFK6WsVQ21x93vad4WSP7rBCexiu
+Non-bounceable address (for init): 0QB-GoXLjDR6sIDeeOWl8sCoGmoxQzAVKiZRO10Sz-L6Gijq
+Bounceable address (for later access): kQB-GoXLjDR6sIDeeOWl8sCoGmoxQzAVKiZRO10Sz-L6GnUv
 mainnet:
-Non-bounceable address (for init): UQCmN49jos1STL0fFLN5fFK6WsVQ21x93vad4WSP7rBCe_7h
-Bounceable address (for later access): EQCmN49jos1STL0fFLN5fFK6WsVQ21x93vad4WSP7rBCe6Mk
+Non-bounceable address (for init): UQB-GoXLjDR6sIDeeOWl8sCoGmoxQzAVKiZRO10Sz-L6GpNg
+Bounceable address (for later access): EQB-GoXLjDR6sIDeeOWl8sCoGmoxQzAVKiZRO10Sz-L6Gs6l
 Succeeded
