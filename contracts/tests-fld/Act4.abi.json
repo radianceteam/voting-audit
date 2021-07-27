@@ -32,15 +32,6 @@
 			]
 		},
 		{
-			"name": "addToAdditionalPhotoLinkArr",
-			"inputs": [
-				{"name":"linkToPhoto","type":"bytes"},
-				{"name":"participant","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "setValidator",
 			"inputs": [
 				{"name":"participant","type":"address"}
@@ -86,7 +77,15 @@
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"vcms","type":"uint256"}
+				{"name":"vcms","type":"uint8"}
+			]
+		},
+		{
+			"name": "lvfc",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"lvfc","type":"uint256"}
 			]
 		},
 		{
@@ -114,14 +113,6 @@
 			]
 		},
 		{
-			"name": "additionalPhotoLinkArr",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"additionalPhotoLinkArr","type":"bytes[]"}
-			]
-		},
-		{
 			"name": "validator",
 			"inputs": [
 			],
@@ -138,19 +129,19 @@
 			]
 		},
 		{
-			"name": "countValidationsFor",
+			"name": "validatorsFor",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"countValidationsFor","type":"uint256"}
+				{"name":"validatorsFor","type":"address[]"}
 			]
 		},
 		{
-			"name": "countValidationsAgainst",
+			"name": "validatorsAgainst",
 			"inputs": [
 			],
 			"outputs": [
-				{"name":"countValidationsAgainst","type":"uint256"}
+				{"name":"validatorsAgainst","type":"address[]"}
 			]
 		}
 	],
@@ -158,10 +149,11 @@
 		{"key":1,"name":"rootDeAudit","type":"address"},
 		{"key":2,"name":"dataDeAudit","type":"address"},
 		{"key":3,"name":"idVotingCenter","type":"uint256"},
-		{"key":4,"name":"vcms","type":"uint256"},
-		{"key":5,"name":"collator","type":"address"},
-		{"key":6,"name":"collatorPhotoLink","type":"bytes"},
-		{"key":7,"name":"voteMatrix","type":"uint256[]"}
+		{"key":4,"name":"vcms","type":"uint8"},
+		{"key":5,"name":"lvfc","type":"uint256"},
+		{"key":6,"name":"collator","type":"address"},
+		{"key":7,"name":"collatorPhotoLink","type":"bytes"},
+		{"key":8,"name":"voteMatrix","type":"uint256[]"}
 	],
 	"events": [
 	]

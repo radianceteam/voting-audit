@@ -24,9 +24,6 @@ const { TONTokenWalletContract } = require("./TONTokenWallet.js");
 const pathJsonRoot = './DeAuditRoot.json';
 const pathJsonParticipants = './Participants.json';
 
-const indexKeysDeAuditData = 2;
-
-
 const hex = require('ascii-hex');
 const hex2ascii = require('hex2ascii');
 
@@ -75,11 +72,13 @@ async function main(client) {
 
 
   response = await rootAcc.runLocal("keysDeAudit", {});
-  console.log("key DeAudit :",indexKeysDeAuditData,', address: ',response.decoded.output.keysDeAudit[indexKeysDeAuditData]);
-  let deauditAddr = response.decoded.output.keysDeAudit[indexKeysDeAuditData];
+  console.log("keysDeAudit[0]:", response.decoded.output.keysDeAudit[2]);
+  let deauditAddr = response.decoded.output.keysDeAudit[2];
 
+  let indexParticipant = 17;
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
   console.log("resultArr.length:", resultArr.length);
+  let indexP = 0;
   for (const item of resultArr) {
     const participantAddr = item.address;
     const participantKeys = item.keys;
@@ -88,7 +87,7 @@ async function main(client) {
       signer: participantKeys,
       client,
     });
-
+    console.log("participant index:", indexP);
     console.log("participant address:", participantAddr);
 
     response = await participantAcc.runLocal("getBalance", {_answer_id:0});
@@ -100,6 +99,8 @@ async function main(client) {
 
     if (response.decoded.output.activities[deauditAddr] !== undefined) {
       let wallet = response.decoded.output.activities[deauditAddr].wallet;
+      let act4Arr = response.decoded.output.activities[deauditAddr].act4Arr;
+      console.log("participant act4Arr:", act4Arr);
       console.log("participant wallet:", wallet);
       if (wallet !== '0:0000000000000000000000000000000000000000000000000000000000000000'){
         const tokenWalletAcc = new Account(TONTokenWalletContract, {address: wallet,client,});
@@ -109,7 +110,7 @@ async function main(client) {
     }
 
 
-
+   indexP ++;
 
   }
 

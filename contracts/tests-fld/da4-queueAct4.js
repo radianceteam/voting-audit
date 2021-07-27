@@ -74,22 +74,22 @@ async function main(client) {
 
 
   response = await rootAcc.runLocal("keysDeAudit", {});
-  console.log("keysDeAudit index:"+indexKeysDeAuditData+' address:'+response.decoded.output.keysDeAudit[indexKeysDeAuditData]);
+  console.log("keysDeAudit index:"+indexKeysDeAuditData+' address: '+response.decoded.output.keysDeAudit[indexKeysDeAuditData]);
 
   let deauditAddr = response.decoded.output.keysDeAudit[indexKeysDeAuditData];
 
 
-  // let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
-  // const participantAddr = resultArr[indexParticipant].address;
-  // const participantKeys = resultArr[indexParticipant].keys;
-  // const participantAcc = new Account(ParticipantContract, {
-  //   address: participantAddr,
-  //   signer: participantKeys,
-  //   client,
-  // });
-  //
+  let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
+  const participantAddr = resultArr[indexParticipant].address;
+  const participantKeys = resultArr[indexParticipant].keys;
+  const participantAcc = new Account(ParticipantContract, {
+    address: participantAddr,
+    signer: participantKeys,
+    client,
+  });
+
   // console.log("collator address:", participantAddr);
-  //
+
   // response = await participantAcc.runLocal("getBalance", {_answer_id:0});
   // console.log("collator getBalance:", response.decoded.output);
 
@@ -117,13 +117,13 @@ async function main(client) {
 
   // response = await deauditDataAcc.runLocal("launchedDeAudit", {});
   // console.log("deauditDataAcc launchedDeAudit:", response.decoded.output);
-  //
+
   // response = await deauditDataAcc.runLocal("votingCenterKeys", {});
   //
   // let votingCenterIndex = response.decoded.output.votingCenterKeys[indexVC];
   // console.log("deauditDataAcc votingCenter:", votingCenterIndex);
-  //
-  //
+
+
   // response = await deauditDataAcc.runLocal("votingCenter", {});
   //
   // let votingCenter = response.decoded.output.votingCenter[votingCenterIndex];
@@ -131,8 +131,23 @@ async function main(client) {
   // console.log("deauditDataAcc votingCenter location:", hex2ascii(votingCenter.location));
 
 
-  response = await deauditDataAcc.runLocal("queueAct4", {});
+  response = await deauditDataAcc.runLocal("labelLVA4", {});
+  console.log("deauditDataAcc labelLVA4:", response.decoded.output);
 
+
+  response = await deauditDataAcc.runLocal("queueAct4Length", {});
+  console.log("deauditDataAcc queueAct4Length:", response.decoded.output);
+
+  response = await deauditDataAcc.runLocal("countAct4", {});
+  console.log("deauditDataAcc countAct4:", response.decoded.output);
+
+  response = await deauditDataAcc.runLocal("countCollatedVC", {});
+  console.log("deauditDataAcc countCollatedVC:", response.decoded.output);
+
+  response = await deauditDataAcc.runLocal("countResultedAct4", {});
+  console.log("deauditDataAcc countResultedAct4:", response.decoded.output);
+
+  response = await deauditDataAcc.runLocal("queueAct4", {});
   console.log("deauditDataAcc queueAct4:", response.decoded.output);
 
 

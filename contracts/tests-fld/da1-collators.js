@@ -78,6 +78,7 @@ async function main(client) {
   let indexParticipant = 17;
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
   console.log("resultArr.length:", resultArr.length);
+  let indexP = 0;
   for (const item of resultArr) {
     const participantAddr = item.address;
     const participantKeys = item.keys;
@@ -86,7 +87,7 @@ async function main(client) {
       signer: participantKeys,
       client,
     });
-
+    console.log("participant index:", indexP);
     console.log("participant address:", participantAddr);
 
     response = await participantAcc.runLocal("getBalance", {_answer_id:0});
@@ -98,6 +99,8 @@ async function main(client) {
 
     if (response.decoded.output.activities[deauditAddr] !== undefined) {
       let wallet = response.decoded.output.activities[deauditAddr].wallet;
+      let act4Arr = response.decoded.output.activities[deauditAddr].act4Arr;
+      console.log("participant act4Arr:", act4Arr);
       console.log("participant wallet:", wallet);
       if (wallet !== '0:0000000000000000000000000000000000000000000000000000000000000000'){
         const tokenWalletAcc = new Account(TONTokenWalletContract, {address: wallet,client,});
@@ -107,7 +110,7 @@ async function main(client) {
     }
 
 
-
+   indexP ++;
 
   }
 

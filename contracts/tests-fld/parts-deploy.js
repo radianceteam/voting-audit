@@ -34,8 +34,11 @@ async function main(client) {
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
   const rootAddr = JSON.parse(fs.readFileSync(pathJsonRoot,{encoding: "utf8"})).address;
   const rootAcc = new Account(DeAuditRootContract, {address: rootAddr,client,});
+  let n = 0;
 
   for (const item of resultArr) {
+    n++;
+    console.log(n);
     const clientKeys = item.keys;
     let pubkey = '0x'+clientKeys.keys.public;
 

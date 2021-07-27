@@ -27,7 +27,7 @@ function toHex(input) {
   return String(output);
 }
 
-const indexKeysDeAuditData = 2;
+const indexKeysDeAuditData = 1;
 
 
 TonClient.useBinaryLibrary(libNode);

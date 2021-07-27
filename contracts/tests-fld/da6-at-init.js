@@ -26,7 +26,7 @@ function toHex(input) {
   return String(output);
 }
 
-const indexKeysDeAuditData = 5;
+const indexKeysDeAuditData = 6;
 
 
 

@@ -18,7 +18,7 @@ const { ParticipantContract } = require("./Participant.js");
 const { Act4Contract } = require("./Act4.js");
 const { TONTokenWalletContract } = require("./TONTokenWallet.js");
 
-const indexKeysDeAuditData = 6;
+const indexKeysDeAudit = 7;
 
 
 
@@ -74,9 +74,9 @@ async function main(client) {
 
 
   response = await rootAcc.runLocal("keysDeAudit", {});
-  console.log("keysDeAudit index:"+indexKeysDeAuditData+' address:'+response.decoded.output.keysDeAudit[indexKeysDeAuditData]);
+  console.log("keysDeAudit index:"+indexKeysDeAudit+' address:'+response.decoded.output.keysDeAudit[indexKeysDeAudit]);
 
-  let deauditAddr = response.decoded.output.keysDeAudit[indexKeysDeAuditData];
+  let deauditAddr = response.decoded.output.keysDeAudit[indexKeysDeAudit];
   let resultArr = JSON.parse(fs.readFileSync(pathJsonParticipants,{encoding: "utf8"}));
 
   const deauditAcc = new Account(DeAuditContract, {address: deauditAddr,client,});

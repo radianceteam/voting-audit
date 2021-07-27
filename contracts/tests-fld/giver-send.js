@@ -42,11 +42,11 @@ async function main(client) {
     // let destination = participantAddr;
 
     // let destination = response.decoded.output.actionTeamKeys[indexPartisipant];
-    let destination = '0:3f76291c7867a31d252db80d741a891305de823b1e9276c844c7acb41ae21d68';
+    let destination = '0:87d030f7388e4fd921800802f9065602292eaa113d89f3d1b13312f0844f87bf';
 
     console.log("Contract reacted to your destination]:", destination);
 
-    let gramms = 20000000000;
+    let gramms = 128000000000;
 
 
     // const giverAddr = JSON.parse(fs.readFileSync('./GiverContractFLD.json',{encoding: "utf8"})).address;

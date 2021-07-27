@@ -8,7 +8,7 @@ const hello = ["Hello localhost TON!","Hello dev net TON!","Hello main net TON!"
 const networkSelector = process.env.NET_SELECTOR;
 
 const fs = require('fs');
-const pathJson = './GiverContractFLD.json';
+const pathJson = './GiverContractNTD.json';
 
 TonClient.useBinaryLibrary(libNode);
 

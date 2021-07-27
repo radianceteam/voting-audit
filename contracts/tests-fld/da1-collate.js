@@ -105,7 +105,7 @@ async function main(client) {
 
   let count = 0;
   while (count < 16) {
-    let indexParticipant = count + 1;
+    let indexParticipant = count;
     let indexVC = count;
     const participantAddr = resultArr[indexParticipant].address;
     const participantKeys = resultArr[indexParticipant].keys;
@@ -117,7 +117,7 @@ async function main(client) {
     console.log("deauditDataAcc votingCenterKey:", votingCenterIndex);
     let votingCenter = votingCenters[votingCenterIndex];
     console.log("deauditDataAcc votingCenter name:", hex2ascii(votingCenter.name));
-    
+
     response = await participantAcc.run("addCollation", {
       addressDeAudit:deauditAddr,
       indexVotingCenter:votingCenterIndex,

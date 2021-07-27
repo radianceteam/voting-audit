@@ -105,81 +105,81 @@ async function main(client) {
 
 
 
-  response = await creatorAcc.run("addDistrict",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameDistrict:toHex("District A"),
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addDistrict:", response.decoded.output);
-
-  response = await creatorAcc.run("addDistrict",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameDistrict:toHex("District B"),
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addDistrict:", response.decoded.output);
-
-  // ========
-
-  response = await creatorAcc.run("addMunicipalBody",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameMunicipalBody:toHex("MunicipalBody A1"),
-    indexDistrict:1,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
-
-  response = await creatorAcc.run("addMunicipalBody",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameMunicipalBody:toHex("MunicipalBody A2"),
-    indexDistrict:1,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
-
-  response = await creatorAcc.run("addMunicipalBody",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameMunicipalBody:toHex("MunicipalBody B1"),
-    indexDistrict:2,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
-
-  response = await creatorAcc.run("addMunicipalBody",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameMunicipalBody:toHex("MunicipalBody B2"),
-    indexDistrict:2,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
-
-  // ==========
-
-  response = await creatorAcc.run("addVotingPool",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingPool:toHex("VotingPool A1-1"),
-    indexDistrict:1,
-    indexMunicipalBody:1,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
-
-  response = await creatorAcc.run("addVotingPool",
-  {
-    addressDeAuditData:deauditDataAddr1,
-    nameVotingPool:toHex("VotingPool A1-2"),
-    indexDistrict:1,
-    indexMunicipalBody:1,
-    grams:1500000000
-  });
-  console.log("Contract reacted to your addVotingPool:", response.decoded.output);
+  // response = await creatorAcc.run("addDistrict",
+  // {
+  //   addressDeAuditData:deauditDataAddr1,
+  //   nameDistrict:toHex("District A"),
+  //   grams:1500000000
+  // });
+  // console.log("Contract reacted to your addDistrict:", response.decoded.output);
+  //
+  // response = await creatorAcc.run("addDistrict",
+  // {
+  //   addressDeAuditData:deauditDataAddr1,
+  //   nameDistrict:toHex("District B"),
+  //   grams:1500000000
+  // });
+  // console.log("Contract reacted to your addDistrict:", response.decoded.output);
+  //
+  // // ========
+  //
+  // response = await creatorAcc.run("addMunicipalBody",
+  // {
+  //   addressDeAuditData:deauditDataAddr1,
+  //   nameMunicipalBody:toHex("MunicipalBody A1"),
+  //   indexDistrict:1,
+  //   grams:1500000000
+  // });
+  // console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
+  //
+  // response = await creatorAcc.run("addMunicipalBody",
+  // {
+  //   addressDeAuditData:deauditDataAddr1,
+  //   nameMunicipalBody:toHex("MunicipalBody A2"),
+  //   indexDistrict:1,
+  //   grams:1500000000
+  // });
+  // console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
+  //
+  // response = await creatorAcc.run("addMunicipalBody",
+  // {
+  //   addressDeAuditData:deauditDataAddr1,
+  //   nameMunicipalBody:toHex("MunicipalBody B1"),
+  //   indexDistrict:2,
+  //   grams:1500000000
+  // });
+  // console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
+  //
+  // response = await creatorAcc.run("addMunicipalBody",
+  // {
+  //   addressDeAuditData:deauditDataAddr1,
+  //   nameMunicipalBody:toHex("MunicipalBody B2"),
+  //   indexDistrict:2,
+  //   grams:1500000000
+  // });
+  // console.log("Contract reacted to your addMunicipalBody:", response.decoded.output);
+  //
+  // // ==========
+  //
+  // response = await creatorAcc.run("addVotingPool",
+  // {
+  //   addressDeAuditData:deauditDataAddr1,
+  //   nameVotingPool:toHex("VotingPool A1-1"),
+  //   indexDistrict:1,
+  //   indexMunicipalBody:1,
+  //   grams:1500000000
+  // });
+  // console.log("Contract reacted to your addVotingPool:", response.decoded.output);
+  //
+  // response = await creatorAcc.run("addVotingPool",
+  // {
+  //   addressDeAuditData:deauditDataAddr1,
+  //   nameVotingPool:toHex("VotingPool A1-2"),
+  //   indexDistrict:1,
+  //   indexMunicipalBody:1,
+  //   grams:1500000000
+  // });
+  // console.log("Contract reacted to your addVotingPool:", response.decoded.output);
 
   response = await creatorAcc.run("addVotingPool",
   {

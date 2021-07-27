@@ -173,14 +173,36 @@ async function main(client) {
   response = await deauditdataAcc.runLocal("districtKeys", {});
   // console.log("Contract reacted to your districtKeys:", response.decoded.output);
   let districtKeys = response.decoded.output.districtKeys;
-
   response = await deauditdataAcc.runLocal("district", {});
   // console.log("Contract reacted to your district:", response.decoded.output);
   let district = response.decoded.output.district;
-  console.log("===> DeAuditData vouting districts list:");
-
+  console.log("===> DeAuditData voting centers list:");
   for (const item of districtKeys) {
-    console.log(hex2ascii(district[item].name));
+    console.log('# '+hex2ascii(district[item].name));
+    let mbkeys = district[item].municipalBodiesArr;
+    for (const item1 of mbkeys) {
+      response = await deauditdataAcc.runLocal("municipalBody", {});
+      let mb = response.decoded.output.municipalBody;
+      console.log('## '+hex2ascii(mb[item1].name));
+      let vpkeys = mb[item1].votingPoolsArr;
+      for (const item2 of vpkeys) {
+        response = await deauditdataAcc.runLocal("votingPool", {});
+        let vp = response.decoded.output.votingPool;
+        console.log('### '+hex2ascii(vp[item2].name));
+        let vckeys = vp[item2].votingCentersArr;
+        for (const item3 of vckeys) {
+          response = await deauditdataAcc.runLocal("votingCenter", {});
+          let vc = response.decoded.output.votingCenter;
+          console.log('#### '+hex2ascii(vc[item3].name));
+          console.log('location: '+hex2ascii(vc[item3].location));
+          console.log('votes: '+hex2ascii(vc[item3].votes));
+          console.log('collationStatus: '+hex2ascii(vc[item3].collationStatus));
+          console.log('act4Arr: '+hex2ascii(vc[item3].act4Arr));
+          console.log('validatorsArr: '+hex2ascii(vc[item3].validatorsArr));
+          console.log('**************');
+        }
+      }
+    }
   }
 
 
