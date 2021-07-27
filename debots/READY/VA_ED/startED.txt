@@ -21,3 +21,4 @@ tonos-cli --url https://gql.custler.net account 0:f4d599a0cbe9f7d24f4e596f2fb0c3
 
 
 tondev js wrap VA_ED.abi.json -o VA_ED.js
+-

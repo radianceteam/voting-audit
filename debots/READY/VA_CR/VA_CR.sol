@@ -221,7 +221,7 @@ uint128 userBalance;
                     status = "ended";
                 }
 
-                string curVdata = format("=======\nDAname: {}, status:{}\n\n",cp.name, status);
+                string curVdata = format(" - {}, status:{} - \n",cp.name, status);
                 m_menu.push(MenuItem(curVdata,"",tvm.functionId(showVotingAuditss)));
             }
 
@@ -280,16 +280,16 @@ uint128 userBalance;
     }
     function showCurDAD() public {
         curDA cr = DeAudits[cureDA];
-        Terminal.print(0,format(" - {} - \ncr.seqno: {} cr.timeStart: {} cr.colPeriod: {} cr.valPeriod: {} colStake: {} valStake: {} cr.totalSupply: {} cr.DADname: {}",
-            cr.sequentialNumber,
+        Terminal.print(0,format(" - {} - \nsequential number: {} Time start: {} Collation period: {} Validation period: {} Collation stake: {} Validationtake: {} Total supply: {} - \n",
             cr.name,
+            cr.sequentialNumber,
             cr.timeStart,
             cr.colPeriod,
             cr.valPeriod,
             cr.colStake,
             cr.valStake,
-            cr.totalSupply,
-            cr.DADname));
+            cr.totalSupply
+            ));
         DAmenu(0);
     }
     function menuGenSeedPhrase(uint32 index) public {
@@ -302,7 +302,7 @@ uint128 userBalance;
     }
 
     function menuEnterSeedPhrase(uint32 index) public {
-        Terminal.input(tvm.functionId(checkSeedPhrase),"Please, enter your seed phrase:", false);
+        Terminal.input(tvm.functionId(checkSeedPhrase),"Enter your seed phrase:", false);
     }
 
     function checkSeedPhrase(string value) public {
@@ -472,9 +472,9 @@ bool amot;
         membersMenu();
     }
     function membersMenu() public {
-        Terminal.print(0,format("Your balance: {}, your address: {}",userBalance, m_participant));
+        Terminal.print(0,format(" - Your address: {}\n Balance: {} - \n",m_participant,userBalance));
 
-        Menu.select("Action Team menu", "", [
+        Menu.select("Action Team menu:", "", [
             MenuItem("Action team", "",tvm.functionId(isActionTeamMemberCheck)),
             MenuItem("Collator", "", tvm.functionId(goToCLdebot)),
             MenuItem("Validator", "", tvm.functionId(onValidation)),

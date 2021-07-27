@@ -17,7 +17,6 @@ tonos-cli --url https://gql.custler.net call 0:6c3980710d32a9ad8612b4cdf0fcc069e
 
 tonos-cli --url https://gql.custler.net debot fetch 0:fff910ab32389bc9b8c07088f074baa5f48a050720b5c1fdb4189e5a1a386326
 
-
 tonos-cli --url https://gql.custler.net account 0:fff910ab32389bc9b8c07088f074baa5f48a050720b5c1fdb4189e5a1a386326
 
 

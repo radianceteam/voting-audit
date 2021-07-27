@@ -44,8 +44,8 @@ interface IDeAuditData {
 }
 
 interface IParticipant {
-    function initVoteAddActionTeamMember(address participantAddr, uint128 grams) external;
-    function initVoteRemoveActionTeamMember(address participantAddr, uint128 grams) external;
+    function initVoteAddActionTeamMember(address participantAddr, uint128 grams) external returns (uint8 status);
+    function initVoteRemoveActionTeamMember(address participantAddr, uint128 grams) external returns (uint8 status);
     function createDeAuditData(bytes nameDeAuditData,
         uint256 timeStart,
         uint256 colPeriod,
@@ -118,17 +118,19 @@ contract VotingAuditDebotACTMmenu is Debot {
     function preStartForCore(address partic) public {
         m_participant = partic;
         m_coreDebot = msg.sender;
-        Terminal.print(0,format("m_coreDebot:{}",m_coreDebot));
         fetchDAD();
+        fetchDA();
         atmenu();
     }
     function preStart(address partic) public {
         m_participant = partic;
         fetchDAD();
+        fetchDA();
         atmenu();
     }
     function pstart(uint32 index) public {
         fetchDAD();
+        fetchDA();
         atmenu();
     }
 
@@ -316,7 +318,7 @@ contract VotingAuditDebotACTMmenu is Debot {
             MenuItem("Edit DeAudit Data", "", tvm.functionId(onToEDdebot)),
             MenuItem("Add member to Action Team", "",tvm.functionId(initAddVoting)),
             MenuItem("Remove member from Action Team", "", tvm.functionId(InitRemoveVoting)),
-            MenuItem("Send trigger", "",tvm.functionId(onSendTrigger)),
+            MenuItem("Force Finish DeAudit", "",tvm.functionId(onSendTrigger)),
             MenuItem("Initiate DeAudit", "", tvm.functionId(initDeauditDataMenuInput)),
             MenuItem("Display Votings", "", tvm.functionId(goToVLdebot)),
             MenuItem("Return to main menu", "", tvm.functionId(goToCore)),
@@ -338,7 +340,7 @@ contract VotingAuditDebotACTMmenu is Debot {
             string curVdata = format("- DeAudit Data name: {} \n DeAudit Data address: {} -\n",dd.name,curDad);
             m_menu.push(MenuItem(curVdata,"",tvm.functionId(onsetDaD)));
         }
-        m_menu.push(MenuItem("Back to menu", "", tvm.functionId(atmenu)));
+        m_menu.push(MenuItem("Back to menu", "", tvm.functionId(pstart)));
         Menu.select("Choose DeAudit Data or back to menu:", "",m_menu);
 
     }
@@ -351,7 +353,6 @@ address curDeAudit;
     address curACT4;
     function onsetVC(address value) public {
         curACT4 = value;
-
             optional(uint256) pubkey;
             IParticipant(m_participant).sendTrigger{
             abiVer : 2,
@@ -363,8 +364,6 @@ address curDeAudit;
             callbackId : tvm.functionId(SCcall),
             onErrorId : tvm.functionId(someError)
             }(curDeAudit,curACT4,GRAMS_TRIGGER);
-
-            atmenu();
     }
 
 /*
@@ -466,10 +465,10 @@ address curDeAudit;
     Add/remove members
 */
     function initAddVoting(uint32 index) public {
-        AddressInput.get(tvm.functionId(addMember_sendMSG), "Enter candidate address to add:");
+        AddressInput.get(tvm.functionId(addMember_sendMSG), "Please enter member address to add:");
     }
     function InitRemoveVoting(uint32 index) public {
-        AddressInput.get(tvm.functionId(removeMember_sendMSG), "Enter candidate address to remove:");
+        AddressInput.get(tvm.functionId(removeMember_sendMSG), "Please enter member address to remove:");
     }
 
     address m_memberAddress;
@@ -485,11 +484,11 @@ address curDeAudit;
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(m_memberAddress,GRAMS_INIT_VOTE);
 
-        start();
+//        start();
     }
 
     function addMember_sendMSG(address value) public {
@@ -503,11 +502,11 @@ address curDeAudit;
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(m_memberAddress,GRAMS_INIT_VOTE);
 
-        start();
+//        start();
     }
 
 /*
@@ -526,7 +525,7 @@ address curDeAudit;
 
     function enterDeAuditDataName(string value) public {
         nameDeAudit = bytes(value);
-        Terminal.input(tvm.functionId(enterDeAuditStartTime), "Please, enter start time (in future) of DeAudit (timestamp)", false);
+        Terminal.input(tvm.functionId(enterDeAuditStartTime), "Enter start time in UNIX-time format (use https://www.unixtimestamp.com/ to convert)", false);
     }
 
     function enterDeAuditStartTime(string value) public {
@@ -550,7 +549,7 @@ address curDeAudit;
         bool status;
         (res, status) = stoi(value);
         valPeriod = uint256(res);
-        Terminal.input(tvm.functionId(enterDeAuditCollationStake), "Please, enter collation stake of DeAudit (in grams)", false);
+        Terminal.input(tvm.functionId(enterDeAuditCollationStake), "Enter Collator Stake (in grams, 1 TON = 1000000000 grams)", false);
     }
 
     function enterDeAuditCollationStake(string value) public {
@@ -589,7 +588,7 @@ address curDeAudit;
             valStake,
             GRAMS_CREATE_DEAUDIT
         );
-        start();
+//        start();
     }
 
 /*
@@ -615,7 +614,7 @@ address curDeAudit;
             GRAMS_INIT_VOTE
         );
 
-        start();
+//        start();
     }
 
 /*

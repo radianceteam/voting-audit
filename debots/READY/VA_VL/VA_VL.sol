@@ -373,8 +373,6 @@ uint32 indexCur;
         callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(votingID,GRAMS_INIT_VOTE);
-
-    votingListMenu();
     }
     function voteAgainst(uint32 index) public {
         optional(uint256) pubkey;
@@ -388,8 +386,6 @@ uint32 indexCur;
         callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(votingID,GRAMS_INIT_VOTE);
-
-    votingListMenu();
     }
     function resultVote(uint32 index) public {
         optional(uint256) pubkey;
@@ -403,8 +399,6 @@ uint32 indexCur;
         callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(votingID,GRAMS_RESULT);
-
-    votingListMenu();
     }
 
 /*

@@ -1,2 +1,6 @@
-07:59:13 [ERROR] Create run message failed: Invalid name: fetch
-07:59:16 [ERROR] Create run message failed: Invalid name: fetch
+16:03:17 [ERROR] Create run message failed: Invalid name: fetch
+16:03:21 [ERROR] Create run message failed: Invalid name: fetch
+16:03:58 [ERROR] Create run message failed: Invalid name: fetch
+16:04:29 [ERROR] ResultOfSendMessage { shard_block_id: "e7d3323a67caf520dced0ac50be29e04afe7f6d16f221583bb8f354d8b094873", sending_endpoints: ["https://gql.custler.net"] }
+16:09:21 [ERROR] Create run message failed: Invalid name: fetch
+16:10:18 [ERROR] ResultOfSendMessage { shard_block_id: "215eb69a54365352aad2825e2443f892bfef77dea5cdf5fae96a238a72a5d96b", sending_endpoints: ["https://gql.custler.net"] }

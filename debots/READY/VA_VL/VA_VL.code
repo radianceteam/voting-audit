@@ -2434,9 +2434,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $votingListMenu_internal_macro$
-}
 ; end function voteFor
 DROP2
 
@@ -2514,9 +2511,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $votingListMenu_internal_macro$
-}
 ; end function voteAgainst
 DROP2
 
@@ -2594,9 +2588,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $votingListMenu_internal_macro$
-}
 ; end function resultVote
 DROP2
 

@@ -149,22 +149,6 @@
 			]
 		},
 		{
-			"name": "fVC",
-			"inputs": [
-				{"name":"index","type":"uint32"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "fCD",
-			"inputs": [
-				{"name":"index","type":"uint32"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "CLmenu",
 			"inputs": [
 			],
@@ -198,6 +182,13 @@
 			"name": "setTouchedVC",
 			"inputs": [
 				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onSetLink2",
+			"inputs": [
 			],
 			"outputs": [
 			]

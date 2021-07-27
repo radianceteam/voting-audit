@@ -42,11 +42,11 @@ interface IDeAuditData {
     );
 }
 interface IParticipant {
-    function addCandidate(address addressDeAuditData, bytes nameCandidate, uint128 grams) external;
-    function addDistrict(address addressDeAuditData, bytes nameDistrict, uint128 grams) external;
-    function addMunicipalBody(address addressDeAuditData, bytes nameMunicipalBody, uint256 indexDistrict, uint128 grams) external;
-    function addVotingPool(address addressDeAuditData, bytes nameVotingPool, uint256 indexDistrict, uint256 indexMunicipalBody, uint128 grams) external;
-    function addVotingCenter(address addressDeAuditData, bytes nameVotingCenter, bytes location, uint256 indexDistrict, uint256 indexMunicipalBody, uint256 indexVotingPool, uint128 grams) external;
+    function addCandidate(address addressDeAuditData, bytes nameCandidate, uint128 grams) external returns (uint8 status);
+    function addDistrict(address addressDeAuditData, bytes nameDistrict, uint128 grams) external returns (uint8 status);
+    function addMunicipalBody(address addressDeAuditData, bytes nameMunicipalBody, uint256 indexDistrict, uint128 grams) external returns (uint8 status);
+    function addVotingPool(address addressDeAuditData, bytes nameVotingPool, uint256 indexDistrict, uint256 indexMunicipalBody, uint128 grams) external returns (uint8 status);
+    function addVotingCenter(address addressDeAuditData, bytes nameVotingCenter, bytes location, uint256 indexDistrict, uint256 indexMunicipalBody, uint256 indexVotingPool, uint128 grams) external returns (uint8 status);
 }
 interface IVotingAuditDebotACTMmenu {
     function preStart(address m_participant) external;
@@ -375,7 +375,7 @@ contract VotingAuditDebotED is Debot {
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : tvm.functionId(editDeAudit),
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(choosenDADaddress,nameDistr,GRAMS_ADD);
     }

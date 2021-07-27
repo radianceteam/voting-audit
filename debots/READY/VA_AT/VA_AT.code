@@ -116,26 +116,11 @@ GETGLOB 9
 ; colValue
 SETGLOB 16
 ; end colValue
-PUSHINT 0
-NIL
-NEWC
-PUSHSLICE x6d5f636f72654465626f743a
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier m_coreDebot
-GETGLOB 16
-CALLREF {
-	CALL $convertAddressToHexString_macro$
-}
-CALLREF {
-	CALL $assembleList_macro$
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
 CALLREF {
 	CALL $fetchDAD_internal_macro$
+}
+CALLREF {
+	CALL $fetchDA_internal_macro$
 }
 CALLREF {
 	CALL $atmenu_internal_macro$
@@ -188,6 +173,9 @@ CALLREF {
 	CALL $fetchDAD_internal_macro$
 }
 CALLREF {
+	CALL $fetchDA_internal_macro$
+}
+CALLREF {
 	CALL $atmenu_internal_macro$
 }
 ; end function preStart
@@ -221,6 +209,9 @@ CALL $pstart_internal_macro$
 ; function pstart
 CALLREF {
 	CALL $fetchDAD_internal_macro$
+}
+CALLREF {
+	CALL $fetchDA_internal_macro$
 }
 CALLREF {
 	CALL $atmenu_internal_macro$
@@ -1868,7 +1859,7 @@ PUSHREF {
 PUSHREF {
 	.blob x
 }
-PUSHINT 1070160265
+PUSHINT 1116360996
 TUPLE 3
 ;; array.push(..)
 CALLREF {
@@ -2050,9 +2041,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $atmenu_internal_macro$
-}
 ; end function onsetVC
 DROP2
 
@@ -2582,7 +2570,7 @@ CALL $initAddVoting_internal_macro$
 ; function initAddVoting
 PUSHINT 1632933345
 PUSHREF {
-	.blob x456e7465722063616e646964617465206164647265737320746f206164643a
+	.blob x506c6561736520656e746572206d656d626572206164647265737320746f206164643a
 }
 CALLREF {
 	CALL $AddressInput_no_obj_get_macro$
@@ -2618,7 +2606,7 @@ CALL $InitRemoveVoting_internal_macro$
 ; function InitRemoveVoting
 PUSHINT 1663984583
 PUSHREF {
-	.blob x456e7465722063616e646964617465206164647265737320746f2072656d6f76653a
+	.blob x506c6561736520656e746572206d656d626572206164647265737320746f2072656d6f76653a
 }
 CALLREF {
 	CALL $AddressInput_no_obj_get_macro$
@@ -2672,7 +2660,7 @@ NULL
 ;; Remote call IParticipant.initVoteRemoveActionTeamMember
 ;; push identifier m_participant
 GETGLOB 21
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -2705,7 +2693,7 @@ NOW
 STUR 64
 PUSHINT 291
 STUR 32
-STSLICECONST x47bceb52
+STSLICECONST x3c53d9e4
 ROTREV
 NEWC
 STSLICE
@@ -2715,9 +2703,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $start_internal_macro$
-}
 ; end function removeMember_sendMSG
 DROP2
 
@@ -2767,7 +2752,7 @@ NULL
 ;; Remote call IParticipant.initVoteAddActionTeamMember
 ;; push identifier m_participant
 GETGLOB 21
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -2800,7 +2785,7 @@ NOW
 STUR 64
 PUSHINT 291
 STUR 32
-STSLICECONST x6704e9a0
+STSLICECONST x70e85ea5
 ROTREV
 NEWC
 STSLICE
@@ -2810,9 +2795,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $start_internal_macro$
-}
 ; end function addMember_sendMSG
 DROP2
 
@@ -3319,9 +3301,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $start_internal_macro$
-}
 DROP
 ; end function callCreateDeAuditData
 
@@ -3443,9 +3422,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $start_internal_macro$
-}
 ; end function initDeauditData
 DROP2
 

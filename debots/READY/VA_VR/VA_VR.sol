@@ -277,7 +277,7 @@ address curDa;
             for(uint8 i = 0; i < curACT4.length; i++){
                address curACT4adr = curACT4[i];
                 string curVdata = format(" - ACT4 address: {} - \n",curACT4adr);
-                m_menu.push(MenuItem(curVdata,"",tvm.functionId(onGetCollatorPhotoLink)));
+                    m_menu.push(MenuItem(curVdata,"",tvm.functionId(onGetCollatorPhotoLink)));
                 }
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(preStart)));
         Menu.select("Choose Act4 or back to menu:", "",m_menu);
@@ -329,28 +329,28 @@ uint256[] voteMatrixD;
 
         voteMatrixD = voteMatrix;
         Terminal.print(0,"Success");
-
-        Terminal.print(0,"Fetching additional photo links...");
-        optional(uint256) pubkey;
-        IAct4(curACT4adrACT).additionalPhotoLinkArr{
-        abiVer : 2,
-        extMsg : true,
-        sign : false,
-        pubkey : pubkey,
-        time : uint64(now),
-        expire: 0x123,
-        callbackId : tvm.functionId(goToValMenubyCurActiv),
-        onErrorId : tvm.functionId(someError)
-        }();
+        act4Validmenu();
+//        Terminal.print(0,"Fetching additional photo links...");
+//        optional(uint256) pubkey;
+//        IAct4(curACT4adrACT).additionalPhotoLinkArr{
+//        abiVer : 2,
+//        extMsg : true,
+//        sign : false,
+//        pubkey : pubkey,
+//        time : uint64(now),
+//        expire: 0x123,
+//        callbackId : tvm.functionId(goToValMenubyCurActiv),
+//        onErrorId : tvm.functionId(someError)
+//        }();
     }
 
-bytes[] additionalPhotoLinkArrD;
+//bytes[] additionalPhotoLinkArrD;
 
-    function goToValMenubyCurActiv(bytes[] additionalPhotoLinkArr) public {
-        Terminal.print(0,"Success");
-        additionalPhotoLinkArrD = additionalPhotoLinkArr;
-        act4Validmenu();
-}
+//    function goToValMenubyCurActiv(bytes[] additionalPhotoLinkArr) public {
+//        Terminal.print(0,"Success");
+//        additionalPhotoLinkArrD = additionalPhotoLinkArr;
+//        act4Validmenu();
+//}
 function act4Validmenu() public {
     MenuItem[] m_menu;
         m_menu.push(MenuItem("Display Act4 data", "", tvm.functionId(showACT4dt)));
@@ -370,17 +370,17 @@ function showACT4dt(uint32 index) public {
         Terminal.print(0,format(" - Candidate index : {} Amount of votes: {} - \n",i, curVoteFromMatrix));
     }
 
-    for(uint8 k = 0; k < additionalPhotoLinkArrD.length; k++){
-        bytes curAdditPhotoLink = additionalPhotoLinkArrD[k];
-        Terminal.print(0,format(" - Additional photo links: {} - \n",curAdditPhotoLink));
-    }
+//    for(uint8 k = 0; k < additionalPhotoLinkArrD.length; k++){
+//        bytes curAdditPhotoLink = additionalPhotoLinkArrD[k];
+//        Terminal.print(0,format(" - Additional photo links: {} - \n",curAdditPhotoLink));
+//    }
     act4Validmenu();
 }
 
 /*
     Callers
 */
-    function VoteForValidator(uint128 value) public {
+    function VoteForValidator(uint32 index) public {
         Terminal.print(0,format(" - You are going to vote for: {} - \n", curACT4adrACT));
 
         optional(uint256) pubkey;
@@ -400,7 +400,7 @@ function showACT4dt(uint32 index) public {
 
 
 
-    function VoteAgainstValidator(uint128 value) public {
+    function VoteAgainstValidator(uint32 index) public {
 
         Terminal.print(0,format(" - You are going to vote against: {} - \n", curACT4adrACT));
 
@@ -463,12 +463,11 @@ bytes nameDD;
         uint256 time = uint256(now);
 
         if(time > (cr.timeStart + cr.colPeriod) && time < (cr.timeStart + cr.colPeriod + cr.valPeriod)){
-            AmountInput.get(tvm.functionId(setValStake), format("====Validation stake is: {} for 1 valid====\n",valSt),0,0,10000000000000);
+            AmountInput.get(tvm.functionId(setValStake), format("====Validation stake is: {} for 1 valid, 0.5 ton should be added for registration\n",valSt),0,0,10000000000000);
         }else{
             Terminal.print(0,"You need to choose deAudit that is between col and val period");
             DAmenu(0);
         }
-
     }
 
 uint128 curGramsForSend;

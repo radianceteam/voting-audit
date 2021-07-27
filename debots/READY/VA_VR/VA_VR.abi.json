@@ -165,14 +165,6 @@
 			]
 		},
 		{
-			"name": "goToValMenubyCurActiv",
-			"inputs": [
-				{"name":"additionalPhotoLinkArr","type":"bytes[]"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "act4Validmenu",
 			"inputs": [
 			],
@@ -190,7 +182,7 @@
 		{
 			"name": "VoteForValidator",
 			"inputs": [
-				{"name":"value","type":"uint128"}
+				{"name":"index","type":"uint32"}
 			],
 			"outputs": [
 			]
@@ -198,7 +190,7 @@
 		{
 			"name": "VoteAgainstValidator",
 			"inputs": [
-				{"name":"value","type":"uint128"}
+				{"name":"index","type":"uint32"}
 			],
 			"outputs": [
 			]

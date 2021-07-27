@@ -1995,93 +1995,10 @@ PUSHREF {
 CALLREF {
 	CALL $Terminal_no_obj_print_macro$
 }
-PUSHINT 0
-PUSHREF {
-	.blob x4665746368696e67206164646974696f6e616c2070686f746f206c696e6b732e2e2e
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
-NULL
-;; decl: pubkey
-;; Remote call IAct4.additionalPhotoLinkArr
-;; push identifier curACT4adrACT
-GETGLOB 26
-PUSHSLICE x92614945ce0a34c190b0174_
-NEWC
-STSLICE
-STSLICE
-PUSHINT 1
-STUR 6
-NEWC
-STSLICECONST 0
-;; push identifier pubkey
-PUSH S2
-ISNULL
-THROWIFNOT 64
-STSLICECONST 0
-;; push identifier now
-NOW
-;; uint64
-STUR 64
-PUSHINT 291
-STUR 32
-STSLICECONST x6d3f0078
-STBREFR
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function onGetAdditionalPhotos
-DROP2
-
-.macro goToValMenubyCurActiv
-DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-LDU 32
-LDDICT
-ROTREV
-PAIR
-SWAP
-ENDS
-;; param: additionalPhotoLinkArr
-CALLREF {
-	CALL $goToValMenubyCurActiv_internal_macro$
-}
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.globl	goToValMenubyCurActiv_internal
-.type	goToValMenubyCurActiv_internal, @function
-CALL $goToValMenubyCurActiv_internal_macro$
-
-.macro goToValMenubyCurActiv_internal_macro
-;; param: additionalPhotoLinkArr
-; function goToValMenubyCurActiv
-PUSHINT 0
-PUSHREF {
-	.blob x53756363657373
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
-; expValue
-; end expValue
-;; push identifier additionalPhotoLinkArr
-DUP
-; colValue
-SETGLOB 29
-; end colValue
 CALLREF {
 	CALL $act4Validmenu_internal_macro$
 }
-; end function goToValMenubyCurActiv
+; end function onGetAdditionalPhotos
 DROP
 
 .macro act4Validmenu
@@ -2152,7 +2069,7 @@ PUSHREF {
 PUSHREF {
 	.blob x
 }
-PUSHINT 461021821
+PUSHINT 1776887493
 TUPLE 3
 ;; array.push(..)
 CALLREF {
@@ -2184,7 +2101,7 @@ PUSHREF {
 PUSHREF {
 	.blob x
 }
-PUSHINT 1853070333
+PUSHINT 1640736538
 TUPLE 3
 ;; array.push(..)
 CALLREF {
@@ -2376,65 +2293,6 @@ PUSHCONT {
 WHILE
 DROP
 ; end for
-; for
-PUSHINT 0
-;; decl: k
-PUSHCONT {
-	;; push identifier k
-	DUP
-	;; <
-	;; get member length
-	;; push identifier additionalPhotoLinkArrD
-	GETGLOB 29
-	INDEX 0
-	LESS
-}
-PUSHCONT {
-	;; index
-	;; push identifier k
-	DUP
-	;; push identifier additionalPhotoLinkArrD
-	GETGLOB 29
-	INDEX 1
-	PUSHINT 32
-	DICTUGETREF
-	THROWIFNOT 50
-	;; decl: curAdditPhotoLink
-	PUSHINT 0
-	NIL
-	NEWC
-	PUSHSLICE x202d204164646974696f6e616c2070686f746f206c696e6b733a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier curAdditPhotoLink
-	PUSH S3
-	CTOS
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	PUSHSLICE x202d200a
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	CALLREF {
-		CALL $assembleList_macro$
-	}
-	CALLREF {
-		CALL $Terminal_no_obj_print_macro$
-	}
-	DROP
-	;; ++
-	; expValue
-	; end expValue
-	INC
-	UFITS 8
-	; colValue
-	; end colValue
-}
-WHILE
-DROP
-; end for
 CALLREF {
 	CALL $act4Validmenu_internal_macro$
 }
@@ -2448,17 +2306,9 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
+LDU 32
 ENDS
-;; param: value
+;; param: index
 CALLREF {
 	CALL $VoteForValidator_internal_macro$
 }
@@ -2473,7 +2323,7 @@ SETGLOB 7
 CALL $VoteForValidator_internal_macro$
 
 .macro VoteForValidator_internal_macro
-;; param: value
+;; param: index
 ; function VoteForValidator
 PUSHINT 0
 NIL
@@ -2555,17 +2405,9 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
+LDU 32
 ENDS
-;; param: value
+;; param: index
 CALLREF {
 	CALL $VoteAgainstValidator_internal_macro$
 }
@@ -2580,7 +2422,7 @@ SETGLOB 7
 CALL $VoteAgainstValidator_internal_macro$
 
 .macro VoteAgainstValidator_internal_macro
-;; param: value
+;; param: index
 ; function VoteAgainstValidator
 PUSHINT 0
 NIL
@@ -3165,7 +3007,7 @@ THROWIFNOT 50
 ;; index
 ;; push identifier cureDA
 DUP
-SETGLOB 30
+SETGLOB 29
 ;; push identifier DeAudits
 GETGLOB 21
 PUSHINT 267
@@ -3275,8 +3117,7 @@ IFELSE
 DUP
 INDEX 1
 ; colValue
-PUSHINT 32
-SETGLOBVAR
+SETGLOB 31
 ; end colValue
 ; expValue
 ; end expValue
@@ -3285,7 +3126,7 @@ SETGLOBVAR
 DUP
 INDEX 9
 ; colValue
-SETGLOB 31
+SETGLOB 30
 ; end colValue
 ;; push identifier now
 NOW
@@ -3339,14 +3180,16 @@ PUSHCONT {
 		CALL $storeStringInBuilders_macro$
 	}
 	;; push identifier valSt
-	GETGLOB 31
+	GETGLOB 30
 	PUSHINT 0
 	FALSE
 	FALSE
 	CALLREF {
 		CALL $convertIntToDecStr_macro$
 	}
-	PUSHSLICE x20666f7220312076616c69643d3d3d3d0a
+	PUSHREFSLICE {
+		.blob x20666f7220312076616c69642c20302e3520746f6e2073686f756c6420626520616464656420666f7220726567697374726174696f6e0a
+	}
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -3417,7 +3260,7 @@ CALL $setValStake_internal_macro$
 ;; push identifier value
 DUP
 ; colValue
-PUSHINT 33
+PUSHINT 32
 SETGLOBVAR
 ; end colValue
 PUSHINT 0
@@ -3430,8 +3273,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier nameDD
-PUSHINT 32
-GETGLOBVAR
+GETGLOB 31
 CTOS
 CALLREF {
 	CALL $storeStringInBuilders_macro$
@@ -3441,7 +3283,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier cureDA
-GETGLOB 30
+GETGLOB 29
 CALLREF {
 	CALL $convertAddressToHexString_macro$
 }
@@ -3450,7 +3292,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier valSt
-GETGLOB 31
+GETGLOB 30
 PUSHINT 0
 FALSE
 FALSE
@@ -3462,7 +3304,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier curGramsForSend
-PUSHINT 33
+PUSHINT 32
 GETGLOBVAR
 PUSHINT 0
 FALSE
@@ -3521,10 +3363,10 @@ STSLICE
 PUSHINT 1
 STUR 6
 ;; push identifier curGramsForSend
-PUSHINT 33
+PUSHINT 32
 GETGLOBVAR
 ;; push identifier cureDA
-GETGLOB 30
+GETGLOB 29
 NEWC
 STSLICECONST 1
 PUSHINT 512
@@ -4131,8 +3973,6 @@ SETGLOB 10
 SETGLOB 11
 
 .macro c7_to_c4
-PUSHINT 33
-GETGLOBVAR
 PUSHINT 32
 GETGLOBVAR
 GETGLOB 31
@@ -4211,23 +4051,21 @@ PUSHCONT {
 }
 IFELSE
 STSLICE
-PUSHINT 19
+PUSHINT 18
 PUSHINT 1
 BLKSWX
 NEWC
 STSLICE
 STU 128
-PUSHINT 17
-PUSHINT 1
-BLKSWX
-NEWC
-STSLICE
 BLKSWAP 16, 1
 NEWC
 STSLICE
 BLKSWAP 15, 1
 NEWC
 STSLICE
+BLKSWAP 14, 1
+NEWC
+STSLICE
 STREF
 STDICT
 SWAP
@@ -4235,7 +4073,7 @@ UNPAIR
 XCHG s2
 STU 32
 STDICT
-BLKSWAP 11, 1
+BLKSWAP 10, 1
 NEWC
 STDICT
 SWAP
@@ -4244,15 +4082,10 @@ XCHG s2
 STU 32
 STDICT
 STSLICE
-BLKSWAP 8, 1
+BLKSWAP 7, 1
 NEWC
 STSLICE
 STREF
-SWAP
-UNPAIR
-XCHG s2
-STU 32
-STDICT
 SWAP
 UNPAIR
 XCHG s2
@@ -4363,11 +4196,6 @@ LDDICT
 ROTREV
 PAIR
 SWAP
-LDU 32
-LDDICT
-ROTREV
-PAIR
-SWAP
 ;; load next cell
 LDREF
 ENDS
@@ -4377,8 +4205,6 @@ LDU 128
 LDREF
 LDU 128
 ENDS
-PUSHINT 33
-SETGLOBVAR
 PUSHINT 32
 SETGLOBVAR
 SETGLOB 31
@@ -4503,11 +4329,6 @@ PUSHCONT {
 	ROTREV
 	PAIR
 	SWAP
-	LDU 32
-	LDDICT
-	ROTREV
-	PAIR
-	SWAP
 	;; load next cell
 	LDREF
 	ENDS
@@ -4517,8 +4338,6 @@ PUSHCONT {
 	LDREF
 	LDU 128
 	ENDS
-	PUSHINT 33
-	SETGLOBVAR
 	PUSHINT 32
 	SETGLOBVAR
 	SETGLOB 31
@@ -4617,25 +4436,19 @@ PUSHCONT {
 	NEWDICT
 	PAIR
 	SETGLOB 28
-	; init additionalPhotoLinkArrD
-	PUSHINT 0
-	NEWDICT
-	PAIR
-	SETGLOB 29
 	; init cureDA
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 30
+	SETGLOB 29
 	; init valSt
 	PUSHINT 0
-	SETGLOB 31
+	SETGLOB 30
 	; init nameDD
 	PUSHREF {
 	}
-	PUSHINT 32
-	SETGLOBVAR
+	SETGLOB 31
 	; init curGramsForSend
 	PUSHINT 0
-	PUSHINT 33
+	PUSHINT 32
 	SETGLOBVAR
 	; set contract pubkey
 	PUSHINT 0
@@ -4771,6 +4584,80 @@ IF
 TRUE
 SETGLOB 7
 
+.globl	Menu_with_obj_select
+.type	Menu_with_obj_select, @function
+CALL $Menu_with_obj_select_macro$
+
+.macro Menu_with_obj_select_macro
+;; param: title
+;; param: description
+;; param: items
+; function select
+;; address.makeAddrStd()
+PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
+;; decl: addr
+;; Remote call IMenu.select
+;; push identifier items
+;; push identifier description
+;; push identifier title
+PUSH3 S1, S2, S3
+;; push identifier addr
+PUSH S3
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000d3028c73_
+STSLICER
+STREF
+STREF
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function select
+BLKDROP 3
+
+.globl	Menu_no_obj_select
+.type	Menu_no_obj_select, @function
+CALL $Menu_no_obj_select_macro$
+
+.macro Menu_no_obj_select_macro
+;; param: title
+;; param: description
+;; param: items
+; function select
+;; address.makeAddrStd()
+PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
+;; decl: addr
+;; Remote call IMenu.select
+;; push identifier items
+;; push identifier description
+;; push identifier title
+PUSH3 S1, S2, S3
+;; push identifier addr
+PUSH S3
+NEWC
+STSLICECONST x62_
+STSLICE
+PUSHSLICE x3989680000000000000000000000000000d3028c73_
+STSLICER
+STREF
+STREF
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function select
+BLKDROP 4
+
 .globl	AmountInput_with_obj_get
 .type	AmountInput_with_obj_get, @function
 CALL $AmountInput_with_obj_get_macro$
@@ -4857,80 +4744,6 @@ SENDRAWMSG
 ; end function get
 BLKDROP 6
 
-.globl	Menu_with_obj_select
-.type	Menu_with_obj_select, @function
-CALL $Menu_with_obj_select_macro$
-
-.macro Menu_with_obj_select_macro
-;; param: title
-;; param: description
-;; param: items
-; function select
-;; address.makeAddrStd()
-PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
-;; decl: addr
-;; Remote call IMenu.select
-;; push identifier items
-;; push identifier description
-;; push identifier title
-PUSH3 S1, S2, S3
-;; push identifier addr
-PUSH S3
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000d3028c73_
-STSLICER
-STREF
-STREF
-SWAP
-UNPAIR
-XCHG s2
-STU 32
-STDICT
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function select
-BLKDROP 3
-
-.globl	Menu_no_obj_select
-.type	Menu_no_obj_select, @function
-CALL $Menu_no_obj_select_macro$
-
-.macro Menu_no_obj_select_macro
-;; param: title
-;; param: description
-;; param: items
-; function select
-;; address.makeAddrStd()
-PUSHSLICE x9c358349a7d9d4465c92f07be94475030479b94640bb8b19a4189b64b384ac0b691_
-;; decl: addr
-;; Remote call IMenu.select
-;; push identifier items
-;; push identifier description
-;; push identifier title
-PUSH3 S1, S2, S3
-;; push identifier addr
-PUSH S3
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000d3028c73_
-STSLICER
-STREF
-STREF
-SWAP
-UNPAIR
-XCHG s2
-STU 32
-STDICT
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function select
-BLKDROP 4
-
 .globl	Terminal_with_obj_print
 .type	Terminal_with_obj_print, @function
 CALL $Terminal_with_obj_print_macro$
@@ -4991,7 +4804,7 @@ BLKDROP 3
 
 .macro public_function_selector
 DUP
-PUSHINT 918258313
+PUSHINT 1133541433
 LEQ
 IFJMPREF {
 	DUP
@@ -5023,7 +4836,7 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 461249023
+	PUSHINT 523943293
 	LEQ
 	IFJMPREF {
 		DUP
@@ -5039,28 +4852,22 @@ IFJMPREF {
 			CALL $fetchCurAvtivity$
 		}
 		DUP
-		PUSHINT 461021821
-		EQUAL
-		IFJMPREF {
-			CALL $VoteForValidator$
-		}
-		DUP
 		PUSHINT 461249023
 		EQUAL
 		IFJMPREF {
 			CALL $setValStakeCall$
 		}
-	}
-	DUP
-	PUSHINT 670720486
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 523943293
 		EQUAL
 		IFJMPREF {
 			CALL $SCgetDAstruct$
 		}
+	}
+	DUP
+	PUSHINT 696732678
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 558780428
 		EQUAL
@@ -5079,23 +4886,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $deauditsCaller$
 		}
-	}
-	DUP
-	PUSHINT 918258313
-	LEQ
-	IFJMPREF {
-		DUP
-		PUSHINT 690534849
-		EQUAL
-		IFJMPREF {
-			CALL $goToValMenubyCurActiv$
-		}
 		DUP
 		PUSHINT 696732678
 		EQUAL
 		IFJMPREF {
 			CALL $SCfetchActivities$
 		}
+	}
+	DUP
+	PUSHINT 1133541433
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 809570843
 		EQUAL
@@ -5108,16 +4909,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $SCcall$
 		}
-	}
-}
-DUP
-PUSHINT 1927677156
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 1184379414
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1037851860
 		EQUAL
@@ -5130,6 +4921,16 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $setValStake$
 		}
+	}
+}
+DUP
+PUSHINT 1942928440
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1355955953
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1150753476
 		EQUAL
@@ -5142,11 +4943,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $someError$
 		}
-	}
-	DUP
-	PUSHINT 1482960138
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1260116821
 		EQUAL
@@ -5159,6 +4955,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $act4Validmenu$
 		}
+	}
+	DUP
+	PUSHINT 1551076115
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1358660711
 		EQUAL
@@ -5171,11 +4972,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getRequiredInterfaces$
 		}
-	}
-	DUP
-	PUSHINT 1756716863
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1539101388
 		EQUAL
@@ -5188,6 +4984,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $SCgetDeauditAddresses$
 		}
+	}
+	DUP
+	PUSHINT 1776887493
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1568115769
 		EQUAL
@@ -5195,14 +4996,26 @@ IFJMPREF {
 			CALL $setABI$
 		}
 		DUP
+		PUSHINT 1640736538
+		EQUAL
+		IFJMPREF {
+			CALL $VoteAgainstValidator$
+		}
+		DUP
 		PUSHINT 1756716863
 		EQUAL
 		IFJMPREF {
 			CALL $constructor$
 		}
+		DUP
+		PUSHINT 1776887493
+		EQUAL
+		IFJMPREF {
+			CALL $VoteForValidator$
+		}
 	}
 	DUP
-	PUSHINT 1927677156
+	PUSHINT 1942928440
 	LEQ
 	IFJMPREF {
 		DUP
@@ -5210,12 +5023,6 @@ IFJMPREF {
 		EQUAL
 		IFJMPREF {
 			CALL $onGetCollatorPhotoLink$
-		}
-		DUP
-		PUSHINT 1853070333
-		EQUAL
-		IFJMPREF {
-			CALL $VoteAgainstValidator$
 		}
 		DUP
 		PUSHINT 1888717285
@@ -5229,18 +5036,18 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $activitiesD$
 		}
+		DUP
+		PUSHINT 1942928440
+		EQUAL
+		IFJMPREF {
+			CALL $invokeValidatorDebot$
+		}
 	}
 }
 DUP
 PUSHINT 2112671963
 LEQ
 IFJMPREF {
-	DUP
-	PUSHINT 1942928440
-	EQUAL
-	IFJMPREF {
-		CALL $invokeValidatorDebot$
-	}
 	DUP
 	PUSHINT 2006082788
 	EQUAL
