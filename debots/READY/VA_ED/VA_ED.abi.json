@@ -149,6 +149,39 @@
 			]
 		},
 		{
+			"name": "fetchCD",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCfetchCD",
+			"inputs": [
+				{"name":"candidateKeys","type":"uint256[]"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getCData",
+			"inputs": [
+				{"name":"curCD","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCgetCData",
+			"inputs": [
+				{"name":"name4Debot","type":"bytes"},
+				{"name":"votes4Debot","type":"uint256"},
+				{"name":"candidateCurrentKeyD","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "editDeAudit",
 			"inputs": [
 			],
@@ -315,6 +348,14 @@
 			]
 		},
 		{
+			"name": "SCcall",
+			"inputs": [
+				{"name":"status","type":"uint8"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "someError",
 			"inputs": [
 				{"name":"sdkError","type":"uint32"},
@@ -405,6 +446,22 @@
 			],
 			"outputs": [
 				{"name":"votingPoolKeysD","type":"uint256[]"}
+			]
+		},
+		{
+			"name": "candidateD",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"name","type":"bytes"},{"name":"votes","type":"uint256"}],"name":"candidateD","type":"map(uint256,tuple)"}
+			]
+		},
+		{
+			"name": "candidateKeysD",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"candidateKeysD","type":"uint256[]"}
 			]
 		}
 	],

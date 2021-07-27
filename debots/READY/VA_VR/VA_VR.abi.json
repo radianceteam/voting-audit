@@ -84,7 +84,7 @@
 		{
 			"name": "fetchCurAvtivity",
 			"inputs": [
-				{"name":"curDeAuditforActiv","type":"address"}
+				{"name":"curDeAuditforActivD","type":"address"}
 			],
 			"outputs": [
 			]
@@ -230,6 +230,14 @@
 		{
 			"name": "setValStakeCall",
 			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCcall",
+			"inputs": [
+				{"name":"status","type":"uint8"}
 			],
 			"outputs": [
 			]

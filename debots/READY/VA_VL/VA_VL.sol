@@ -26,9 +26,9 @@ interface IDeAuditRoot {
 }
 
 interface IParticipant {
-    function voteFor(uint256 voteId,uint128 grams) external;
-    function voteAgainst(uint256 voteId,uint128 grams) external;
-    function resultVote(uint256 voteId,uint128 grams) external;
+    function voteFor(uint256 voteId,uint128 grams) external returns (uint8 status);
+    function voteAgainst(uint256 voteId,uint128 grams) external returns (uint8 status);
+    function resultVote(uint256 voteId,uint128 grams) external returns (uint8 status);
 }
 
 interface IVotingAuditDebotACTMmenu {
@@ -39,13 +39,12 @@ contract VotingAuditDebotVL is Debot {
 
     address m_VAdebotACTMmenuAddress;
 
-    //TODO for test only
     uint128 GRAMS_INIT_VOTE = 700000000;
     uint128 GRAMS_RESULT = 3100000000;
 
     address m_DeAuditRoot = address.makeAddrStd(0, 0xeb29541ddefbe0d27642d031c2831b7f573952f3a002fb5b3a9308f7362c225c);
-    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
-    //END
+    address m_participant;
+
     bytes m_icon;
 
     mapping(uint256 => VoteD) voteD;
@@ -56,9 +55,6 @@ contract VotingAuditDebotVL is Debot {
         uint256 startTime;
         uint256 duration;
         uint8 vcms;
-//        TvmCell data;
-//        mapping(address => uint32) yes;
-//        mapping(address => uint32) no;
         uint32 yesCount;
         uint32 noCount;
         TvmCell data;
@@ -71,15 +67,10 @@ contract VotingAuditDebotVL is Debot {
         tvm.accept();
         m_icon = icon;
     }
-/*
-    voting list
-*/
 
     function prestart(address m_participantC) public {
         m_participant = m_participantC;
         m_VAdebotACTMmenuAddress = msg.sender;
-        Terminal.print(0,format("m_VAdebotACTMmenuAddress:{}",m_VAdebotACTMmenuAddress));
-//        m_DeAuditRoot = DeAuditRoot;
         start();
     }
     function preInd(uint32 index) public {
@@ -87,7 +78,7 @@ contract VotingAuditDebotVL is Debot {
     }
 
     function start() override functionID(0x01) public {
-
+        Terminal.print(0,"Fetching data...");
         optional(uint256) pubkey;
         IDeAuditRoot(m_DeAuditRoot).voteKeys{
         abiVer : 2,
@@ -106,6 +97,7 @@ contract VotingAuditDebotVL is Debot {
         for(uint8 i = 0; i < voteKeysD.length; i++){
             votingListMenu_getVoteStuctCur(voteKeysD[i]);
         }
+        Terminal.print(0,"Success");
         votingListMenu();
     }
 
@@ -144,7 +136,6 @@ contract VotingAuditDebotVL is Debot {
             cp.duration = duration4Debot;
             cp.vcms= vcms4Debot;
             cp.yesCount = yesCount4Debot;
-//            cp.data = data4Debot;
             cp.noCount = noCount4Debot;
             cp.data = data4Debot;
             cp.actionType = actionType4Debot;
@@ -157,22 +148,17 @@ contract VotingAuditDebotVL is Debot {
         votingListMenu();
     }
     function votingListMenu() public {
-        Menu.select("Choose voting type", "", [
-            MenuItem("fetch data", "",tvm.functionId(preInd)),
-            MenuItem("DEV set AT debot address", "", tvm.functionId(setATaddress)),
-            MenuItem("dev show all data", "",tvm.functionId(showVotings)),
+        Menu.select("Voting list menu:", "", [
+            MenuItem("Refresh data", "",tvm.functionId(preInd)),
+            MenuItem("Display data", "",tvm.functionId(showVotings)),
 //            MenuItem("DEP add action team member", "",tvm.functionId(votingAddMember)),
 //            MenuItem("DEP Remove action team member", "", tvm.functionId(votingRemoveMember)),
 //            MenuItem("DEP launched deaudit votings", "", tvm.functionId(launchedV)),
-            MenuItem("show all votings", "", tvm.functionId(showallV)),
-            MenuItem("return to previous menu", "", tvm.functionId(goToACTMdebot)),
+            MenuItem("Display all votings", "", tvm.functionId(showallV)),
+            MenuItem("Return to previous menu", "", tvm.functionId(goToACTMdebot)),
             MenuItem("Quit", "", 0)
             ]);
         }
-
-/*
-    showallV
-*/
 
     function showallV(uint32 index) public {
 
@@ -191,12 +177,12 @@ contract VotingAuditDebotVL is Debot {
                     complete = "false";
                 }
 
-                    string curVdata = format("======\nVoting for this address: {} ---- status :{}\n curK: {}\nvotingID: {}\ninitiator:{}\nstartTime: {}\nduration: {}\nyesCount: {}\nnoCount: {}\n actionType:{}",addrData, complete,curK,votingID, cp.initiator, cp.startTime, cp.duration,cp.yesCount,cp.noCount,cp.actionType);
+                    string curVdata = format(" - Voting for address: {} status :{}  curK: {} initiator address:{} startTime: {} duration: {} yesCount: {} noCount: {} actionType:{} - \n",addrData, complete,curK, cp.initiator, cp.startTime, cp.duration,cp.yesCount,cp.noCount,cp.actionType);
                     m_menu.push(MenuItem(curVdata,"",tvm.functionId(toungAllV)));
 
             }
-            m_menu.push(MenuItem("Back to voting list menu add", "", tvm.functionId(preInd)));
-            Menu.select("Choose voting:", "",m_menu);
+            m_menu.push(MenuItem("Back to voting list menu", "", tvm.functionId(preInd)));
+            Menu.select("Choose voting or back to menu:", "",m_menu);
 
     }
 uint256 votingID;
@@ -207,40 +193,28 @@ uint32 indexCur;
         VoteD cp = voteD[votingID];
         MenuItem[] m_menu;
         if(cp.completed){
-            Terminal.print(0, "/n/n***This Voting completed, choose another one***/n/n");
+            Terminal.print(0, " - Error: this Voting completed, choose another one - \n");
             showallV(0);
         }else{
 
-                m_menu.push(MenuItem("vote for","",tvm.functionId(voteFor)));
-                m_menu.push(MenuItem("vote against","",tvm.functionId(voteAgainst)));
-                m_menu.push(MenuItem("result vote","",tvm.functionId(resultVote)));
+                m_menu.push(MenuItem("Vote for","",tvm.functionId(voteFor)));
+                m_menu.push(MenuItem("Vote against","",tvm.functionId(voteAgainst)));
+                m_menu.push(MenuItem("Result votes","",tvm.functionId(resultVote)));
 
                 if(cp.actionType == 2){
-                    m_menu.push(MenuItem("show deauditData", "",tvm.functionId(showDADdata)));
+                    m_menu.push(MenuItem("Display DeAudit Data", "",tvm.functionId(showDADdata)));
                 }
 
-                m_menu.push(MenuItem("return to voting list menu","",tvm.functionId(premenu)));
+                m_menu.push(MenuItem("Back to voting list menu","",tvm.functionId(premenu)));
                 m_menu.push(MenuItem("Quit","",0));
-                string title = format("initiator: {} voting id: {}",cp.initiator, votingID);
+                string title = format(" - Initiator: {} Voting id: {} - \n",cp.initiator, votingID);
                 Menu.select(title,"",m_menu);
         }
-    }
-
-/*
-        DEV
-*/
-    function setATaddress(uint32 index) public {
-        AddressInput.get(tvm.functionId(onsetEditDebaddress), "dev set at deb adddress: ");
-    }
-    function onsetEditDebaddress(address value) public {
-        m_VAdebotACTMmenuAddress = value;
-        votingListMenu();
     }
 
     function goToACTMdebot(uint32 index)public{
         IVotingAuditDebotACTMmenu(m_VAdebotACTMmenuAddress).preStart(m_participant);
     }
-
 
     function showVotings(uint32 index) public {
 
@@ -396,7 +370,7 @@ uint32 indexCur;
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(votingID,GRAMS_INIT_VOTE);
 
@@ -411,7 +385,7 @@ uint32 indexCur;
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(votingID,GRAMS_INIT_VOTE);
 
@@ -426,7 +400,7 @@ uint32 indexCur;
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(votingID,GRAMS_RESULT);
 
@@ -436,7 +410,15 @@ uint32 indexCur;
 /*
     utils
 */
-
+    function SCcall(uint8 status) public {
+        if(status == 1){
+            Terminal.print(0, "Success, your message sended to blockchain");
+            start();
+        }else{
+            Terminal.print(0, "Error, try again");
+            start();
+        }
+    }
     function someError(uint32 sdkError, uint32 exitCode) public {
         Terminal.print(0, format("sdkError: {}\nexitCOde:{}", sdkError, exitCode));
         Terminal.print(0x01, "Back to menu...");

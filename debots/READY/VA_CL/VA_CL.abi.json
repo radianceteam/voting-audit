@@ -172,58 +172,6 @@
 			]
 		},
 		{
-			"name": "showUserData",
-			"inputs": [
-				{"name":"index","type":"uint32"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "SCshowUserData",
-			"inputs": [
-				{"name":"pName","type":"bytes"},
-				{"name":"pPhotoLink","type":"bytes"},
-				{"name":"pDataLink","type":"bytes"},
-				{"name":"pAddress","type":"address"},
-				{"name":"pBalance","type":"uint128"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "onEditUserData",
-			"inputs": [
-				{"name":"index","type":"uint32"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "onSetName",
-			"inputs": [
-				{"name":"value","type":"bytes"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "onAddPhotoLink",
-			"inputs": [
-				{"name":"value","type":"bytes"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "onAddPublishedDataLink",
-			"inputs": [
-				{"name":"value","type":"bytes"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "onAddCollation",
 			"inputs": [
 				{"name":"index","type":"uint32"}
@@ -319,6 +267,14 @@
 			"name": "goToCore",
 			"inputs": [
 				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCcall",
+			"inputs": [
+				{"name":"status","type":"uint8"}
 			],
 			"outputs": [
 			]

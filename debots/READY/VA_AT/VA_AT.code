@@ -1434,7 +1434,7 @@ PUSHREF {
 PUSHINT 10
 NEWDICT
 PUSHREF {
-	.blob x5b4445565d20526566726573682064617461
+	.blob x526566726573682064617461
 }
 PUSHREF {
 	.blob x
@@ -2001,7 +2001,7 @@ NULL
 ;; Remote call IParticipant.sendTrigger
 ;; push identifier m_participant
 GETGLOB 21
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -2036,7 +2036,7 @@ NOW
 STUR 64
 PUSHINT 291
 STUR 32
-STSLICECONST x4cf3c1bd
+STSLICECONST x12946c6a
 BLKSWAP 3, 1
 NEWC
 STSLICE
@@ -2616,7 +2616,7 @@ CALL $InitRemoveVoting_internal_macro$
 .macro InitRemoveVoting_internal_macro
 ;; param: index
 ; function InitRemoveVoting
-PUSHINT 1632933345
+PUSHINT 1663984583
 PUSHREF {
 	.blob x456e7465722063616e646964617465206164647265737320746f2072656d6f76653a
 }
@@ -2626,7 +2626,7 @@ CALLREF {
 ; end function InitRemoveVoting
 DROP
 
-.macro romoveMember_sendMSG
+.macro removeMember_sendMSG
 DROP
 GETGLOB 8
 ISNULL
@@ -2645,7 +2645,7 @@ IFNOT
 ENDS
 ;; param: value
 CALLREF {
-	CALL $romoveMember_sendMSG_internal_macro$
+	CALL $removeMember_sendMSG_internal_macro$
 }
 CALLREF {
 	CALL $c7_to_c4$
@@ -2653,13 +2653,13 @@ CALLREF {
 TRUE
 SETGLOB 7
 
-.globl	romoveMember_sendMSG_internal
-.type	romoveMember_sendMSG_internal, @function
-CALL $romoveMember_sendMSG_internal_macro$
+.globl	removeMember_sendMSG_internal
+.type	removeMember_sendMSG_internal, @function
+CALL $removeMember_sendMSG_internal_macro$
 
-.macro romoveMember_sendMSG_internal_macro
+.macro removeMember_sendMSG_internal_macro
 ;; param: value
-; function romoveMember_sendMSG
+; function removeMember_sendMSG
 ; expValue
 ; end expValue
 ;; push identifier value
@@ -2718,7 +2718,7 @@ SENDRAWMSG
 CALLREF {
 	CALL $start_internal_macro$
 }
-; end function romoveMember_sendMSG
+; end function removeMember_sendMSG
 DROP2
 
 .macro addMember_sendMSG
@@ -2844,7 +2844,7 @@ CALL $enterDeAuditDataNameInput_internal_macro$
 ; function enterDeAuditDataNameInput
 PUSHINT 830794338
 PUSHREF {
-	.blob x456e7465722044654175646974204e616d65
+	.blob x456e7465722044654175646974204e616d653a
 }
 FALSE
 CALLREF {
@@ -3253,7 +3253,7 @@ NULL
 ;; Remote call IParticipant.createDeAuditData
 ;; push identifier m_participant
 GETGLOB 21
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -3301,7 +3301,7 @@ NOW
 STUR 64
 PUSHINT 291
 STUR 32
-STSLICECONST x77c5bb5e
+STSLICECONST x0404ea46
 STREF
 BLKSWAP 6, 1
 NEWC
@@ -3400,7 +3400,7 @@ NULL
 ;; Remote call IParticipant.initVoteDeAudut
 ;; push identifier m_participant
 GETGLOB 21
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -3433,7 +3433,7 @@ NOW
 STUR 64
 PUSHINT 291
 STUR 32
-STSLICECONST x4a1c5d6d
+STSLICECONST x77066df7
 ROTREV
 NEWC
 STSLICE
@@ -3448,6 +3448,65 @@ CALLREF {
 }
 ; end function initDeauditData
 DROP2
+
+.macro SCcall
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 8
+ENDS
+;; param: status
+CALLREF {
+	CALL $SCcall_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	SCcall_internal
+.type	SCcall_internal, @function
+CALL $SCcall_internal_macro$
+
+.macro SCcall_internal_macro
+;; param: status
+; function SCcall
+;; if
+;; push identifier status
+DUP
+EQINT 1
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x537563636573732c20796f7572206d6573736167652073656e64656420746f20626c6f636b636861696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $start_internal_macro$
+	}
+}
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x4572726f722c2074727920616761696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $start_internal_macro$
+	}
+}
+IFELSE
+;; end if
+; end function SCcall
+DROP
 
 .macro someError
 DROP
@@ -4567,10 +4626,6 @@ SETGLOB 8
 	;; address.makeAddrStd()
 	PUSHSLICE x801d652a83bbdf7c1a4ec85a063850636feae72a5e74005f6b6752611ee6c5844b9_
 	SETGLOB 20
-	;; init state var: m_participant
-	;; address.makeAddrStd()
-	PUSHSLICE x8009b0e448ff86fdb6beb3bbc2f3e78d314d645cb1593bdf9744f0301804d0894f7_
-	SETGLOB 21
 }
 IFELSE
 
@@ -5112,11 +5167,11 @@ IFJMPREF {
 	}
 }
 DUP
-PUSHINT 1559973453
+PUSHINT 1522516059
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 936431167
+	PUSHINT 918258313
 	LEQ
 	IFJMPREF {
 		DUP
@@ -5138,16 +5193,22 @@ IFJMPREF {
 			CALL $preStart$
 		}
 		DUP
+		PUSHINT 918258313
+		EQUAL
+		IFJMPREF {
+			CALL $SCcall$
+		}
+	}
+	DUP
+	PUSHINT 1070160265
+	LEQ
+	IFJMPREF {
+		DUP
 		PUSHINT 936431167
 		EQUAL
 		IFJMPREF {
 			CALL $goToEDdebot$
 		}
-	}
-	DUP
-	PUSHINT 1100412470
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1000318693
 		EQUAL
@@ -5166,17 +5227,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $atmenu$
 		}
+	}
+	DUP
+	PUSHINT 1180480033
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1100412470
 		EQUAL
 		IFJMPREF {
 			CALL $SCgetDADid$
 		}
-	}
-	DUP
-	PUSHINT 1184379414
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1114586547
 		EQUAL
@@ -5195,17 +5256,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $preStartForCore$
 		}
+	}
+	DUP
+	PUSHINT 1522516059
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1184379414
 		EQUAL
 		IFJMPREF {
 			CALL $someError$
 		}
-	}
-	DUP
-	PUSHINT 1559973453
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1372128895
 		EQUAL
@@ -5224,22 +5285,22 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $initDeauditData$
 		}
+	}
+}
+DUP
+PUSHINT 2013238326
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1654896055
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1559973453
 		EQUAL
 		IFJMPREF {
 			CALL $keysDeAuditDataD$
 		}
-	}
-}
-DUP
-PUSHINT 2034608647
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 1731456176
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1632933345
 		EQUAL
@@ -5258,17 +5319,23 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $keysDeAuditD$
 		}
+	}
+	DUP
+	PUSHINT 1756716863
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 1663984583
+		EQUAL
+		IFJMPREF {
+			CALL $removeMember_sendMSG$
+		}
 		DUP
 		PUSHINT 1731456176
 		EQUAL
 		IFJMPREF {
 			CALL $setABI$
 		}
-	}
-	DUP
-	PUSHINT 1810136044
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1736649579
 		EQUAL
@@ -5281,6 +5348,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $constructor$
 		}
+	}
+	DUP
+	PUSHINT 1868343720
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1767589786
 		EQUAL
@@ -5293,11 +5365,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $enterDeAuditCollationPeriod$
 		}
-	}
-	DUP
-	PUSHINT 1923774751
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1866884673
 		EQUAL
@@ -5310,6 +5377,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getDADname$
 		}
+	}
+	DUP
+	PUSHINT 2013238326
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1888717285
 		EQUAL
@@ -5322,11 +5394,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $enterDeAuditDataNameInput$
 		}
-	}
-	DUP
-	PUSHINT 2034608647
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1990296751
 		EQUAL
@@ -5339,24 +5406,18 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $initDeauditDataMenuInput$
 		}
-		DUP
-		PUSHINT 2021410796
-		EQUAL
-		IFJMPREF {
-			CALL $romoveMember_sendMSG$
-		}
-		DUP
-		PUSHINT 2034608647
-		EQUAL
-		IFJMPREF {
-			CALL $enterDeAuditStartTime$
-		}
 	}
 }
 DUP
 PUSHINT 2112671963
 LEQ
 IFJMPREF {
+	DUP
+	PUSHINT 2034608647
+	EQUAL
+	IFJMPREF {
+		CALL $enterDeAuditStartTime$
+	}
 	DUP
 	PUSHINT 2112321760
 	EQUAL

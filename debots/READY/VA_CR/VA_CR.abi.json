@@ -27,6 +27,14 @@
 			]
 		},
 		{
+			"name": "preGet",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "start",
 			"id": "0x1",
 			"inputs": [
@@ -219,6 +227,14 @@
 			]
 		},
 		{
+			"name": "getBafterStart",
+			"inputs": [
+				{"name":"nanotokens","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "checkDeployAnswer",
 			"inputs": [
 				{"name":"value","type":"bool"}
@@ -289,6 +305,14 @@
 			]
 		},
 		{
+			"name": "preMembersMenu",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "membersMenu",
 			"inputs": [
 			],
@@ -330,6 +354,14 @@
 		{
 			"name": "enterATMdebot",
 			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCcall",
+			"inputs": [
+				{"name":"status","type":"uint8"}
 			],
 			"outputs": [
 			]

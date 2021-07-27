@@ -50,16 +50,7 @@ interface IDeAuditData {
 }
 
 interface IParticipant {
-    function addCollation(address addressDeAudit, uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix, uint128 grams) external;
-    function getPublishedData() external returns (
-        bytes pName,
-        bytes pPhotoLink,
-        bytes pDataLink,
-        address pAddress,
-        uint128 pBalance
-    );
-    function publishData(bytes publishName, bytes publishPhotoLink, bytes publishDataLink) external;
-
+    function addCollation(address addressDeAudit, uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix, uint128 grams) external returns (uint8 status);
 }
 
 interface IVotingAuditDebot {
@@ -71,7 +62,7 @@ contract CLdebot is Debot {
     address m_coreDebot;
 
     address DeAuditRoot = address.makeAddrStd(0, 0xeb29541ddefbe0d27642d031c2831b7f573952f3a002fb5b3a9308f7362c225c);
-    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
+    address m_participant;
 
     bytes m_icon;
 
@@ -173,7 +164,7 @@ contract CLdebot is Debot {
         Terminal.print(0,format("getCDdata, curDAD: {}", curDAD));
 
         optional(uint256) pubkey;
-        IDeAuditData(testDAD).getCandidate4Debot{
+        IDeAuditData(DeAuditRoot).getCandidate4Debot{
         abiVer : 2,
         extMsg : true,
         sign : false,
@@ -293,7 +284,7 @@ contract CLdebot is Debot {
         Terminal.print(0,format("getVCdata, curVC: {}", curVC));
 
         optional(uint256) pubkey;
-        IDeAuditData(testDAD).getVotingCenter4Debot{
+        IDeAuditData(DeAuditRoot).getVotingCenter4Debot{
         abiVer : 2,
         extMsg : true,
         sign : false,
@@ -328,94 +319,25 @@ contract CLdebot is Debot {
         votingCenterD[votingCenterCurrentKeyD] = vc;
     }
 
-    address testDAD = address.makeAddrStd(0, 0xe97bb59a278124af5d1fe4aa92ca997aa68c244478c4a6b505bb09e33c158780);
     function fVC(uint32 index) public {
-        fetchVC(testDAD);
+        fetchVC(DeAuditRoot);
         CLmenu();
     }
     function fCD(uint32 index) public {
-        fetchCD(testDAD);
+        fetchCD(DeAuditRoot);
         CLmenu();
     }
     function CLmenu() public {
-        Menu.select("Welcome to CL menu", "", [
+        Menu.select("Welcome to Collator menu", "", [
             MenuItem("Fetch data", "",tvm.functionId(pstart)),
-            MenuItem("show user data", "",tvm.functionId(showUserData)),
-            MenuItem("Fetch VC", "",tvm.functionId(fVC)),
-            MenuItem("Fetch CD", "",tvm.functionId(fCD)),
-            MenuItem("add collation", "", tvm.functionId(onAddCollation)),
-            MenuItem("return to main menu", "", tvm.functionId(goToCore)),
+//            MenuItem("Fetch VC", "",tvm.functionId(fVC)),
+//            MenuItem("Fetch CD", "",tvm.functionId(fCD)),
+            MenuItem("Add collation", "", tvm.functionId(onAddCollation)),
+            MenuItem("Back to main menu", "", tvm.functionId(goToCore)),
             MenuItem("Quit", "", 0)
             ]);
     }
 
-/*
-    user info
-*/
-    function showUserData(uint32 index) public {
-        optional(uint256) pubkey;
-        IParticipant(m_participant).getPublishedData{
-        abiVer : 2,
-        extMsg : true,
-        sign : false,
-        pubkey : pubkey,
-        time : uint64(now),
-        expire: 0x123,
-        callbackId : tvm.functionId(SCshowUserData),
-        onErrorId : tvm.functionId(someError)
-        }();
-    }
-
-    function SCshowUserData(
-        bytes pName,
-        bytes pPhotoLink,
-        bytes pDataLink,
-        address pAddress,
-        uint128 pBalance
-    )  public {
-        Terminal.print(0,format("***USER DATA\nyour name: {}\nphoto link: {}\ndata link: {}\nyour address: {}\n balance: {}\nEND***\n",pName,pPhotoLink,pDataLink,pAddress,pBalance));
-
-        MenuItem[] m_menu;
-            m_menu.push(MenuItem("Edit user data", "", tvm.functionId(onEditUserData)));
-            m_menu.push(MenuItem("Return to menu", "", tvm.functionId(pstart)));
-        Menu.select("Choose: ", "",m_menu);
-    }
-
-    function onEditUserData(uint32 index) public {
-        Terminal.input(tvm.functionId(onSetName), "----\nYour name?\n\n",false);
-    }
-bytes userName;
-    function onSetName(string value) public {
-        userName = bytes(value);
-
-        Terminal.input(tvm.functionId(onAddPhotoLink), "----\nAdd your photo link:\n\n",false);
-    }
-bytes PhotoLink;
-    function onAddPhotoLink(string value) public {
-        PhotoLink = bytes(value);
-
-        Terminal.input(tvm.functionId(onAddPublishedDataLink), "----\nAdd your published data link:\n\n",false);
-    }
-bytes PublishedDataLink;
-    function onAddPublishedDataLink(string value) public {
-        PublishedDataLink = bytes(value);
-
-        Terminal.print(0,format("***** your userName: {}\n photo link: {}\n published data link: {}\n*****\n", userName,PhotoLink,PublishedDataLink));
-
-        optional(uint256) pubkey;
-        IParticipant(m_participant).publishData{
-        abiVer : 2,
-        extMsg : true,
-        sign : true,
-        pubkey : pubkey,
-        time : uint64(now),
-        expire: 0x123,
-        callbackId : 0,
-        onErrorId : tvm.functionId(someError)
-        }(userName,PhotoLink,PublishedDataLink);
-
-        CLmenu();
-    }
 
 /*
     add collation
@@ -574,7 +496,7 @@ uint256[] VoteMatrixD;
             pubkey : pubkey,
             time : uint64(now),
             expire: 0x123,
-            callbackId : tvm.functionId(CLmenu),
+            callbackId : tvm.functionId(SCcall),
             onErrorId : tvm.functionId(someError)
             }(curDAAddressD,curVCIndexD,link,VoteMatrixD,CLstake);
 
@@ -591,6 +513,16 @@ uint256[] VoteMatrixD;
 /*
     utils
 */
+
+    function SCcall(uint8 status) public {
+        if(status == 1){
+            Terminal.print(0, "Success, your message sended to blockchain");
+            start();
+        }else{
+            Terminal.print(0, "Error, try again");
+            start();
+        }
+    }
 
     function someError(uint32 sdkError, uint32 exitCode) public {
         Terminal.print(0, format("sdkError: {}\nexitCOde:{}", sdkError, exitCode));

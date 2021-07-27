@@ -12,6 +12,19 @@ interface IDeAuditData {
     function municipalBodyKeys() external returns (uint256[] municipalBodyKeys);
     function votingPoolKeys() external returns (uint256[] votingPoolKeys);
     function candidateKeys() external returns (uint256[] candidateKeys);
+    function votingCenterKeys() external returns (uint256[] votingCenterKeys);
+
+    function getVotingCenter4Debot(uint256 votingCenterCurrentKey) external returns (
+        bytes name4Debot,
+        bytes location4Debot,
+        uint256[] votes4Debot,
+        uint256 idVotingPool4Debot,
+        uint256 idMunicipalBody4Debot,
+        uint256 idDistrict4Debot,
+        bool collationStatus4Debot,
+        address[] act4Arr4Debot,
+        uint256 votingCenterCurrentKeyD
+    );
 
     function getCandidate4Debot(uint256 candidateCurrentKey) external returns (
         bytes name4Debot,
@@ -96,6 +109,14 @@ contract VotingAuditDebotED is Debot {
 
     mapping (uint256 => CandidateD) public candidateD;
     uint256[] public candidateKeysD;
+
+    struct VotingCenterD {
+        bytes name;
+        bytes location;
+    }
+
+    mapping (uint256 => VotingCenterD) public votingCenterD;
+    uint256[] public votingCenterKeysD;
 
     function setIcon(bytes icon) public {
         require(msg.pubkey() == tvm.pubkey(), 100);
@@ -310,6 +331,56 @@ contract VotingAuditDebotED is Debot {
         candidateD[candidateCurrentKeyD] = cd;
     }
 
+    function fetchVC() public {
+        optional(uint256) pubkey;
+        IDeAuditData(choosenDADaddress).votingCenterKeys{
+        abiVer : 2,
+        extMsg : true,
+        sign : false,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(SCfetchVC),
+        onErrorId : tvm.functionId(someError)
+        }();
+    }
+    function SCfetchVC(uint256[] votingCenterKeys) public {
+        votingCenterKeysD = votingCenterKeys;
+        for(uint8 i = 0; i < votingCenterKeysD.length; i++){
+            uint256 curVC = votingCenterKeysD[i];
+            getVCata(curVC);
+        }
+    }
+    function getVCata(uint256 curVC) public {
+        optional(uint256) pubkey;
+        IDeAuditData(choosenDADaddress).getCandidate4Debot{
+        abiVer : 2,
+        extMsg : true,
+        sign : false,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(SCgetVCata),
+        onErrorId : tvm.functionId(someError)
+        }(curVC);
+    }
+    function SCgetVCata(
+        bytes name4Debot,
+        bytes location4Debot,
+        uint256[] votes4Debot,
+        uint256 idVotingPool4Debot,
+        uint256 idMunicipalBody4Debot,
+        uint256 idDistrict4Debot,
+        bool collationStatus4Debot,
+        address[] act4Arr4Debot,
+        uint256 votingCenterCurrentKeyD
+    ) public {
+        VotingCenterD vc = votingCenterD[votingCenterCurrentKeyD];
+        vc.name = name4Debot;
+        vc.location = location4Debot;
+        votingCenterD[votingCenterCurrentKeyD] = vc;
+    }
+
     function editDeAudit() public {
         Menu.select("Edit DeAudit data menu:", "", [
             MenuItem("Refresh data", "",tvm.functionId(prestart)),
@@ -353,6 +424,12 @@ contract VotingAuditDebotED is Debot {
             CandidateD cd = candidateD[curCD];
             Terminal.print(0, format(" - Candidate name: {}",cd.name));
 
+        }
+
+        for(uint8 k = 0; k < votingCenterKeysD.length; k++){
+            uint256 curVC = votingCenterKeysD[k];
+            VotingCenterD vc = votingCenterD[curVC];
+            Terminal.print(0,  format(" - Voting center: {}", vc.name));
         }
 
         editDeAudit();

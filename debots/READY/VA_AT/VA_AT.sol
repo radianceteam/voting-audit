@@ -52,9 +52,9 @@ interface IParticipant {
         uint256 valPeriod,
         uint128 colStake,
         uint128 valStake,
-        uint128 grams) external;
-    function initVoteDeAudut(address addrDeAuditData, uint128 grams) external;
-    function sendTrigger(address addrDeAudit, address addrAct4, uint128 grams) external;
+        uint128 grams) external returns (uint8 status);
+    function initVoteDeAudut(address addrDeAuditData, uint128 grams) external returns (uint8 status);
+    function sendTrigger(address addrDeAudit, address addrAct4, uint128 grams) external returns (uint8 status);
 }
 
 interface IVotingAuditDebot {
@@ -78,7 +78,7 @@ contract VotingAuditDebotACTMmenu is Debot {
     uint128 GRAMS_CREATE_DEAUDIT = 1100000000;
 
     address DeAuditRoot = address.makeAddrStd(0, 0xeb29541ddefbe0d27642d031c2831b7f573952f3a002fb5b3a9308f7362c225c);
-    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
+    address m_participant;
 
     bytes m_icon;
 
@@ -311,7 +311,7 @@ contract VotingAuditDebotACTMmenu is Debot {
     function atmenu() public {
         Menu.select("Welcome to Action team menu", "", [
 //            MenuItem("[DEV] set core debot address", "", tvm.functionId(setACTMdebAddress)),
-            MenuItem("[DEV] Refresh data", "",tvm.functionId(pstart)),
+            MenuItem("Refresh data", "",tvm.functionId(pstart)),
             MenuItem("Create DeAudit Data", "", tvm.functionId(enterDeAuditDataNameInput)),
             MenuItem("Edit DeAudit Data", "", tvm.functionId(onToEDdebot)),
             MenuItem("Add member to Action Team", "",tvm.functionId(initAddVoting)),
@@ -327,7 +327,7 @@ contract VotingAuditDebotACTMmenu is Debot {
     go to ED debot
 */
 
-
+//TODO check deaudit address -> filter it
     function onSendTrigger(uint32 index) public {
 //        fetchVCbyDA();
         MenuItem[] m_menu;
@@ -360,7 +360,7 @@ address curDeAudit;
             pubkey : pubkey,
             time : uint64(now),
             expire: 0x123,
-            callbackId : 0,
+            callbackId : tvm.functionId(SCcall),
             onErrorId : tvm.functionId(someError)
             }(curDeAudit,curACT4,GRAMS_TRIGGER);
 
@@ -469,12 +469,12 @@ address curDeAudit;
         AddressInput.get(tvm.functionId(addMember_sendMSG), "Enter candidate address to add:");
     }
     function InitRemoveVoting(uint32 index) public {
-        AddressInput.get(tvm.functionId(addMember_sendMSG), "Enter candidate address to remove:");
+        AddressInput.get(tvm.functionId(removeMember_sendMSG), "Enter candidate address to remove:");
     }
 
     address m_memberAddress;
 
-    function romoveMember_sendMSG(address value) public {
+    function removeMember_sendMSG(address value) public {
         m_memberAddress = value;
 
         optional(uint256) pubkey;
@@ -521,7 +521,7 @@ address curDeAudit;
     uint128 valStake;
 
     function enterDeAuditDataNameInput(uint32 index) public {
-        Terminal.input(tvm.functionId(enterDeAuditDataName), "Enter DeAudit Name", false);
+        Terminal.input(tvm.functionId(enterDeAuditDataName), "Enter DeAudit Name:", false);
     }
 
     function enterDeAuditDataName(string value) public {
@@ -578,7 +578,7 @@ address curDeAudit;
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(
             nameDeAudit,
@@ -608,7 +608,7 @@ address curDeAudit;
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(
             value,
@@ -621,6 +621,16 @@ address curDeAudit;
 /*
     utils
 */
+
+    function SCcall(uint8 status) public {
+        if(status == 1){
+            Terminal.print(0, "Success, your message sended to blockchain");
+            start();
+        }else{
+            Terminal.print(0, "Error, try again");
+            start();
+        }
+    }
 
     function someError(uint32 sdkError, uint32 exitCode) public {
         Terminal.print(0, format("sdkError: {}\nexitCode:{}", sdkError, exitCode));

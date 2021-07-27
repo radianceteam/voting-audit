@@ -101,22 +101,6 @@
 			]
 		},
 		{
-			"name": "setATaddress",
-			"inputs": [
-				{"name":"index","type":"uint32"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "onsetEditDebaddress",
-			"inputs": [
-				{"name":"value","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "goToACTMdebot",
 			"inputs": [
 				{"name":"index","type":"uint32"}
@@ -160,6 +144,14 @@
 			"name": "resultVote",
 			"inputs": [
 				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCcall",
+			"inputs": [
+				{"name":"status","type":"uint8"}
 			],
 			"outputs": [
 			]

@@ -160,9 +160,41 @@ DUP
 SETGLOB 28
 ; end colValue
 CALLREF {
-	CALL $start_internal_macro$
+	CALL $membersMenu_internal_macro$
 }
 ; end function getBalanc
+DROP
+
+.macro preGet
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $preGet_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	preGet_internal
+.type	preGet_internal, @function
+CALL $preGet_internal_macro$
+
+.macro preGet_internal_macro
+;; param: index
+; function preGet
+CALLREF {
+	CALL $start_internal_macro$
+}
+; end function preGet
 DROP
 
 .macro start
@@ -1129,49 +1161,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
-	PUSHSLICE x0a74696d6553746172743a
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; get member timeStart
-	;; push identifier cp
-	PUSH S4
-	INDEX 5
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x0a636f6c506572696f643a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; get member colPeriod
-	;; push identifier cp
-	PUSH S4
-	INDEX 6
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x0a76616c506572696f643a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; get member valPeriod
-	;; push identifier cp
-	PUSH S4
-	INDEX 7
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x0a7374617475733a
+	PUSHSLICE x2c207374617475733a
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -2038,7 +2028,7 @@ IFELSE
 PUSHINT 0
 NIL
 NEWC
-PUSHSLICE x3d3d3d3d3d3d3d3d3d3d3d3d63722e6e616d653a20
+PUSHSLICE x202d20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2052,9 +2042,7 @@ FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHREFSLICE {
-	.blob x3d3d3d3d3d3d3d3d3d3d3d3d3d3d0a63722e73657175656e7469616c4e756d6265723a20
-}
+PUSHSLICE x202d200a63722e7365716e6f3a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2066,7 +2054,7 @@ CTOS
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
-PUSHSLICE x0a63722e74696d6553746172743a20
+PUSHSLICE x2063722e74696d6553746172743a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2080,7 +2068,7 @@ FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHSLICE x0a63722e636f6c506572696f643a20
+PUSHSLICE x2063722e636f6c506572696f643a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2094,7 +2082,7 @@ FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHSLICE x0a63722e76616c506572696f643a20
+PUSHSLICE x2063722e76616c506572696f643a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2108,7 +2096,7 @@ FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHSLICE x0a636f6c5374616b653a20
+PUSHSLICE x20636f6c5374616b653a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2122,7 +2110,7 @@ FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHSLICE x0a76616c5374616b653a20
+PUSHSLICE x2076616c5374616b653a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2136,7 +2124,7 @@ FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHSLICE x0a63722e746f74616c537570706c793a20
+PUSHSLICE x2063722e746f74616c537570706c793a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2150,7 +2138,7 @@ FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHSLICE x0a63722e4441446e616d653a20
+PUSHSLICE x2063722e4441446e616d653a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2159,10 +2147,6 @@ CALLREF {
 PUSH S3
 INDEX 11
 CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x0a3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2253,9 +2237,7 @@ CTOS
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
-PUSHREFSLICE {
-	.blob x0a577269746520646f776e20616e6420736176652069742e20506c6561736520646f6e277420666f7267657420697421
-}
+PUSHSLICE x0a506c6561736520646f6e277420666f7267657420697421
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2694,7 +2676,7 @@ PUSH S1
 PUSHCONT {
 	PUSHINT 0
 	PUSHREF {
-		.blob x636865636b656420737563636573732c20676f696e6720746f206d656d62657273206d656e75
+		.blob x436865636b65642073756363657373
 	}
 	CALLREF {
 		CALL $Terminal_no_obj_print_macro$
@@ -2706,8 +2688,11 @@ PUSHCONT {
 	; colValue
 	SETGLOB 18
 	; end colValue
+	PUSHINT 935643272
+	;; push identifier m_participant
+	GETGLOB 18
 	CALLREF {
-		CALL $membersMenu_internal_macro$
+		CALL $Sdk_no_obj_getBalance_macro$
 	}
 }
 PUSHCONT {
@@ -2723,6 +2708,53 @@ IFELSE
 ;; end if
 ; end function SCcheckPubKey
 DROP2
+
+.macro getBafterStart
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDUQ 128
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 128
+}
+IFNOT
+ENDS
+;; param: nanotokens
+CALLREF {
+	CALL $getBafterStart_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	getBafterStart_internal
+.type	getBafterStart_internal, @function
+CALL $getBafterStart_internal_macro$
+
+.macro getBafterStart_internal_macro
+;; param: nanotokens
+; function getBafterStart
+; expValue
+; end expValue
+;; push identifier nanotokens
+DUP
+; colValue
+SETGLOB 28
+; end colValue
+CALLREF {
+	CALL $membersMenu_internal_macro$
+}
+; end function getBafterStart
+DROP
 
 .macro checkDeployAnswer
 DROP
@@ -2872,9 +2904,7 @@ SETGLOB 18
 PUSHINT 0
 NIL
 NEWC
-PUSHREFSLICE {
-	.blob x6765745061727469636970616e744164647265737320737563636573732c20796f7572206164647265737320
-}
+PUSHSLICE x537563636573732c20796f7572206164647265737320
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -3036,7 +3066,7 @@ PUSHREF {
 PUSHINT 2
 NEWDICT
 PUSHREF {
-	.blob x636865636b20706c73
+	.blob x436865636b20706c73
 }
 PUSHREF {
 	.blob x
@@ -3061,7 +3091,7 @@ PUSHREF {
 PUSHREF {
 	.blob x
 }
-PUSHINT 1260116821
+PUSHINT 198194283
 TUPLE 3
 CALLREF {
 	UNTUPLE 3
@@ -3247,13 +3277,6 @@ CALL $deployCall_internal_macro$
 
 .macro deployCall_internal_macro
 ; function deployCall
-PUSHINT 0
-PUSHREF {
-	.blob x6465706c6f792063616c6c
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
 NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditRoot.deployParticipant
@@ -3358,17 +3381,9 @@ SETGLOBVAR
 PUSHINT 0
 NIL
 NEWC
-PUSHREFSLICE {
-	.blob x53756363657373206465706c6f7965642e20676f696e6720746f206d656d626572734d656e752c206465706c6f79656441646472657373202d20
-}
+PUSHSLICE x53756363657373206465706c6f7965642e
 CALLREF {
 	CALL $storeStringInBuilders_macro$
-}
-;; push identifier dp
-PUSHINT 34
-GETGLOBVAR
-CALLREF {
-	CALL $convertAddressToHexString_macro$
 }
 CALLREF {
 	CALL $assembleList_macro$
@@ -3381,6 +3396,38 @@ CALLREF {
 }
 ; end function deployParticipantSuccess
 DROP2
+
+.macro preMembersMenu
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+ENDS
+;; param: index
+CALLREF {
+	CALL $preMembersMenu_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	preMembersMenu_internal
+.type	preMembersMenu_internal, @function
+CALL $preMembersMenu_internal_macro$
+
+.macro preMembersMenu_internal_macro
+;; param: index
+; function preMembersMenu
+CALLREF {
+	CALL $membersMenu_internal_macro$
+}
+; end function preMembersMenu
+DROP
 
 .macro membersMenu
 DROP
@@ -3426,24 +3473,6 @@ CALLREF {
 }
 ;; push identifier m_participant
 GETGLOB 18
-CALLREF {
-	CALL $convertAddressToHexString_macro$
-}
-PUSHSLICE x2c206d5f56415f5652616464723a
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier m_VA_VRaddr
-GETGLOB 16
-CALLREF {
-	CALL $convertAddressToHexString_macro$
-}
-PUSHSLICE x2c6d5f434c646562416464726573733a
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier m_CLdebAddress
-GETGLOB 15
 CALLREF {
 	CALL $convertAddressToHexString_macro$
 }
@@ -3527,7 +3556,7 @@ PUSHREF {
 PUSHREF {
 	.blob x
 }
-PUSHINT 1260116821
+PUSHINT 198194283
 TUPLE 3
 CALLREF {
 	UNTUPLE 3
@@ -3759,7 +3788,7 @@ PUSHCONT {
 PUSHCONT {
 	PUSHINT 0
 	PUSHREF {
-		.blob x796f752068617665206e6f207065726d697373696f6e
+		.blob x596f752068617665206e6f207065726d697373696f6e
 	}
 	CALLREF {
 		CALL $Terminal_no_obj_print_macro$
@@ -3815,6 +3844,65 @@ ENDC
 PUSHINT 0
 SENDRAWMSG
 ; end function enterATMdebot
+
+.macro SCcall
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 8
+ENDS
+;; param: status
+CALLREF {
+	CALL $SCcall_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	SCcall_internal
+.type	SCcall_internal, @function
+CALL $SCcall_internal_macro$
+
+.macro SCcall_internal_macro
+;; param: status
+; function SCcall
+;; if
+;; push identifier status
+DUP
+EQINT 1
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x537563636573732c20796f7572206d6573736167652073656e64656420746f20626c6f636b636861696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $membersMenu_internal_macro$
+	}
+}
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x4572726f722c2074727920616761696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $membersMenu_internal_macro$
+	}
+}
+IFELSE
+;; end if
+; end function SCcall
+DROP
 
 .macro someError
 DROP
@@ -5773,7 +5861,7 @@ BLKDROP 4
 
 .macro public_function_selector
 DUP
-PUSHINT 739503393
+PUSHINT 728376660
 LEQ
 IFJMPREF {
 	DUP
@@ -5834,7 +5922,7 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 258836457
+	PUSHINT 250476418
 	LEQ
 	IFJMPREF {
 		DUP
@@ -5842,6 +5930,12 @@ IFJMPREF {
 		EQUAL
 		IFJMPREF {
 			CALL $deploy_genAddr$
+		}
+		DUP
+		PUSHINT 198194283
+		EQUAL
+		IFJMPREF {
+			CALL $preGet$
 		}
 		DUP
 		PUSHINT 212884318
@@ -5855,17 +5949,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $preStart$
 		}
+	}
+	DUP
+	PUSHINT 728376660
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 258836457
 		EQUAL
 		IFJMPREF {
 			CALL $setIcon$
 		}
-	}
-	DUP
-	PUSHINT 739503393
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 523943293
 		EQUAL
@@ -5884,22 +5978,22 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getMasterKeysFromMnemonicStep4$
 		}
+	}
+}
+DUP
+PUSHINT 1348879102
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 898299379
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 739503393
 		EQUAL
 		IFJMPREF {
 			CALL $menuEnterSeedPhrase$
 		}
-	}
-}
-DUP
-PUSHINT 1484565528
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 1073606278
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 749555203
 		EQUAL
@@ -5918,23 +6012,40 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getParticipantAddressCallback$
 		}
+	}
+	DUP
+	PUSHINT 1173194401
+	LEQ
+	IFJMPREF {
+		DUP
+		PUSHINT 918258313
+		EQUAL
+		IFJMPREF {
+			CALL $SCcall$
+		}
+		DUP
+		PUSHINT 935643272
+		EQUAL
+		IFJMPREF {
+			CALL $getBafterStart$
+		}
 		DUP
 		PUSHINT 1073606278
 		EQUAL
 		IFJMPREF {
 			CALL $preSstart$
 		}
-	}
-	DUP
-	PUSHINT 1194747359
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1173194401
 		EQUAL
 		IFJMPREF {
 			CALL $getBalanceOfSuccess$
 		}
+	}
+	DUP
+	PUSHINT 1240722853
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1182827257
 		EQUAL
@@ -5953,17 +6064,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getFromDAD$
 		}
-	}
-	DUP
-	PUSHINT 1339057434
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1240722853
 		EQUAL
 		IFJMPREF {
 			CALL $setABI$
 		}
+	}
+	DUP
+	PUSHINT 1348879102
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1245629296
 		EQUAL
@@ -5982,17 +6093,22 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $showMnemonic$
 		}
-	}
-	DUP
-	PUSHINT 1484565528
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1348879102
 		EQUAL
 		IFJMPREF {
 			CALL $getMasterKeysFromMnemonicStep2$
 		}
+	}
+}
+DUP
+PUSHINT 2102773688
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1501446644
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1358660711
 		EQUAL
@@ -6011,22 +6127,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $setGiverSuccess$
 		}
-	}
-}
-DUP
-PUSHINT 2138477742
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 1541890324
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1501446644
 		EQUAL
 		IFJMPREF {
 			CALL $getMasterKeysFromMnemonicStep3$
 		}
+	}
+	DUP
+	PUSHINT 1551076115
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1502274774
 		EQUAL
@@ -6045,17 +6156,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $goToCLdebot$
 		}
-	}
-	DUP
-	PUSHINT 1601205352
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1551076115
 		EQUAL
 		IFJMPREF {
 			CALL $SCgetDeauditAddresses$
 		}
+	}
+	DUP
+	PUSHINT 1669267340
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1556291458
 		EQUAL
@@ -6074,16 +6185,22 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $showCurDAD$
 		}
+		DUP
+		PUSHINT 1669267340
+		EQUAL
+		IFJMPREF {
+			CALL $onValidation$
+		}
 	}
 	DUP
 	PUSHINT 2102773688
 	LEQ
 	IFJMPREF {
 		DUP
-		PUSHINT 1669267340
+		PUSHINT 1725132521
 		EQUAL
 		IFJMPREF {
-			CALL $onValidation$
+			CALL $preMembersMenu$
 		}
 		DUP
 		PUSHINT 1756716863
@@ -6104,27 +6221,27 @@ IFJMPREF {
 			CALL $getBalanceOf$
 		}
 	}
+}
+DUP
+PUSHINT 2138477742
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 2112671963
+	EQUAL
+	IFJMPREF {
+		CALL $getDebotOptions$
+	}
+	DUP
+	PUSHINT 2135367155
+	EQUAL
+	IFJMPREF {
+		CALL $SCgetFromDAD$
+	}
 	DUP
 	PUSHINT 2138477742
-	LEQ
+	EQUAL
 	IFJMPREF {
-		DUP
-		PUSHINT 2112671963
-		EQUAL
-		IFJMPREF {
-			CALL $getDebotOptions$
-		}
-		DUP
-		PUSHINT 2135367155
-		EQUAL
-		IFJMPREF {
-			CALL $SCgetFromDAD$
-		}
-		DUP
-		PUSHINT 2138477742
-		EQUAL
-		IFJMPREF {
-			CALL $getMasterKeysFromMnemonic$
-		}
+		CALL $getMasterKeysFromMnemonic$
 	}
 }

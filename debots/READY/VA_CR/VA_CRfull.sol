@@ -51,6 +51,16 @@ interface IVRdebot {
 interface IRootTokenContract {
     function getTotalSupply(uint32 _answer_id) external returns(uint128 value0);
 }
+interface IParticipant {
+    function getPublishedData() external returns (
+        bytes pName,
+        bytes pPhotoLink,
+        bytes pDataLink,
+        address pAddress,
+        uint128 pBalance
+    );
+    function publishData(bytes publishName, bytes publishPhotoLink, bytes publishDataLink) external returns (uint8 status);
+}
 
 contract VotingAuditDebot is Debot {
 
@@ -115,10 +125,6 @@ uint128 userBalance;
         membersMenu();
     }
 
-    function preGet(uint32 index) public {
-        start();
-
-    }
     function start() public functionID(0x01) override {
 
         optional(uint256) pubkey;
@@ -140,8 +146,12 @@ uint128 userBalance;
         for(uint8 i = 0; i < keysDeAudit.length; i++){
             deauditsCaller(keysDeAudit[i]);
         }
-        mainMenu();
+        Sdk.getBalance(tvm.functionId(getBafterStart), m_participant);
 
+    }
+    function getBafterStart(uint128 nanotokens) public {
+        userBalance = nanotokens;
+        mainMenu();
     }
     function deauditsCaller(address curDeAudit) public {
 
@@ -356,18 +366,11 @@ uint128 userBalance;
         if(status){
             Terminal.print(0,"Checked success");
             m_participant = participant;
-            Sdk.getBalance(tvm.functionId(getBafterStart), m_participant);
+            membersMenu();
         }else{
             ConfirmInput.get(tvm.functionId(checkDeployAnswer), "You do not have deployed participant, would you like to deploy?");
         }
     }
-
-    function getBafterStart(uint128 nanotokens) public {
-        userBalance = nanotokens;
-        membersMenu();
-    }
-
-
     function checkDeployAnswer(bool value) public {
         if(value){
             deploy_genAddr();
@@ -414,7 +417,7 @@ uint128 userBalance;
     function setGiverSuccess() public {
         Menu.select("Checking registration fee payed","",[
             MenuItem("Check pls", "", tvm.functionId(getBalanceOf)),
-            MenuItem("Return to main menu", "", tvm.functionId(preGet))
+            MenuItem("Return to main menu", "", tvm.functionId(mainMenu))
             ]);
     }
     function getBalanceOf(uint32 index) public {
@@ -475,14 +478,76 @@ bool amot;
         Terminal.print(0,format("Your balance: {}, your address: {}",userBalance, m_participant));
 
         Menu.select("Action Team menu", "", [
+            MenuItem("Display user data", "",tvm.functionId(showUserData)),
             MenuItem("Action team", "",tvm.functionId(isActionTeamMemberCheck)),
             MenuItem("Collator", "", tvm.functionId(goToCLdebot)),
             MenuItem("Validator", "", tvm.functionId(onValidation)),
-            MenuItem("return to main menu", "", tvm.functionId(preGet)),
+            MenuItem("return to main menu", "", tvm.functionId(mainMenu)),
             MenuItem("Quit", "", 0)
             ]);
     }
 
+    function showUserData(uint32 index) public {
+        optional(uint256) pubkey;
+        IParticipant(m_participant).getPublishedData{
+        abiVer : 2,
+        extMsg : true,
+        sign : false,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(SCshowUserData),
+        onErrorId : tvm.functionId(someError)
+        }();
+    }
+
+    function SCshowUserData(
+        bytes pName,
+        bytes pPhotoLink,
+        bytes pDataLink,
+        address pAddress,
+        uint128 pBalance
+    )  public {
+        Terminal.print(0,format(" - Your name: {}\nphoto link: {}\ndata link: {}\nyour address: {}\n balance: {} - \n",pName,pPhotoLink,pDataLink,pAddress,pBalance));
+
+        MenuItem[] m_menu;
+        m_menu.push(MenuItem("Edit user data", "", tvm.functionId(onEditUserData)));
+        m_menu.push(MenuItem("Return to menu", "", tvm.functionId(preMembersMenu)));
+        Menu.select("User data menu: ", "",m_menu);
+    }
+
+    function onEditUserData(uint32 index) public {
+        Terminal.input(tvm.functionId(onSetName), "Your name?",false);
+    }
+    bytes userName;
+    function onSetName(string value) public {
+        userName = bytes(value);
+
+        Terminal.input(tvm.functionId(onAddPhotoLink), "Add your photo link:",false);
+    }
+    bytes PhotoLink;
+    function onAddPhotoLink(string value) public {
+        PhotoLink = bytes(value);
+        Terminal.input(tvm.functionId(onAddPublishedDataLink), "Add your published data link:",false);
+    }
+    bytes PublishedDataLink;
+    function onAddPublishedDataLink(string value) public {
+        PublishedDataLink = bytes(value);
+
+        Terminal.print(0,format("Your name: {}\nphoto link: {}\npublished data link: {}", userName,PhotoLink,PublishedDataLink));
+
+        optional(uint256) pubkey;
+        IParticipant(m_participant).publishData{
+        abiVer : 2,
+        extMsg : true,
+        sign : true,
+        pubkey : pubkey,
+        time : uint64(now),
+        expire: 0x123,
+        callbackId : tvm.functionId(SCcall),
+        onErrorId : tvm.functionId(someError)
+        }(userName,PhotoLink,PublishedDataLink);
+    }
 
     function onValidation(uint32 index) public {
         IVRdebot(m_VA_VRaddr).invokeValidatorDebot(m_participant);

@@ -141,7 +141,7 @@ async function main(client) {
 
   for(let i=0; i<arrContractAddreses.length; i++){
     console.log(`sending from giver to ${arrContractAddreses[i]}`)
-    await giverFLDAcc.run("sendTransaction",  {dest:arrContractAddreses[i],value:2000000000,bounce:false});
+    await giverFLDAcc.run("sendTransaction",  {dest:arrContractAddreses[i],value:5000000000,bounce:false});
   }
 
   //
@@ -180,7 +180,7 @@ async function main(client) {
 
   await VA_ATacc.run("setABI",  {dabi:VA_ATaccDABI.stdout.replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm,""), m_VotingAuditDebotVLaddressD: VA_VLaccAddr, m_EditDebotD: VA_EDaccAddr});
 
-  console.log(`setABI VA_ATacc, VA_ATaccAddr:${VA_ATaccAddr}, VA_CLaccAddr:${VA_CLaccAddr}, m_VA_VRaddrD:${VA_VRaccAddr}`);
+  console.log(`setABI VA_CRacc, VA_ATaccAddr:${VA_ATaccAddr}, VA_CLaccAddr:${VA_CLaccAddr}, m_VA_VRaddrD:${VA_VRaccAddr}`);
 
   await VA_CRacc.run("setABI",  {dabi:VA_CRaccDABI.stdout.replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm,""), m_ATdebAddressD: VA_ATaccAddr, m_CLdebAddressD: VA_CLaccAddr, m_VA_VRaddrD: VA_VRaccAddr});
 

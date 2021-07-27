@@ -14,7 +14,7 @@ tonos-cli --url https://gql.custler.net deploy VA_VR.tvc {} --sign VA_VR.keys.js
 tonos-cli --url https://gql.custler.net call 0:5d0bec48b7a0f1990ca8be280bb6442bf2474613a77be8df912a9fd11c65c3c1 setABI "{\"dabi\":\"$debot_abi\"}" --sign VA_VR.keys.json --abi VA_VR.abi.json
 
 
-tonos-cli --url https://gql.custler.net debot fetch 0:1330ce5c0adfb8aece8f49135d88d3da90c7cf45378b536bb4de5cef1bbc0946
+tonos-cli --url https://gql.custler.net debot fetch 0:ae2bccc9e487167c8284143ca6049e697ffb69b06bb2aba92020143888c57186
 
 
 tondev js wrap VA_VR.abi.json -o VA_VR.js

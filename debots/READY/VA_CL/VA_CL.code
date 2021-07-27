@@ -414,8 +414,8 @@ CALLREF {
 NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditData.getCandidate4Debot
-;; push identifier testDAD
-GETGLOB 24
+;; push identifier DeAuditRoot
+GETGLOB 15
 PUSHSLICE x92635b79b07a34c190b0174_
 NEWC
 STSLICE
@@ -1306,8 +1306,8 @@ CALLREF {
 NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditData.getVotingCenter4Debot
-;; push identifier testDAD
-GETGLOB 24
+;; push identifier DeAuditRoot
+GETGLOB 15
 PUSHSLICE x926080fea84234c190b0174_
 NEWC
 STSLICE
@@ -1615,8 +1615,8 @@ CALL $fVC_internal_macro$
 .macro fVC_internal_macro
 ;; param: index
 ; function fVC
-;; push identifier testDAD
-GETGLOB 24
+;; push identifier DeAuditRoot
+GETGLOB 15
 CALLREF {
 	CALL $fetchVC_internal_macro$
 }
@@ -1652,8 +1652,8 @@ CALL $fCD_internal_macro$
 .macro fCD_internal_macro
 ;; param: index
 ; function fCD
-;; push identifier testDAD
-GETGLOB 24
+;; push identifier DeAuditRoot
+GETGLOB 15
 CALLREF {
 	CALL $fetchCD_internal_macro$
 }
@@ -1687,12 +1687,12 @@ CALL $CLmenu_internal_macro$
 .macro CLmenu_internal_macro
 ; function CLmenu
 PUSHREF {
-	.blob x57656c636f6d6520746f20434c206d656e75
+	.blob x57656c636f6d6520746f20436f6c6c61746f72206d656e75
 }
 PUSHREF {
 	.blob x
 }
-PUSHINT 7
+PUSHINT 4
 NEWDICT
 PUSHREF {
 	.blob x46657463682064617461
@@ -1715,67 +1715,7 @@ ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x73686f7720757365722064617461
-}
-PUSHREF {
-	.blob x
-}
-PUSHINT 1212254244
-TUPLE 3
-CALLREF {
-	UNTUPLE 3
-	XCHG s2
-	NEWC
-	STREF
-	STREF
-	STU 32
-}
-PUSHINT 1
-ROT
-PUSHINT 32
-DICTUSETB
-PUSHREF {
-	.blob x4665746368205643
-}
-PUSHREF {
-	.blob x
-}
-PUSHINT 1436449757
-TUPLE 3
-CALLREF {
-	UNTUPLE 3
-	XCHG s2
-	NEWC
-	STREF
-	STREF
-	STU 32
-}
-PUSHINT 2
-ROT
-PUSHINT 32
-DICTUSETB
-PUSHREF {
-	.blob x4665746368204344
-}
-PUSHREF {
-	.blob x
-}
-PUSHINT 429618224
-TUPLE 3
-CALLREF {
-	UNTUPLE 3
-	XCHG s2
-	NEWC
-	STREF
-	STREF
-	STU 32
-}
-PUSHINT 3
-ROT
-PUSHINT 32
-DICTUSETB
-PUSHREF {
-	.blob x61646420636f6c6c6174696f6e
+	.blob x41646420636f6c6c6174696f6e
 }
 PUSHREF {
 	.blob x
@@ -1790,12 +1730,12 @@ CALLREF {
 	STREF
 	STU 32
 }
-PUSHINT 4
+PUSHINT 1
 ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x72657475726e20746f206d61696e206d656e75
+	.blob x4261636b20746f206d61696e206d656e75
 }
 PUSHREF {
 	.blob x
@@ -1810,7 +1750,7 @@ CALLREF {
 	STREF
 	STU 32
 }
-PUSHINT 5
+PUSHINT 2
 ROT
 PUSHINT 32
 DICTUSETB
@@ -1830,7 +1770,7 @@ CALLREF {
 	STREF
 	STU 32
 }
-PUSHINT 6
+PUSHINT 3
 ROT
 PUSHINT 32
 DICTUSETB
@@ -1839,522 +1779,6 @@ CALLREF {
 	CALL $Menu_no_obj_select_macro$
 }
 ; end function CLmenu
-
-.macro showUserData
-DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-LDU 32
-ENDS
-;; param: index
-CALLREF {
-	CALL $showUserData_internal_macro$
-}
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.globl	showUserData_internal
-.type	showUserData_internal, @function
-CALL $showUserData_internal_macro$
-
-.macro showUserData_internal_macro
-;; param: index
-; function showUserData
-NULL
-;; decl: pubkey
-;; Remote call IParticipant.getPublishedData
-;; push identifier m_participant
-GETGLOB 16
-PUSHSLICE x926180f07aaa34c190b0174_
-NEWC
-STSLICE
-STSLICE
-PUSHINT 1
-STUR 6
-NEWC
-STSLICECONST 0
-;; push identifier pubkey
-PUSH S2
-ISNULL
-THROWIFNOT 64
-STSLICECONST 0
-;; push identifier now
-NOW
-;; uint64
-STUR 64
-PUSHINT 291
-STUR 32
-STSLICECONST x6c5ba96b
-STBREFR
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function showUserData
-DROP2
-
-.macro SCshowUserData
-DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-LDREF
-LDREF
-LDREF
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-LDUQ 128
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDU 128
-}
-IFNOT
-ENDS
-;; param: pName
-;; param: pPhotoLink
-;; param: pDataLink
-;; param: pAddress
-;; param: pBalance
-CALLREF {
-	CALL $SCshowUserData_internal_macro$
-}
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.globl	SCshowUserData_internal
-.type	SCshowUserData_internal, @function
-CALL $SCshowUserData_internal_macro$
-
-.macro SCshowUserData_internal_macro
-;; param: pName
-;; param: pPhotoLink
-;; param: pDataLink
-;; param: pAddress
-;; param: pBalance
-; function SCshowUserData
-PUSHINT 0
-NIL
-NEWC
-PUSHSLICE x2a2a2a5553455220444154410a796f7572206e616d653a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier pName
-PUSH S7
-CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x0a70686f746f206c696e6b3a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier pPhotoLink
-PUSH S6
-CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x0a64617461206c696e6b3a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier pDataLink
-PUSH S5
-CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x0a796f757220616464726573733a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier pAddress
-PUSH S4
-CALLREF {
-	CALL $convertAddressToHexString_macro$
-}
-PUSHSLICE x0a2062616c616e63653a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier pBalance
-PUSH S3
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-PUSHSLICE x0a454e442a2a2a0a
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-CALLREF {
-	CALL $assembleList_macro$
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
-PUSHINT 0
-NEWDICT
-PAIR
-;; decl: m_menu
-; expValue
-DUP
-; end expValue
-PUSHREF {
-	.blob x4564697420757365722064617461
-}
-PUSHREF {
-	.blob x
-}
-PUSHINT 1942793936
-TUPLE 3
-;; array.push(..)
-CALLREF {
-	UNTUPLE 3
-	XCHG s2
-	NEWC
-	STREF
-	STREF
-	STU 32
-}
-SWAP
-UNPAIR
-PUSH S1
-INC
-XCHG s3
-ROTREV
-PUSHINT 32
-DICTUSETB
-PAIR
-; colValue
-NIP
-; end colValue
-; expValue
-DUP
-; end expValue
-PUSHREF {
-	.blob x52657475726e20746f206d656e75
-}
-PUSHREF {
-	.blob x
-}
-PUSHINT 1116360996
-TUPLE 3
-;; array.push(..)
-CALLREF {
-	UNTUPLE 3
-	XCHG s2
-	NEWC
-	STREF
-	STREF
-	STU 32
-}
-SWAP
-UNPAIR
-PUSH S1
-INC
-XCHG s3
-ROTREV
-PUSHINT 32
-DICTUSETB
-PAIR
-; colValue
-NIP
-; end colValue
-PUSHREF {
-	.blob x43686f6f73653a20
-}
-PUSHREF {
-	.blob x
-}
-;; push identifier m_menu
-PUSH S2
-CALLREF {
-	CALL $Menu_no_obj_select_macro$
-}
-; end function SCshowUserData
-BLKDROP 6
-
-.macro onEditUserData
-DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-LDU 32
-ENDS
-;; param: index
-CALLREF {
-	CALL $onEditUserData_internal_macro$
-}
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.globl	onEditUserData_internal
-.type	onEditUserData_internal, @function
-CALL $onEditUserData_internal_macro$
-
-.macro onEditUserData_internal_macro
-;; param: index
-; function onEditUserData
-PUSHINT 248133278
-PUSHREF {
-	.blob x2d2d2d2d0a596f7572206e616d653f0a0a
-}
-FALSE
-CALLREF {
-	CALL $Terminal_no_obj_input_macro$
-}
-; end function onEditUserData
-DROP
-
-.macro onSetName
-DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-LDREF
-ENDS
-;; param: value
-CALLREF {
-	CALL $onSetName_internal_macro$
-}
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.globl	onSetName_internal
-.type	onSetName_internal, @function
-CALL $onSetName_internal_macro$
-
-.macro onSetName_internal_macro
-;; param: value
-; function onSetName
-;; push identifier value
-DUP
-;; bytes
-; expValue
-; end expValue
-; colValue
-SETGLOB 25
-; end colValue
-PUSHINT 1977725247
-PUSHREF {
-	.blob x2d2d2d2d0a41646420796f75722070686f746f206c696e6b3a0a0a
-}
-FALSE
-CALLREF {
-	CALL $Terminal_no_obj_input_macro$
-}
-; end function onSetName
-DROP
-
-.macro onAddPhotoLink
-DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-LDREF
-ENDS
-;; param: value
-CALLREF {
-	CALL $onAddPhotoLink_internal_macro$
-}
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.globl	onAddPhotoLink_internal
-.type	onAddPhotoLink_internal, @function
-CALL $onAddPhotoLink_internal_macro$
-
-.macro onAddPhotoLink_internal_macro
-;; param: value
-; function onAddPhotoLink
-;; push identifier value
-DUP
-;; bytes
-; expValue
-; end expValue
-; colValue
-SETGLOB 26
-; end colValue
-PUSHINT 682243761
-PUSHREF {
-	.blob x2d2d2d2d0a41646420796f7572207075626c69736865642064617461206c696e6b3a0a0a
-}
-FALSE
-CALLREF {
-	CALL $Terminal_no_obj_input_macro$
-}
-; end function onAddPhotoLink
-DROP
-
-.macro onAddPublishedDataLink
-DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-LDREF
-ENDS
-;; param: value
-CALLREF {
-	CALL $onAddPublishedDataLink_internal_macro$
-}
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.globl	onAddPublishedDataLink_internal
-.type	onAddPublishedDataLink_internal, @function
-CALL $onAddPublishedDataLink_internal_macro$
-
-.macro onAddPublishedDataLink_internal_macro
-;; param: value
-; function onAddPublishedDataLink
-;; push identifier value
-DUP
-;; bytes
-; expValue
-; end expValue
-; colValue
-SETGLOB 27
-; end colValue
-PUSHINT 0
-NIL
-NEWC
-PUSHSLICE x2a2a2a2a2a20796f757220757365724e616d653a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier userName
-GETGLOB 25
-CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x0a2070686f746f206c696e6b3a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier PhotoLink
-GETGLOB 26
-CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x0a207075626c69736865642064617461206c696e6b3a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier PublishedDataLink
-GETGLOB 27
-CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x0a2a2a2a2a2a0a
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-CALLREF {
-	CALL $assembleList_macro$
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
-NULL
-;; decl: pubkey
-;; Remote call IParticipant.publishData
-;; push identifier m_participant
-GETGLOB 16
-PUSHSLICE x92600000000234c190b0174_
-NEWC
-STSLICE
-STSLICE
-PUSHINT 1
-STUR 6
-;; push identifier PublishedDataLink
-GETGLOB 27
-;; push identifier PhotoLink
-GETGLOB 26
-;; push identifier userName
-GETGLOB 25
-NEWC
-STSLICECONST 1
-PUSHINT 512
-STZEROES
-;; push identifier pubkey
-PUSH2 S5, S5
-ISNULL
-PUSHCONT {
-	DROP
-	STSLICECONST 0
-}
-PUSHCONT {
-	SWAP
-	STSLICECONST 1
-	STU 256
-}
-IFELSE
-;; push identifier now
-NOW
-;; uint64
-STUR 64
-PUSHINT 291
-STUR 32
-STSLICECONST x1c0aa5cd
-STREF
-STREF
-STREF
-STBREFR
-ENDC
-PUSHINT 0
-SENDRAWMSG
-CALLREF {
-	CALL $CLmenu_internal_macro$
-}
-; end function onAddPublishedDataLink
-DROP2
 
 .macro onAddCollation
 DROP
@@ -2951,7 +2375,7 @@ THROWIFNOT 50
 ;; index
 ;; push identifier curDAAddressD
 DUP
-SETGLOB 28
+SETGLOB 24
 ;; push identifier paramDeAuditD
 GETGLOB 20
 PUSHINT 267
@@ -3077,7 +2501,7 @@ PUSHCONT {
 	DUP
 	INDEX 0
 	; colValue
-	SETGLOB 29
+	SETGLOB 25
 	; end colValue
 	;; get member colStake
 	;; push identifier da
@@ -3087,7 +2511,7 @@ PUSHCONT {
 	; expValue
 	; end expValue
 	; colValue
-	SETGLOB 30
+	SETGLOB 26
 	; end colValue
 	; expValue
 	; end expValue
@@ -3096,7 +2520,7 @@ PUSHCONT {
 	DUP
 	INDEX 3
 	; colValue
-	SETGLOB 31
+	SETGLOB 27
 	; end colValue
 	PUSHINT 0
 	NIL
@@ -3106,7 +2530,7 @@ PUSHCONT {
 		CALL $storeStringInBuilders_macro$
 	}
 	;; push identifier curDADadd
-	GETGLOB 31
+	GETGLOB 27
 	CALLREF {
 		CALL $convertAddressToHexString_macro$
 	}
@@ -3117,12 +2541,12 @@ PUSHCONT {
 		CALL $Terminal_no_obj_print_macro$
 	}
 	;; push identifier curDADadd
-	GETGLOB 31
+	GETGLOB 27
 	CALLREF {
 		CALL $fetchCD_internal_macro$
 	}
 	;; push identifier curDADadd
-	GETGLOB 31
+	GETGLOB 27
 	CALLREF {
 		CALL $fetchVC_internal_macro$
 	}
@@ -3148,7 +2572,7 @@ PUSHCONT {
 		CALL $storeStringInBuilders_macro$
 	}
 	;; push identifier curSN
-	GETGLOB 29
+	GETGLOB 25
 	PUSHINT 0
 	FALSE
 	FALSE
@@ -3160,7 +2584,7 @@ PUSHCONT {
 		CALL $storeStringInBuilders_macro$
 	}
 	;; push identifier curDADadd
-	GETGLOB 31
+	GETGLOB 27
 	CALLREF {
 		CALL $convertAddressToHexString_macro$
 	}
@@ -3169,7 +2593,7 @@ PUSHCONT {
 		CALL $storeStringInBuilders_macro$
 	}
 	;; push identifier curDAAddressD
-	GETGLOB 28
+	GETGLOB 24
 	CALLREF {
 		CALL $convertAddressToHexString_macro$
 	}
@@ -3473,13 +2897,11 @@ DICTUGET
 THROWIFNOT 50
 PLDU 256
 ; colValue
-PUSHINT 32
-SETGLOBVAR
 ; end colValue
 ;; index
 ;; push identifier curVCIndexD
-PUSHINT 32
-GETGLOBVAR
+DUP
+SETGLOB 28
 ;; push identifier votingCenterD
 GETGLOB 22
 PUSHINT 256
@@ -3565,8 +2987,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier curVCIndexD
-PUSHINT 32
-GETGLOBVAR
+GETGLOB 28
 PUSHINT 0
 FALSE
 FALSE
@@ -3651,8 +3072,7 @@ DUP
 ; expValue
 ; end expValue
 ; colValue
-PUSHINT 33
-SETGLOBVAR
+SETGLOB 29
 ; end colValue
 CALLREF {
 	CALL $onSetVC_internal_macro$
@@ -3965,13 +3385,11 @@ DICTUGET
 THROWIFNOT 50
 PLDU 256
 ; colValue
-PUSHINT 34
-SETGLOBVAR
 ; end colValue
 ;; index
 ;; push identifier curCDIndexD
-PUSHINT 34
-GETGLOBVAR
+DUP
+SETGLOB 30
 ;; push identifier candidateD
 GETGLOB 18
 PUSHINT 256
@@ -3999,8 +3417,7 @@ IFELSE
 DUP
 INDEX 0
 ; colValue
-PUSHINT 35
-SETGLOBVAR
+SETGLOB 31
 ; end colValue
 PUSHINT 1911271730
 NIL
@@ -4022,8 +3439,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier curCDIndexD
-PUSHINT 34
-GETGLOBVAR
+GETGLOB 30
 PUSHINT 0
 FALSE
 FALSE
@@ -4086,8 +3502,7 @@ DUP
 ;; decl: newValue
 ;; index
 ;; push identifier curCDIndexD
-PUSHINT 34
-GETGLOBVAR
+GETGLOB 30
 ;; push identifier candidateD
 GETGLOB 18
 PUSHINT 256
@@ -4117,11 +3532,9 @@ SETINDEX 2
 ; end colValue
 ; expValue
 ;; fetch candidateD
-GETGLOB 18
 ;; push identifier curCDIndexD
-PUSHINT 34
-GETGLOBVAR
-SWAP
+GETGLOB 30
+GETGLOB 18
 ; end expValue
 ;; push identifier cd
 PUSH S2
@@ -4149,8 +3562,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier canName
-PUSHINT 35
-GETGLOBVAR
+GETGLOB 31
 CTOS
 CALLREF {
 	CALL $storeStringInBuilders_macro$
@@ -4245,7 +3657,7 @@ PUSHCONT {
 	;; decl: cd
 	; expValue
 	;; fetch VoteMatrixD
-	PUSHINT 36
+	PUSHINT 32
 	GETGLOBVAR
 	; end expValue
 	;; get member curVotes
@@ -4265,7 +3677,7 @@ PUSHCONT {
 	DICTUSETB
 	PAIR
 	; colValue
-	PUSHINT 36
+	PUSHINT 32
 	SETGLOBVAR
 	; end colValue
 	PUSHINT 0
@@ -4327,7 +3739,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier curDAAddressD
-GETGLOB 28
+GETGLOB 24
 CALLREF {
 	CALL $convertAddressToHexString_macro$
 }
@@ -4336,8 +3748,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier curVCIndexD
-PUSHINT 32
-GETGLOBVAR
+GETGLOB 28
 PUSHINT 0
 FALSE
 FALSE
@@ -4349,8 +3760,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier link
-PUSHINT 33
-GETGLOBVAR
+GETGLOB 29
 CTOS
 CALLREF {
 	CALL $storeStringInBuilders_macro$
@@ -4360,7 +3770,7 @@ CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier CLstake
-GETGLOB 30
+GETGLOB 26
 PUSHINT 0
 FALSE
 FALSE
@@ -4381,7 +3791,7 @@ INDEX 0
 ;; !=
 ;; get member length
 ;; push identifier VoteMatrixD
-PUSHINT 36
+PUSHINT 32
 GETGLOBVAR
 INDEX 0
 NEQ
@@ -4480,25 +3890,23 @@ NULL
 ;; Remote call IParticipant.addCollation
 ;; push identifier m_participant
 GETGLOB 16
-PUSHSLICE x92607a778fb234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
 PUSHINT 1
 STUR 6
 ;; push identifier CLstake
-GETGLOB 30
+GETGLOB 26
 ;; push identifier VoteMatrixD
-PUSHINT 36
-GETGLOBVAR
-;; push identifier link
-PUSHINT 33
-GETGLOBVAR
-;; push identifier curVCIndexD
 PUSHINT 32
 GETGLOBVAR
-;; push identifier curDAAddressD
+;; push identifier link
+GETGLOB 29
+;; push identifier curVCIndexD
 GETGLOB 28
+;; push identifier curDAAddressD
+GETGLOB 24
 NEWC
 STSLICECONST 1
 PUSHINT 512
@@ -4522,7 +3930,7 @@ NOW
 STUR 64
 PUSHINT 291
 STUR 32
-STSLICECONST x4fb91f70
+STSLICECONST x64412a44
 BLKSWAP 5, 1
 NEWC
 STSLICE
@@ -4587,6 +3995,65 @@ ENDC
 PUSHINT 0
 SENDRAWMSG
 ; end function goToCore
+DROP
+
+.macro SCcall
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 8
+ENDS
+;; param: status
+CALLREF {
+	CALL $SCcall_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	SCcall_internal
+.type	SCcall_internal, @function
+CALL $SCcall_internal_macro$
+
+.macro SCcall_internal_macro
+;; param: status
+; function SCcall
+;; if
+;; push identifier status
+DUP
+EQINT 1
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x537563636573732c20796f7572206d6573736167652073656e64656420746f20626c6f636b636861696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $start_internal_macro$
+	}
+}
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x4572726f722c2074727920616761696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $start_internal_macro$
+	}
+}
+IFELSE
+;; end if
+; end function SCcall
 DROP
 
 .macro someError
@@ -5103,14 +4570,6 @@ SETGLOB 10
 SETGLOB 11
 
 .macro c7_to_c4
-PUSHINT 36
-GETGLOBVAR
-PUSHINT 35
-GETGLOBVAR
-PUSHINT 34
-GETGLOBVAR
-PUSHINT 33
-GETGLOBVAR
 PUSHINT 32
 GETGLOBVAR
 GETGLOB 31
@@ -5189,47 +4648,39 @@ PUSHCONT {
 }
 IFELSE
 STSLICE
-PUSHINT 22
+PUSHINT 18
 PUSHINT 1
 BLKSWX
 NEWC
 STSLICE
-PUSHINT 21
-PUSHINT 1
-BLKSWX
-NEWC
-STSLICE
-STREF
-STDICT
-SWAP
-UNPAIR
-XCHG s2
-STU 32
-STDICT
 PUSHINT 17
 PUSHINT 1
 BLKSWX
 NEWC
-STDICT
-SWAP
-UNPAIR
-XCHG s2
-STU 32
-STDICT
-STDICT
-BLKSWAP 14, 1
-NEWC
-SWAP
-UNPAIR
-XCHG s2
-STU 32
-STDICT
 STSLICE
 STREF
-STREF
+STDICT
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+BLKSWAP 13, 1
+NEWC
+STDICT
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+STDICT
 BLKSWAP 10, 1
 NEWC
-STREF
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
 STSLICE
 STU 256
 STU 128
@@ -5247,7 +4698,6 @@ UNPAIR
 XCHG s2
 STU 32
 STDICT
-STBREFR
 STBREFR
 STBREFR
 STBREFR
@@ -5334,14 +4784,6 @@ ROTREV
 PAIR
 SWAP
 LDMSGADDR
-LDREF
-LDREF
-;; load next cell
-LDREF
-ENDS
-CTOS
-LDREF
-LDMSGADDR
 LDU 256
 LDU 128
 ;; load next cell
@@ -5363,14 +4805,6 @@ ROTREV
 PAIR
 SWAP
 ENDS
-PUSHINT 36
-SETGLOBVAR
-PUSHINT 35
-SETGLOBVAR
-PUSHINT 34
-SETGLOBVAR
-PUSHINT 33
-SETGLOBVAR
 PUSHINT 32
 SETGLOBVAR
 SETGLOB 31
@@ -5483,14 +4917,6 @@ PUSHCONT {
 	PAIR
 	SWAP
 	LDMSGADDR
-	LDREF
-	LDREF
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDREF
-	LDMSGADDR
 	LDU 256
 	LDU 128
 	;; load next cell
@@ -5512,14 +4938,6 @@ PUSHCONT {
 	PAIR
 	SWAP
 	ENDS
-	PUSHINT 36
-	SETGLOBVAR
-	PUSHINT 35
-	SETGLOBVAR
-	PUSHINT 34
-	SETGLOBVAR
-	PUSHINT 33
-	SETGLOBVAR
 	PUSHINT 32
 	SETGLOBVAR
 	SETGLOB 31
@@ -5602,56 +5020,37 @@ PUSHCONT {
 	NEWDICT
 	PAIR
 	SETGLOB 23
-	; init testDAD
-	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 24
-	; init userName
-	PUSHREF {
-	}
-	SETGLOB 25
-	; init PhotoLink
-	PUSHREF {
-	}
-	SETGLOB 26
-	; init PublishedDataLink
-	PUSHREF {
-	}
-	SETGLOB 27
 	; init curDAAddressD
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 28
+	SETGLOB 24
 	; init curSN
 	PUSHINT 0
-	SETGLOB 29
+	SETGLOB 25
 	; init CLstake
 	PUSHINT 0
-	SETGLOB 30
+	SETGLOB 26
 	; init curDADadd
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
-	SETGLOB 31
+	SETGLOB 27
 	; init curVCIndexD
 	PUSHINT 0
-	PUSHINT 32
-	SETGLOBVAR
+	SETGLOB 28
 	; init link
 	PUSHREF {
 	}
-	PUSHINT 33
-	SETGLOBVAR
+	SETGLOB 29
 	; init curCDIndexD
 	PUSHINT 0
-	PUSHINT 34
-	SETGLOBVAR
+	SETGLOB 30
 	; init canName
 	PUSHREF {
 	}
-	PUSHINT 35
-	SETGLOBVAR
+	SETGLOB 31
 	; init VoteMatrixD
 	PUSHINT 0
 	NEWDICT
 	PAIR
-	PUSHINT 36
+	PUSHINT 32
 	SETGLOBVAR
 	; set contract pubkey
 	PUSHINT 0
@@ -5671,14 +5070,6 @@ SETGLOB 8
 	;; address.makeAddrStd()
 	PUSHSLICE x801d652a83bbdf7c1a4ec85a063850636feae72a5e74005f6b6752611ee6c5844b9_
 	SETGLOB 15
-	;; init state var: m_participant
-	;; address.makeAddrStd()
-	PUSHSLICE x8009b0e448ff86fdb6beb3bbc2f3e78d314d645cb1593bdf9744f0301804d0894f7_
-	SETGLOB 16
-	;; init state var: testDAD
-	;; address.makeAddrStd()
-	PUSHSLICE x801d2f76b344f02495eba3fc955259532f54d184888f1894d6a0b7613c6782b0f01_
-	SETGLOB 24
 }
 IFELSE
 
@@ -6253,7 +5644,7 @@ BLKDROP 3
 
 .macro public_function_selector
 DUP
-PUSHINT 769026985
+PUSHINT 798706999
 LEQ
 IFJMPREF {
 	DUP
@@ -6285,7 +5676,7 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 256831990
+	PUSHINT 258836457
 	LEQ
 	IFJMPREF {
 		DUP
@@ -6301,28 +5692,22 @@ IFJMPREF {
 			CALL $getCDdata$
 		}
 		DUP
-		PUSHINT 248133278
-		EQUAL
-		IFJMPREF {
-			CALL $onSetName$
-		}
-		DUP
 		PUSHINT 256831990
 		EQUAL
 		IFJMPREF {
 			CALL $CLmenu$
 		}
-	}
-	DUP
-	PUSHINT 429618224
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 258836457
 		EQUAL
 		IFJMPREF {
 			CALL $setIcon$
 		}
+	}
+	DUP
+	PUSHINT 576001571
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 270521608
 		EQUAL
@@ -6341,17 +5726,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $fCD$
 		}
-	}
-	DUP
-	PUSHINT 769026985
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 576001571
 		EQUAL
 		IFJMPREF {
 			CALL $SCfetchCD$
 		}
+	}
+	DUP
+	PUSHINT 798706999
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 618582524
 		EQUAL
@@ -6359,27 +5744,11 @@ IFJMPREF {
 			CALL $onSetVoteMatrix$
 		}
 		DUP
-		PUSHINT 682243761
-		EQUAL
-		IFJMPREF {
-			CALL $onAddPublishedDataLink$
-		}
-		DUP
 		PUSHINT 769026985
 		EQUAL
 		IFJMPREF {
 			CALL $addCandOnchainCheck$
 		}
-	}
-}
-DUP
-PUSHINT 1354319067
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 809570843
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 773105316
 		EQUAL
@@ -6392,23 +5761,22 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $candidateKeysD$
 		}
-		DUP
-		PUSHINT 807276373
-		EQUAL
-		IFJMPREF {
-			CALL $SCshowUserData$
-		}
+	}
+}
+DUP
+PUSHINT 1482960138
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 918258313
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 809570843
 		EQUAL
 		IFJMPREF {
 			CALL $fetchDA$
 		}
-	}
-	DUP
-	PUSHINT 1028350681
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 851942820
 		EQUAL
@@ -6422,6 +5790,17 @@ IFJMPREF {
 			CALL $preStart$
 		}
 		DUP
+		PUSHINT 918258313
+		EQUAL
+		IFJMPREF {
+			CALL $SCcall$
+		}
+	}
+	DUP
+	PUSHINT 1184379414
+	LEQ
+	IFJMPREF {
+		DUP
 		PUSHINT 967996591
 		EQUAL
 		IFJMPREF {
@@ -6433,11 +5812,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $fetchCD$
 		}
-	}
-	DUP
-	PUSHINT 1212254244
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1116360996
 		EQUAL
@@ -6450,23 +5824,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $someError$
 		}
+	}
+	DUP
+	PUSHINT 1303960295
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1210935814
 		EQUAL
 		IFJMPREF {
 			CALL $SCgetDADdata$
 		}
-		DUP
-		PUSHINT 1212254244
-		EQUAL
-		IFJMPREF {
-			CALL $showUserData$
-		}
-	}
-	DUP
-	PUSHINT 1354319067
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1254241818
 		EQUAL
@@ -6485,22 +5853,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $checkAns$
 		}
+	}
+	DUP
+	PUSHINT 1482960138
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1354319067
 		EQUAL
 		IFJMPREF {
 			CALL $candidateD$
 		}
-	}
-}
-DUP
-PUSHINT 1977725247
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 1486181014
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1379583785
 		EQUAL
@@ -6519,17 +5882,22 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getRequiredInterfaces$
 		}
+	}
+}
+DUP
+PUSHINT 2112671963
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1589257215
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1486181014
 		EQUAL
 		IFJMPREF {
 			CALL $setTouchedVC$
 		}
-	}
-	DUP
-	PUSHINT 1657396525
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1559973453
 		EQUAL
@@ -6548,17 +5916,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $setTouchedDA$
 		}
+	}
+	DUP
+	PUSHINT 1756716863
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1657396525
 		EQUAL
 		IFJMPREF {
 			CALL $addCandOnchain$
 		}
-	}
-	DUP
-	PUSHINT 1802450447
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1720833948
 		EQUAL
@@ -6577,17 +5945,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $constructor$
 		}
+	}
+	DUP
+	PUSHINT 1986195133
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1802450447
 		EQUAL
 		IFJMPREF {
 			CALL $SCgetCDdata$
 		}
-	}
-	DUP
-	PUSHINT 1977725247
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1888717285
 		EQUAL
@@ -6601,28 +5969,11 @@ IFJMPREF {
 			CALL $saveCandidateVotes$
 		}
 		DUP
-		PUSHINT 1942793936
+		PUSHINT 1986195133
 		EQUAL
 		IFJMPREF {
-			CALL $onEditUserData$
+			CALL $paramDeAuditD$
 		}
-		DUP
-		PUSHINT 1977725247
-		EQUAL
-		IFJMPREF {
-			CALL $onAddPhotoLink$
-		}
-	}
-}
-DUP
-PUSHINT 2112671963
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 1986195133
-	EQUAL
-	IFJMPREF {
-		CALL $paramDeAuditD$
 	}
 	DUP
 	PUSHINT 2112671963

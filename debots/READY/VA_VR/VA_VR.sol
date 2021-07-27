@@ -31,11 +31,11 @@ interface IDeAudit {
 }
 
 interface IParticipant {
-    function validateFor(address addrAct4, uint128 grams) external;
-    function validateAgainst(address addrAct4, uint128 grams) external;
-    function registrationForValidation(address addrAct4, uint128 grams) external;
+    function validateFor(address addrAct4, uint128 grams) external returns (uint8 status);
+    function validateAgainst(address addrAct4, uint128 grams) external returns (uint8 status);
+    function registrationForValidation(address addrAct4, uint128 grams) external returns (uint8 status);
     function activeDeAudits() external returns (address[] activeDeAudits);
-    function getCurActivity() external returns (
+    function getCurActivity(address curLaunchedDeAudit) external returns (
         bool reg,
         uint8 atype,
         address[] act4Arr,
@@ -62,7 +62,7 @@ contract VRdebot is Debot {
     address m_coreDebot;
 
     address DeAuditRoot = address.makeAddrStd(0, 0xeb29541ddefbe0d27642d031c2831b7f573952f3a002fb5b3a9308f7362c225c);
-    address m_participant = address.makeAddrStd(0, 0x4d872247fc37edb5f59dde179f3c698a6b22e58ac9defcba278180c026844a7b);
+    address m_participant;
     //END
     bytes m_icon;
 
@@ -106,12 +106,14 @@ contract VRdebot is Debot {
     function invokeValidatorDebot(address curPart) public {
         m_participant = curPart;
         m_coreDebot = msg.sender;
-        Terminal.print(0,format("m_coreDebot:{}",m_coreDebot));
+//        Terminal.print(0,format("m_coreDebot:{}",m_coreDebot));
         start();
     }
     function start() public functionID(0x01) override {
+        Terminal.print(0,"Fetching data...");
         fetchDA();
         fetchActivities();
+        Terminal.print(0,"Success");
         mainMenu();
     }
 
@@ -201,7 +203,7 @@ contract VRdebot is Debot {
         }
     }
 
-    function fetchCurAvtivity(address curDeAuditforActiv) public {
+    function fetchCurAvtivity(address curDeAuditforActivD) public {
         optional(uint256) pubkey;
         IParticipant(m_participant).getCurActivity{
         abiVer : 2,
@@ -212,7 +214,7 @@ contract VRdebot is Debot {
         expire: 0x123,
         callbackId : tvm.functionId(SCfetchCurAvtivity),
         onErrorId : tvm.functionId(someError)
-        }();
+        }(curDeAuditforActivD);
     }
 
     function SCfetchCurAvtivity(
@@ -237,10 +239,10 @@ contract VRdebot is Debot {
 
     function mainMenu() public {
         Menu.select("Validator menu", "", [
-            MenuItem("fetch data", "", tvm.functionId(preStart)),
-            MenuItem("Register on DA", "", tvm.functionId(DAmenu)),
-            MenuItem("validate", "", tvm.functionId(onValidate)),
-            MenuItem("return to role menu", "", tvm.functionId(goToCore)),
+            MenuItem("Refresh data", "", tvm.functionId(preStart)),
+            MenuItem("Register on De Audit", "", tvm.functionId(DAmenu)),
+            MenuItem("Validate", "", tvm.functionId(onValidate)),
+            MenuItem("Return to previous menu", "", tvm.functionId(goToCore)),
             MenuItem("Quit", "", 0)
             ]);
     }
@@ -258,11 +260,11 @@ contract VRdebot is Debot {
             for(uint8 i = 0; i < activeDeAuditsD.length; i++){
             address actCurDA = activeDeAuditsD[i];
             curDA da = DeAudits[actCurDA];
-            string curVdata = format("====De Audit data name: {}====\n",da.name);
+            string curVdata = format(" - {} - \n",da.name);
             m_menu.push(MenuItem(curVdata,"",tvm.functionId(onsetDaD)));
             }
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(preStart)));
-        Menu.select("Choose De Audit:", "",m_menu);
+        Menu.select("Choose DeAudit or back to menu:", "",m_menu);
     }
 
 address curDa;
@@ -274,11 +276,11 @@ address curDa;
 
             for(uint8 i = 0; i < curACT4.length; i++){
                address curACT4adr = curACT4[i];
-                string curVdata = format("====ACT4 address choose one: {}====\n",curACT4adr);
+                string curVdata = format(" - ACT4 address: {} - \n",curACT4adr);
                 m_menu.push(MenuItem(curVdata,"",tvm.functionId(onGetCollatorPhotoLink)));
                 }
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(preStart)));
-        Menu.select("Choose ACT4:", "",m_menu);
+        Menu.select("Choose Act4 or back to menu:", "",m_menu);
     }
 address curACT4adrACT;
     function onGetCollatorPhotoLink(uint32 index) public {
@@ -286,7 +288,9 @@ address curACT4adrACT;
         ActivityD at = activitiesD[curDa];
         address[] curACT4 = at.act4Arr;
         curACT4adrACT = curACT4[index];
+        Terminal.print(0,format("- Touched Act4 address: {} - \n",curACT4adrACT));
 
+        Terminal.print(0,"Fetching collator photo link...");
             optional(uint256) pubkey;
             IAct4(curACT4adrACT).collatorPhotoLink{
             abiVer : 2,
@@ -303,7 +307,9 @@ bytes curPhotoLinkActivs;
     function onGetPhotoLink(bytes collatorPhotoLink) public {
 
         curPhotoLinkActivs = collatorPhotoLink;
+        Terminal.print(0,"Success");
 
+        Terminal.print(0,"Fetching vote matrix...");
             optional(uint256) pubkey;
             IAct4(curACT4adrACT).voteMatrix{
             abiVer : 2,
@@ -322,7 +328,9 @@ uint256[] voteMatrixD;
     function onGetAdditionalPhotos(uint256[] voteMatrix) public {
 
         voteMatrixD = voteMatrix;
+        Terminal.print(0,"Success");
 
+        Terminal.print(0,"Fetching additional photo links...");
         optional(uint256) pubkey;
         IAct4(curACT4adrACT).additionalPhotoLinkArr{
         abiVer : 2,
@@ -339,31 +347,32 @@ uint256[] voteMatrixD;
 bytes[] additionalPhotoLinkArrD;
 
     function goToValMenubyCurActiv(bytes[] additionalPhotoLinkArr) public {
-    additionalPhotoLinkArrD = additionalPhotoLinkArr;
-    act4Validmenu();
+        Terminal.print(0,"Success");
+        additionalPhotoLinkArrD = additionalPhotoLinkArr;
+        act4Validmenu();
 }
 function act4Validmenu() public {
     MenuItem[] m_menu;
-        m_menu.push(MenuItem("show act4 data", "", tvm.functionId(showACT4dt)));
-        m_menu.push(MenuItem("vote for", "", tvm.functionId(VoteForValidator)));
-        m_menu.push(MenuItem("vote against", "", tvm.functionId(VoteAgainstValidator)));
+        m_menu.push(MenuItem("Display Act4 data", "", tvm.functionId(showACT4dt)));
+        m_menu.push(MenuItem("Vote for", "", tvm.functionId(VoteForValidator)));
+        m_menu.push(MenuItem("Vote against", "", tvm.functionId(VoteAgainstValidator)));
 
         m_menu.push(MenuItem("Back to menu", "", tvm.functionId(preStart)));
-    Menu.select("Act4 voting:", "",m_menu);
+    Menu.select("Act4 voting menu:", "",m_menu);
 
     }
 
 function showACT4dt(uint32 index) public {
-    Terminal.print(0,format("**** photo link of act4: \n{}\n",curPhotoLinkActivs));
+    Terminal.print(0,format(" - Photo link of Act4: {} \n ",curPhotoLinkActivs));
 
     for(uint8 i = 0; i < voteMatrixD.length; i++){
         uint256 curVoteFromMatrix = voteMatrixD[i];
-        Terminal.print(0,format("****\nindex of candidate: {}\namount of votes: {}\n***\n",i, curVoteFromMatrix));
+        Terminal.print(0,format(" - Candidate index : {} Amount of votes: {} - \n",i, curVoteFromMatrix));
     }
 
     for(uint8 k = 0; k < additionalPhotoLinkArrD.length; k++){
         bytes curAdditPhotoLink = additionalPhotoLinkArrD[k];
-        Terminal.print(0,format("*** additional photo link: {}\n",curAdditPhotoLink));
+        Terminal.print(0,format(" - Additional photo links: {} - \n",curAdditPhotoLink));
     }
     act4Validmenu();
 }
@@ -372,7 +381,7 @@ function showACT4dt(uint32 index) public {
     Callers
 */
     function VoteForValidator(uint128 value) public {
-        Terminal.print(0,format("=====You are going to vote for: {}", curACT4adrACT));
+        Terminal.print(0,format(" - You are going to vote for: {} - \n", curACT4adrACT));
 
         optional(uint256) pubkey;
         IParticipant(m_participant).validateFor{
@@ -382,15 +391,18 @@ function showACT4dt(uint32 index) public {
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(curACT4adrACT, GRAMS_VALIDATE);
 
-        mainMenu();
+//        mainMenu();
     }
+
+
+
     function VoteAgainstValidator(uint128 value) public {
 
-        Terminal.print(0,format("=====You are going to vote against: {}", curACT4adrACT));
+        Terminal.print(0,format(" - You are going to vote against: {} - \n", curACT4adrACT));
 
         optional(uint256) pubkey;
         IParticipant(m_participant).validateAgainst{
@@ -400,11 +412,11 @@ function showACT4dt(uint32 index) public {
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(curACT4adrACT, GRAMS_VALIDATE);
 
-        mainMenu();
+//        mainMenu();
     }
 
 /*
@@ -430,7 +442,7 @@ function showACT4dt(uint32 index) public {
                 }else{
                     status = "ended";
                 }
-
+//TODO
                 string curVdata = format("=======\nDAname: {}\ntimeStart:{}\ncolPeriod: {}\nvalPeriod: {}\nvalStake: {}\nstatus:{}\n\n",cp.name, cp.timeStart, cp.colPeriod,cp.valPeriod,cp.valStake,status);
                 m_menu.push(MenuItem(curVdata,"",tvm.functionId(showVotingAuditss)));
             }
@@ -474,15 +486,24 @@ uint128 curGramsForSend;
         pubkey : pubkey,
         time : uint64(now),
         expire: 0x123,
-        callbackId : 0,
+        callbackId : tvm.functionId(SCcall),
         onErrorId : tvm.functionId(someError)
         }(cureDA,curGramsForSend);
 
-        start();
+//        start();
     }
 /*
     utils
 */
+    function SCcall(uint8 status) public {
+        if(status == 1){
+            Terminal.print(0, "Success, your message sended to blockchain");
+        start();
+        }else{
+            Terminal.print(0, "Error, try again");
+        start();
+        }
+    }
 
     function someError(uint32 sdkError, uint32 exitCode) public {
         Terminal.print(0, format("sdkError: {}\nexitCOde:{}", sdkError, exitCode));

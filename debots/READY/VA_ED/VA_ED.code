@@ -66,7 +66,7 @@ ACCEPT
 ; colValue
 ; end colValue
 ; end function setIcon
-SETGLOB 16
+SETGLOB 17
 
 .macro start
 DROP
@@ -180,30 +180,12 @@ GETGLOB 9
 ; colValue
 SETGLOB 18
 ; end colValue
-PUSHINT 0
-NIL
-NEWC
-PUSHSLICE x6d5f41546465626f74416464726573733a
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier m_ATdebotAddress
-GETGLOB 18
-CALLREF {
-	CALL $convertAddressToHexString_macro$
-}
-CALLREF {
-	CALL $assembleList_macro$
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
 ; expValue
 ; end expValue
 ;; push identifier choosenDAD
 DUP
 ; colValue
-SETGLOB 17
+SETGLOB 16
 ; end colValue
 ; expValue
 ; end expValue
@@ -251,6 +233,9 @@ CALLREF {
 	CALL $fetchVP_internal_macro$
 }
 CALLREF {
+	CALL $fetchCD_internal_macro$
+}
+CALLREF {
 	CALL $editDeAudit_internal_macro$
 }
 ; end function startFetch
@@ -282,7 +267,7 @@ NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditData.districtKeys
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 PUSHSLICE x926036c6580234c190b0174_
 NEWC
 STSLICE
@@ -427,7 +412,7 @@ NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditData.getDistrict4Debot
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 PUSHSLICE x92620236c4a234c190b0174_
 NEWC
 STSLICE
@@ -655,7 +640,7 @@ NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditData.municipalBodyKeys
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 PUSHSLICE x926186bfe8b234c190b0174_
 NEWC
 STSLICE
@@ -800,7 +785,7 @@ NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditData.getMunicipalBody4Debot
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 PUSHSLICE x9263814440c234c190b0174_
 NEWC
 STSLICE
@@ -993,7 +978,7 @@ NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditData.votingPoolKeys
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 PUSHSLICE x92636166df7234c190b0174_
 NEWC
 STSLICE
@@ -1138,7 +1123,7 @@ NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditData.getVotingPool4Debot
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 PUSHSLICE x9261a256848234c190b0174_
 NEWC
 STSLICE
@@ -1282,6 +1267,311 @@ SETGLOB 25
 ; end function SCgetVPData
 BLKDROP 5
 
+.macro fetchCD
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+ENDS
+CALLREF {
+	CALL $fetchCD_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	fetchCD_internal
+.type	fetchCD_internal, @function
+CALL $fetchCD_internal_macro$
+
+.macro fetchCD_internal_macro
+; function fetchCD
+NULL
+;; decl: pubkey
+;; Remote call IDeAuditData.candidateKeys
+;; push identifier choosenDADaddress
+GETGLOB 16
+PUSHSLICE x926112a8b11a34c190b0174_
+NEWC
+STSLICE
+STSLICE
+PUSHINT 1
+STUR 6
+NEWC
+STSLICECONST 0
+;; push identifier pubkey
+PUSH S2
+ISNULL
+THROWIFNOT 64
+STSLICECONST 0
+;; push identifier now
+NOW
+;; uint64
+STUR 64
+PUSHINT 291
+STUR 32
+STSLICECONST x35da02ac
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+DROP
+; end function fetchCD
+
+.macro SCfetchCD
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 32
+LDDICT
+ROTREV
+PAIR
+SWAP
+ENDS
+;; param: candidateKeys
+CALLREF {
+	CALL $SCfetchCD_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	SCfetchCD_internal
+.type	SCfetchCD_internal, @function
+CALL $SCfetchCD_internal_macro$
+
+.macro SCfetchCD_internal_macro
+;; param: candidateKeys
+; function SCfetchCD
+; expValue
+; end expValue
+;; push identifier candidateKeys
+DUP
+; colValue
+SETGLOB 28
+; end colValue
+; for
+PUSHINT 0
+;; decl: i
+PUSHCONT {
+	;; push identifier i
+	DUP
+	;; <
+	;; get member length
+	;; push identifier candidateKeysD
+	GETGLOB 28
+	INDEX 0
+	LESS
+}
+PUSHCONT {
+	;; index
+	;; push identifier i
+	DUP
+	;; push identifier candidateKeysD
+	GETGLOB 28
+	INDEX 1
+	PUSHINT 32
+	DICTUGET
+	THROWIFNOT 50
+	PLDU 256
+	;; decl: curCD
+	;; push identifier curCD
+	DUP
+	CALLREF {
+		CALL $getCData_internal_macro$
+	}
+	DROP
+	;; ++
+	; expValue
+	; end expValue
+	INC
+	UFITS 8
+	; colValue
+	; end colValue
+}
+WHILE
+; end for
+; end function SCfetchCD
+DROP2
+
+.macro getCData
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+ENDS
+;; param: curCD
+CALLREF {
+	CALL $getCData_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	getCData_internal
+.type	getCData_internal, @function
+CALL $getCData_internal_macro$
+
+.macro getCData_internal_macro
+;; param: curCD
+; function getCData
+NULL
+;; decl: pubkey
+;; Remote call IDeAuditData.getCandidate4Debot
+;; push identifier choosenDADaddress
+GETGLOB 16
+PUSHSLICE x9263fa2cb68234c190b0174_
+NEWC
+STSLICE
+STSLICE
+PUSHINT 1
+STUR 6
+;; push identifier curCD
+PUSH S2
+NEWC
+STSLICECONST 0
+;; push identifier pubkey
+PUSH S3
+ISNULL
+THROWIFNOT 64
+STSLICECONST 0
+;; push identifier now
+NOW
+;; uint64
+STUR 64
+PUSHINT 291
+STUR 32
+STSLICECONST x326f95be
+STU 256
+STBREFR
+ENDC
+PUSHINT 0
+SENDRAWMSG
+; end function getCData
+DROP2
+
+.macro SCgetCData
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDREF
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+LDUQ 256
+PUSHCONT {
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDU 256
+}
+IFNOT
+ENDS
+;; param: name4Debot
+;; param: votes4Debot
+;; param: candidateCurrentKeyD
+CALLREF {
+	CALL $SCgetCData_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	SCgetCData_internal
+.type	SCgetCData_internal, @function
+CALL $SCgetCData_internal_macro$
+
+.macro SCgetCData_internal_macro
+;; param: name4Debot
+;; param: votes4Debot
+;; param: candidateCurrentKeyD
+; function SCgetCData
+;; index
+;; push identifier candidateCurrentKeyD
+DUP
+;; push identifier candidateD
+GETGLOB 27
+PUSHINT 256
+DICTUGET
+PUSHREFCONT {
+	LDREF
+	LDU 256
+	ENDS
+	TUPLE 2
+}
+PUSHREFCONT {
+	PUSHREF {
+	}
+	PUSHINT 0
+	TUPLE 2
+}
+IFELSE
+;; decl: cd
+; expValue
+; end expValue
+;; push identifier name4Debot
+; colValue
+PUSH S3
+SETINDEX 0
+; end colValue
+; expValue
+;; fetch candidateD
+;; push identifier candidateCurrentKeyD
+PUSH S1
+GETGLOB 27
+; end expValue
+;; push identifier cd
+PUSH S2
+; colValue
+CALLREF {
+	UNTUPLE 2
+	SWAP
+	NEWC
+	STREF
+	STU 256
+}
+ROTREV
+PUSHINT 256
+DICTUSETB
+SETGLOB 27
+; end colValue
+; end function SCgetCData
+BLKDROP 4
+
 .macro editDeAudit
 DROP
 GETGLOB 8
@@ -1306,7 +1596,7 @@ CALL $editDeAudit_internal_macro$
 .macro editDeAudit_internal_macro
 ; function editDeAudit
 PUSHREF {
-	.blob x6564697444656175646974446174614d656e75
+	.blob x4564697420446541756469742064617461206d656e753a
 }
 PUSHREF {
 	.blob x
@@ -1314,7 +1604,7 @@ PUSHREF {
 PUSHINT 9
 NEWDICT
 PUSHREF {
-	.blob x4445562066657463682064617461
+	.blob x526566726573682064617461
 }
 PUSHREF {
 	.blob x
@@ -1334,7 +1624,7 @@ ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x4445562073686f772064617461
+	.blob x53686f772064617461
 }
 PUSHREF {
 	.blob x
@@ -1354,7 +1644,7 @@ ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x616464206469737472696374
+	.blob x416464206469737472696374
 }
 PUSHREF {
 	.blob x
@@ -1394,7 +1684,7 @@ ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x616464206d756e69636970616c20626f6479
+	.blob x416464206d756e69636970616c20626f6479
 }
 PUSHREF {
 	.blob x
@@ -1414,7 +1704,7 @@ ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x61646420766f74696e6720706f6f6c
+	.blob x41646420766f74696e6720706f6f6c
 }
 PUSHREF {
 	.blob x
@@ -1434,7 +1724,7 @@ ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x61646420766f74696e672063656e746572
+	.blob x41646420766f74696e672063656e746572
 }
 PUSHREF {
 	.blob x
@@ -1454,7 +1744,7 @@ ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x72657475726e20746f206d61696e206d656e75
+	.blob x4261636b20746f206d61696e206d656e75
 }
 PUSHREF {
 	.blob x
@@ -1640,19 +1930,7 @@ PUSHCONT {
 	PUSHINT 0
 	NIL
 	NEWC
-	PUSHSLICE x646973747269637444202d2d2d2063757244543a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier curDT
-	PUSH S4
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x2c64742e6e616d653a20
+	PUSHSLICE x202d204469737472696374206e616d653a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1737,19 +2015,7 @@ PUSHCONT {
 	PUSHINT 0
 	NIL
 	NEWC
-	PUSHSLICE x4d426b65797344202d2d2d204d426b657973445b695d3a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier curbm
-	PUSH S4
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x2c6d622e6e616d653a20
+	PUSHSLICE x202d204d756e69636970616c20626f6479206e616d653a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1768,111 +2034,6 @@ PUSHCONT {
 		CALL $Terminal_no_obj_print_macro$
 	}
 	DROP2
-	;; ++
-	; expValue
-	; end expValue
-	INC
-	UFITS 8
-	; colValue
-	; end colValue
-}
-WHILE
-DROP
-; end for
-;; index
-PUSHINT 0
-;; push identifier MBD
-GETGLOB 23
-PUSHINT 256
-DICTUGET
-PUSHREFCONT {
-	LDREF
-	LDU 32
-	LDDICT
-	ROTREV
-	PAIR
-	SWAP
-	ENDS
-	TUPLE 2
-}
-PUSHREFCONT {
-	PUSHREF {
-	}
-	PUSHINT 0
-	NEWDICT
-	PAIR
-	TUPLE 2
-}
-IFELSE
-;; decl: mb
-;; get member votingPoolsArr
-;; push identifier mb
-DUP
-INDEX 1
-;; decl: VPAR
-; for
-PUSHINT 0
-;; decl: k
-PUSHCONT {
-	;; push identifier k
-	;; <
-	;; get member length
-	;; push identifier VPAR
-	PUSH2 S0, S1
-	INDEX 0
-	LESS
-}
-PUSHCONT {
-	;; index
-	;; push identifier k
-	;; push identifier VPAR
-	PUSH2 S0, S1
-	INDEX 1
-	PUSHINT 32
-	DICTUGET
-	THROWIFNOT 50
-	PLDU 256
-	;; decl: curVPAR
-	PUSHINT 0
-	NIL
-	NEWC
-	PUSHSLICE x5f2b5f2b5f2b637572565041523a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier curVPAR
-	PUSH S3
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x2b2b2b565041522e6c656e6774683a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; get member length
-	;; push identifier VPAR
-	PUSH S5
-	INDEX 0
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x202b2b2b
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	CALLREF {
-		CALL $assembleList_macro$
-	}
-	CALLREF {
-		CALL $Terminal_no_obj_print_macro$
-	}
-	DROP
 	;; ++
 	; expValue
 	; end expValue
@@ -1939,19 +2100,7 @@ PUSHCONT {
 	PUSHINT 0
 	NIL
 	NEWC
-	PUSHSLICE x4d426b65797344202d2d2d2063757276703a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier curvp
-	PUSH S4
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x2c6d622e6e616d653a20
+	PUSHSLICE x202d20566f74696e6720706f6f6c206e616d653a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1981,82 +2130,41 @@ PUSHCONT {
 WHILE
 DROP
 ; end for
-;; index
-PUSHINT 1
-;; push identifier districtD
-GETGLOB 21
-PUSHINT 256
-DICTUGET
-PUSHREFCONT {
-	LDREF
-	LDU 32
-	LDDICT
-	ROTREV
-	PAIR
-	SWAP
-	LDU 32
-	LDDICT
-	ROTREV
-	PAIR
-	SWAP
-	ENDS
-	TUPLE 3
-}
-PUSHREFCONT {
-	PUSHREF {
-	}
-	PUSHINT 0
-	NEWDICT
-	PAIR
-	PUSHINT 0
-	NEWDICT
-	PAIR
-	TUPLE 3
-}
-IFELSE
-;; decl: dt
-;; get member municipalBodiesArr
-;; push identifier dt
-DUP
-INDEX 1
-;; decl: MBarr
 ; for
 PUSHINT 0
 ;; decl: k
 PUSHCONT {
 	;; push identifier k
+	DUP
 	;; <
 	;; get member length
-	;; push identifier MBarr
-	PUSH2 S0, S1
+	;; push identifier candidateKeysD
+	GETGLOB 28
 	INDEX 0
 	LESS
 }
 PUSHCONT {
 	;; index
 	;; push identifier k
-	;; push identifier MBarr
-	PUSH2 S0, S1
+	DUP
+	;; push identifier candidateKeysD
+	GETGLOB 28
 	INDEX 1
 	PUSHINT 32
 	DICTUGET
 	THROWIFNOT 50
 	PLDU 256
-	;; decl: curmbar
+	;; decl: curCD
 	;; index
-	;; push identifier curmbar
+	;; push identifier curCD
 	DUP
-	;; push identifier MBD
-	GETGLOB 23
+	;; push identifier candidateD
+	GETGLOB 27
 	PUSHINT 256
 	DICTUGET
 	PUSHREFCONT {
 		LDREF
-		LDU 32
-		LDDICT
-		ROTREV
-		PAIR
-		SWAP
+		LDU 256
 		ENDS
 		TUPLE 2
 	}
@@ -2064,33 +2172,19 @@ PUSHCONT {
 		PUSHREF {
 		}
 		PUSHINT 0
-		NEWDICT
-		PAIR
 		TUPLE 2
 	}
 	IFELSE
-	;; decl: curStr
+	;; decl: cd
 	PUSHINT 0
 	NIL
 	NEWC
-	PUSHSLICE x6375726d6261723a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier curmbar
-	PUSH S4
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x2c206375725374722e6e616d653a20
+	PUSHSLICE x202d2043616e646964617465206e616d653a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
 	;; get member name
-	;; push identifier curStr
+	;; push identifier cd
 	PUSH S3
 	INDEX 0
 	CTOS
@@ -2119,7 +2213,7 @@ CALLREF {
 	CALL $editDeAudit_internal_macro$
 }
 ; end function devshow
-BLKDROP 5
+DROP
 
 .macro onAddDistrictSetName
 DROP
@@ -2154,7 +2248,7 @@ CALL $onAddDistrictSetName_internal_macro$
 ; end colValue
 PUSHINT 2079741131
 PUSHREF {
-	.blob x0a456e746572206469737472696374204e616d653a200a
+	.blob x456e746572206469737472696374204e616d653a200a
 }
 FALSE
 CALLREF {
@@ -2196,12 +2290,12 @@ DUP
 PUSHINT 0
 NIL
 NEWC
-PUSHSLICE x0a2a2a2a2a2a20546f75636865642044654175646974446174613a20
+PUSHSLICE x202d20546f7563686564204465417564697420646174613a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 CALLREF {
 	CALL $convertAddressToHexString_macro$
 }
@@ -2215,7 +2309,7 @@ CTOS
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
-PUSHSLICE x2c6772616d7320666f722063616c6c3a20
+PUSHSLICE x2c206772616d7320666f722063616c6c3a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2227,7 +2321,7 @@ FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHSLICE x0a
+PUSHSLICE x202d200a
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2253,7 +2347,7 @@ GETGLOB 14
 ;; push identifier nameDistr
 PUSH S3
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 NEWC
 STSLICECONST 1
 PUSHINT 512
@@ -2324,7 +2418,7 @@ CALL $onAddCandidateName_internal_macro$
 ; end colValue
 PUSHINT 1699315533
 PUSHREF {
-	.blob x0a456e7465722063616e646964617465204e616d653a200a
+	.blob x456e7465722063616e646964617465204e616d653a
 }
 FALSE
 CALLREF {
@@ -2366,12 +2460,12 @@ DUP
 PUSHINT 0
 NIL
 NEWC
-PUSHSLICE x0a2a2a2a2a2a20546f75636865642044654175646974446174613a20
+PUSHSLICE x202d20546f7563686564204465417564697420646174613a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 CALLREF {
 	CALL $convertAddressToHexString_macro$
 }
@@ -2397,7 +2491,7 @@ FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHSLICE x0a
+PUSHSLICE x202d200a
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2412,7 +2506,7 @@ NULL
 ;; Remote call IParticipant.addCandidate
 ;; push identifier m_participant
 GETGLOB 15
-PUSHSLICE x926123d9279a34c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -2423,7 +2517,7 @@ GETGLOB 14
 ;; push identifier nameCandidate
 PUSH S3
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 NEWC
 STSLICECONST 1
 PUSHINT 512
@@ -2501,7 +2595,7 @@ PUSHCONT {
 	; end expValue
 	PUSHINT 33
 	; colValue
-	SETGLOB 27
+	SETGLOB 29
 	; end colValue
 }
 PUSHCONT {
@@ -2514,13 +2608,13 @@ PUSHCONT {
 		; end expValue
 		PUSHINT 17
 		; colValue
-		SETGLOB 27
+		SETGLOB 29
 		; end colValue
 		; expValue
 		; end expValue
 		PUSHINT 34
 		; colValue
-		SETGLOB 28
+		SETGLOB 30
 		; end colValue
 	}
 	PUSHCONT {
@@ -2533,19 +2627,19 @@ PUSHCONT {
 			; end expValue
 			PUSHINT 17
 			; colValue
-			SETGLOB 27
+			SETGLOB 29
 			; end colValue
 			; expValue
 			; end expValue
 			PUSHINT 18
 			; colValue
-			SETGLOB 28
+			SETGLOB 30
 			; end colValue
 			; expValue
 			; end expValue
 			PUSHINT 35
 			; colValue
-			SETGLOB 29
+			SETGLOB 31
 			; end colValue
 		}
 		IF
@@ -2651,7 +2745,7 @@ PUSHCONT {
 	;; decl: cp
 	NIL
 	NEWC
-	PUSHSLICE x2a2a2a2a2a0a4469737472696374206e616d653a
+	PUSHSLICE x202d204469737472696374206e616d653a
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -2663,7 +2757,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
-	PUSHSLICE x20446973747269637420696e6465783a20
+	PUSHSLICE x20696e6465783a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -2675,7 +2769,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $convertIntToDecStr_macro$
 	}
-	PUSHSLICE x0a3d3d3d3d0a
+	PUSHSLICE x202d200a
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -2758,7 +2852,7 @@ PAIR
 NIP
 ; end colValue
 PUSHREF {
-	.blob x43686f6f73652064697374726963743a
+	.blob x43686f6f7365206469737472696374206f72206261636b20746f206d656e753a
 }
 PUSHREF {
 	.blob x
@@ -2815,27 +2909,27 @@ DICTUGET
 THROWIFNOT 50
 PLDU 256
 ; colValue
-SETGLOB 30
+PUSHINT 32
+SETGLOBVAR
 ; end colValue
 ;; push identifier toundDistrictsID
-GETGLOB 27
+GETGLOB 29
 NIL
 NEWC
-PUSHREFSLICE {
-	.blob x2d2d2d2d596f7520746f756368656420446973747269637420696e6465783a20
-}
+PUSHSLICE x202d20596f7520746f756368656420446973747269637420696e6465783a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
 ;; push identifier curDistrIndexD
-GETGLOB 30
+PUSHINT 32
+GETGLOBVAR
 PUSHINT 0
 FALSE
 FALSE
 CALLREF {
 	CALL $convertIntToDecStr_macro$
 }
-PUSHSLICE x0a
+PUSHSLICE x202d200a
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -2877,7 +2971,8 @@ PAIR
 ;; decl: m_menu
 ;; index
 ;; push identifier curDistrIndexD
-GETGLOB 30
+PUSHINT 32
+GETGLOBVAR
 ;; push identifier districtD
 GETGLOB 21
 PUSHINT 256
@@ -2917,7 +3012,7 @@ IFELSE
 DUP
 INDEX 1
 ; colValue
-PUSHINT 32
+PUSHINT 34
 SETGLOBVAR
 ; end colValue
 ; for
@@ -2929,7 +3024,7 @@ PUSHCONT {
 	;; <
 	;; get member length
 	;; push identifier MBarr
-	PUSHINT 32
+	PUSHINT 34
 	GETGLOBVAR
 	INDEX 0
 	LESS
@@ -2939,7 +3034,7 @@ PUSHCONT {
 	;; push identifier i
 	DUP
 	;; push identifier MBarr
-	PUSHINT 32
+	PUSHINT 34
 	GETGLOBVAR
 	INDEX 1
 	PUSHINT 32
@@ -2978,7 +3073,8 @@ PUSHCONT {
 	;; push identifier curBlyatMBindex
 	PUSH S1
 	;; push identifier MBforstruct
-	GETGLOB 31
+	PUSHINT 33
+	GETGLOBVAR
 	PUSHINT 256
 	DICTUGET
 	PUSHREFCONT {
@@ -3013,9 +3109,11 @@ PUSHCONT {
 	; end colValue
 	; expValue
 	;; fetch MBforstruct
+	PUSHINT 33
+	GETGLOBVAR
 	;; push identifier curBlyatMBindex
-	PUSH S2
-	GETGLOB 31
+	PUSH S3
+	SWAP
 	; end expValue
 	;; push identifier mp
 	PUSH S2
@@ -3030,55 +3128,9 @@ PUSHCONT {
 	ROTREV
 	PUSHINT 256
 	DICTUSETB
-	SETGLOB 31
+	PUSHINT 33
+	SETGLOBVAR
 	; end colValue
-	PUSHINT 0
-	NIL
-	NEWC
-	PUSHSLICE x3d3d3d3d206d702e6e616d653a
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; get member name
-	;; push identifier mp
-	PUSH S3
-	INDEX 0
-	CTOS
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	PUSHSLICE x2c206d702e4d42696e6465783a
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; get member MBindex
-	;; push identifier mp
-	PUSH S3
-	INDEX 1
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x2c20637572426c7961744d42696e6465783a
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier curBlyatMBindex
-	PUSH S5
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	CALLREF {
-		CALL $assembleList_macro$
-	}
-	CALLREF {
-		CALL $Terminal_no_obj_print_macro$
-	}
 	BLKDROP 3
 	;; ++
 	; expValue
@@ -3100,7 +3152,7 @@ PUSHCONT {
 	;; <
 	;; get member length
 	;; push identifier MBarr
-	PUSHINT 32
+	PUSHINT 34
 	GETGLOBVAR
 	INDEX 0
 	LESS
@@ -3110,7 +3162,7 @@ PUSHCONT {
 	;; push identifier k
 	DUP
 	;; push identifier MBarr
-	PUSHINT 32
+	PUSHINT 34
 	GETGLOBVAR
 	INDEX 1
 	PUSHINT 32
@@ -3122,7 +3174,8 @@ PUSHCONT {
 	;; push identifier curmbar
 	DUP
 	;; push identifier MBforstruct
-	GETGLOB 31
+	PUSHINT 33
+	GETGLOBVAR
 	PUSHINT 256
 	DICTUGET
 	PUSHREFCONT {
@@ -3141,45 +3194,11 @@ PUSHCONT {
 	;; decl: curStr
 	NIL
 	NEWC
-	PUSHSLICE x2a2a2a2a2a204d756e69636970616c20626f6479206e616d653a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
 	;; get member name
 	;; push identifier curStr
 	PUSH S2
 	INDEX 0
 	CTOS
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	PUSHSLICE x2c204d4220696e6465783a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; get member MBindex
-	;; push identifier curStr
-	PUSH S2
-	INDEX 1
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x0a706f736974696f6e20696e206d656e753a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier curmbar
-	PUSH S3
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x0a
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -3262,7 +3281,7 @@ PAIR
 POP S2
 ; end colValue
 PUSHREF {
-	.blob x43686f6f7365204d756e69636970616c20626f6479423a
+	.blob x43686f6f7365204d756e69636970616c20626f6479206f72206261636b20746f206d656e753a
 }
 PUSHREF {
 	.blob x
@@ -3301,32 +3320,11 @@ CALL $setTouchedMB_internal_macro$
 .macro setTouchedMB_internal_macro
 ;; param: index
 ; function setTouchedMB
-PUSHINT 0
-NIL
-NEWC
-PUSHSLICE x2a2a20696e6465783a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier index
-PUSH S3
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-CALLREF {
-	CALL $assembleList_macro$
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
 ;; index
 ;; push identifier index
 DUP
 ;; push identifier MBarr
-PUSHINT 32
+PUSHINT 34
 GETGLOBVAR
 INDEX 1
 PUSHINT 32
@@ -3338,7 +3336,8 @@ PLDU 256
 ;; push identifier curmbar
 DUP
 ;; push identifier MBforstruct
-GETGLOB 31
+PUSHINT 33
+GETGLOBVAR
 PUSHINT 256
 DICTUGET
 PUSHREFCONT {
@@ -3362,29 +3361,14 @@ IFELSE
 DUP
 INDEX 1
 ; colValue
-PUSHINT 33
+PUSHINT 35
 SETGLOBVAR
 ; end colValue
 ;; push identifier toundMBID
-GETGLOB 28
+GETGLOB 30
 NIL
 NEWC
-PUSHREFSLICE {
-	.blob x0a202d2d2d2d596f7520746f7563686564204d756e69636970616c20626f647920696e6465783a20
-}
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier curMBIndexD
-PUSHINT 33
-GETGLOBVAR
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-PUSHSLICE x0a697473206e616d653a20
+PUSHSLICE x202d20546f7563686564204d756e69636970616c20626f64793a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -3396,7 +3380,7 @@ CTOS
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
-PUSHSLICE x0a
+PUSHSLICE x202d200a
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -3438,7 +3422,7 @@ PAIR
 ;; decl: m_menu
 ;; index
 ;; push identifier curMBIndexD
-PUSHINT 33
+PUSHINT 35
 GETGLOBVAR
 ;; push identifier MBD
 GETGLOB 23
@@ -3464,31 +3448,6 @@ PUSHREFCONT {
 }
 IFELSE
 ;; decl: dt
-PUSHINT 0
-NIL
-NEWC
-PUSHSLICE x6474206e616d6565653a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; get member name
-;; push identifier dt
-PUSH S3
-INDEX 0
-CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x0a2a2a2a
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-CALLREF {
-	CALL $assembleList_macro$
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
 ; expValue
 ; end expValue
 ;; get member votingPoolsArr
@@ -3496,7 +3455,7 @@ CALLREF {
 DUP
 INDEX 1
 ; colValue
-PUSHINT 35
+PUSHINT 37
 SETGLOBVAR
 ; end colValue
 ; for
@@ -3508,7 +3467,7 @@ PUSHCONT {
 	;; <
 	;; get member length
 	;; push identifier VParray
-	PUSHINT 35
+	PUSHINT 37
 	GETGLOBVAR
 	INDEX 0
 	LESS
@@ -3518,7 +3477,7 @@ PUSHCONT {
 	;; push identifier i
 	DUP
 	;; push identifier VParray
-	PUSHINT 35
+	PUSHINT 37
 	GETGLOBVAR
 	INDEX 1
 	PUSHINT 32
@@ -3557,7 +3516,7 @@ PUSHCONT {
 	;; push identifier curVPindex
 	PUSH S1
 	;; push identifier votpoolsMAP
-	PUSHINT 34
+	PUSHINT 36
 	GETGLOBVAR
 	PUSHINT 256
 	DICTUGET
@@ -3593,7 +3552,7 @@ PUSHCONT {
 	; end colValue
 	; expValue
 	;; fetch votpoolsMAP
-	PUSHINT 34
+	PUSHINT 36
 	GETGLOBVAR
 	;; push identifier curVPindex
 	PUSH S3
@@ -3612,44 +3571,9 @@ PUSHCONT {
 	ROTREV
 	PUSHINT 256
 	DICTUSETB
-	PUSHINT 34
+	PUSHINT 36
 	SETGLOBVAR
 	; end colValue
-	PUSHINT 0
-	NIL
-	NEWC
-	PUSHSLICE x3d3d3d3d207670432e6e616d653a
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; get member name
-	;; push identifier vpC
-	PUSH S3
-	INDEX 0
-	CTOS
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	PUSHSLICE x2c207670432e5650696e6465783a
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; get member VPindex
-	;; push identifier vpC
-	PUSH S3
-	INDEX 1
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	CALLREF {
-		CALL $assembleList_macro$
-	}
-	CALLREF {
-		CALL $Terminal_no_obj_print_macro$
-	}
 	BLKDROP 3
 	;; ++
 	; expValue
@@ -3671,7 +3595,7 @@ PUSHCONT {
 	;; <
 	;; get member length
 	;; push identifier VParray
-	PUSHINT 35
+	PUSHINT 37
 	GETGLOBVAR
 	INDEX 0
 	LESS
@@ -3681,7 +3605,7 @@ PUSHCONT {
 	;; push identifier i
 	DUP
 	;; push identifier VParray
-	PUSHINT 35
+	PUSHINT 37
 	GETGLOBVAR
 	INDEX 1
 	PUSHINT 32
@@ -3718,31 +3642,11 @@ PUSHCONT {
 	;; decl: vp
 	NIL
 	NEWC
-	PUSHSLICE x0a2a2a2a2a2a20566f74696e6720706f6f6c206e616d653a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
 	;; get member name
 	;; push identifier vp
 	PUSH S2
 	INDEX 0
 	CTOS
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	PUSHSLICE x2c20565020696e6465783a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier curVP
-	PUSH S3
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x0a
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -3825,7 +3729,7 @@ PAIR
 POP S2
 ; end colValue
 PUSHREF {
-	.blob x43686f6f736520566f74696e6720706f6f6c3a
+	.blob x43686f6f736520566f74696e6720706f6f6c206f72206261636b20746f206d656e753a
 }
 PUSHREF {
 	.blob x
@@ -3868,7 +3772,7 @@ CALL $setTouchedVP_internal_macro$
 ;; push identifier index
 DUP
 ;; push identifier VParray
-PUSHINT 35
+PUSHINT 37
 GETGLOBVAR
 INDEX 1
 PUSHINT 32
@@ -3880,7 +3784,7 @@ PLDU 256
 ;; push identifier curVPi
 DUP
 ;; push identifier votpoolsMAP
-PUSHINT 34
+PUSHINT 36
 GETGLOBVAR
 PUSHINT 256
 DICTUGET
@@ -3905,29 +3809,14 @@ IFELSE
 DUP
 INDEX 1
 ; colValue
-PUSHINT 36
+PUSHINT 38
 SETGLOBVAR
 ; end colValue
 ;; push identifier toundVPID
-GETGLOB 29
+GETGLOB 31
 NIL
 NEWC
-PUSHREFSLICE {
-	.blob x0a202d2d2d2d596f7520746f756368656420566f74696e6720706f6f6c20696e6465783a20
-}
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier curVPIndexD
-PUSHINT 36
-GETGLOBVAR
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-PUSHSLICE x0a697473206e616d653a20
+PUSHSLICE x202d20546f756368656420566f74696e6720706f6f6c3a20
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -3936,10 +3825,6 @@ CALLREF {
 PUSH S3
 INDEX 0
 CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x0a
 CALLREF {
 	CALL $storeStringInBuilders_macro$
 }
@@ -4020,7 +3905,7 @@ NULL
 ;; Remote call IParticipant.addMunicipalBody
 ;; push identifier m_participant
 GETGLOB 15
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -4029,11 +3914,12 @@ STUR 6
 ;; push identifier GRAMS_ADD
 GETGLOB 14
 ;; push identifier curDistrIndexD
-GETGLOB 30
+PUSHINT 32
+GETGLOBVAR
 ;; push identifier MBname
 PUSH S4
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 NEWC
 STSLICECONST 1
 PUSHINT 512
@@ -4069,9 +3955,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $editDeAudit_internal_macro$
-}
 ; end function setMBname
 BLKDROP 3
 
@@ -4098,61 +3981,6 @@ CALL $touchCurVotingVP_internal_macro$
 
 .macro touchCurVotingVP_internal_macro
 ; function touchCurVotingVP
-PUSHINT 0
-NIL
-NEWC
-PUSHSLICE x63686f6f73656e444144616464726573733a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier choosenDADaddress
-GETGLOB 17
-CALLREF {
-	CALL $convertAddressToHexString_macro$
-}
-PUSHSLICE x2c6375724469737472496e646578443a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier curDistrIndexD
-GETGLOB 30
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-PUSHSLICE x2c6375724d42496e646578443a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier curMBIndexD
-PUSHINT 33
-GETGLOBVAR
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-PUSHSLICE x2c4752414d535f4144443a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier GRAMS_ADD
-GETGLOB 14
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-CALLREF {
-	CALL $assembleList_macro$
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
 PUSHINT 597176646
 PUSHREF {
 	.blob x456e74657220566f74696e6720706f6f6c206e616d653a20
@@ -4193,12 +4021,78 @@ CALL $setVPname_internal_macro$
 DUP
 ;; bytes
 ;; decl: VPname
+PUSHINT 0
+NIL
+NEWC
+PUSHSLICE x4465417564697420646174613a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier choosenDADaddress
+GETGLOB 16
+CALLREF {
+	CALL $convertAddressToHexString_macro$
+}
+PUSHSLICE x2c646973747269637420696e6465783a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier curDistrIndexD
+PUSHINT 32
+GETGLOBVAR
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x2c4d4220696e6465783a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier curMBIndexD
+PUSHINT 35
+GETGLOBVAR
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x2c565020696e6465783a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier VPname
+PUSH S3
+CTOS
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+PUSHSLICE x2c204752414d535f4144443a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier GRAMS_ADD
+GETGLOB 14
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+CALLREF {
+	CALL $assembleList_macro$
+}
+CALLREF {
+	CALL $Terminal_no_obj_print_macro$
+}
 NULL
 ;; decl: pubkey
 ;; Remote call IParticipant.addVotingPool
 ;; push identifier m_participant
 GETGLOB 15
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -4207,14 +4101,15 @@ STUR 6
 ;; push identifier GRAMS_ADD
 GETGLOB 14
 ;; push identifier curMBIndexD
-PUSHINT 33
+PUSHINT 35
 GETGLOBVAR
 ;; push identifier curDistrIndexD
-GETGLOB 30
+PUSHINT 32
+GETGLOBVAR
 ;; push identifier VPname
 PUSH S5
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 NEWC
 STSLICECONST 1
 PUSHINT 512
@@ -4254,9 +4149,6 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $editDeAudit_internal_macro$
-}
 ; end function setVPname
 BLKDROP 3
 
@@ -4285,7 +4177,7 @@ CALL $touchCurVotingVC_internal_macro$
 ; function touchCurVotingVC
 PUSHINT 1960582215
 PUSHREF {
-	.blob x456e74657220566f74696e672043656e746572206e616d65
+	.blob x456e74657220566f74696e672043656e746572206e616d653a
 }
 FALSE
 CALLREF {
@@ -4325,91 +4217,12 @@ DUP
 ; expValue
 ; end expValue
 ; colValue
-PUSHINT 37
+PUSHINT 39
 SETGLOBVAR
 ; end colValue
-PUSHINT 0
-NIL
-NEWC
-PUSHSLICE x56436e616d653a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier VCname
-PUSHINT 37
-GETGLOBVAR
-CTOS
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-PUSHSLICE x2c2063686f6f73656e444144616464726573733a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier choosenDADaddress
-GETGLOB 17
-CALLREF {
-	CALL $convertAddressToHexString_macro$
-}
-PUSHSLICE x2c6375724469737472496e646578443a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier curDistrIndexD
-GETGLOB 30
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-PUSHSLICE x2c6375724d42496e646578443a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier curMBIndexD
-PUSHINT 33
-GETGLOBVAR
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-PUSHSLICE x2c6375725650496e646578443a
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier curVPIndexD
-PUSHINT 36
-GETGLOBVAR
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-PUSHSLICE x2c204752414d535f4144443a20
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier GRAMS_ADD
-GETGLOB 14
-PUSHINT 0
-FALSE
-FALSE
-CALLREF {
-	CALL $convertIntToDecStr_macro$
-}
-CALLREF {
-	CALL $assembleList_macro$
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
 PUSHINT 1388940621
 PUSHREF {
-	.blob x456e74657220566f74696e672043656e746572206c6f636174696f6e
+	.blob x456e74657220566f74696e672043656e746572206c6f636174696f6e3a
 }
 FALSE
 CALLREF {
@@ -4448,12 +4261,102 @@ CALL $setVCname_internal_macro$
 DUP
 ;; bytes
 ;; decl: VClocation
+PUSHINT 0
+NIL
+NEWC
+PUSHSLICE x4465417564697420646174613a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier choosenDADaddress
+GETGLOB 16
+CALLREF {
+	CALL $convertAddressToHexString_macro$
+}
+PUSHSLICE x2c646973747269637420696e6465783a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier curDistrIndexD
+PUSHINT 32
+GETGLOBVAR
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x2c4d4220696e6465783a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier curMBIndexD
+PUSHINT 35
+GETGLOBVAR
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x2c565020696e6465783a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier curVPIndexD
+PUSHINT 38
+GETGLOBVAR
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+PUSHSLICE x2c6c6f636174696f6e3a
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier VClocation
+PUSH S3
+CTOS
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+PUSHSLICE x2c6e616d653a
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier VCname
+PUSHINT 39
+GETGLOBVAR
+CTOS
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+PUSHSLICE x2c204752414d535f4144443a20
+CALLREF {
+	CALL $storeStringInBuilders_macro$
+}
+;; push identifier GRAMS_ADD
+GETGLOB 14
+PUSHINT 0
+FALSE
+FALSE
+CALLREF {
+	CALL $convertIntToDecStr_macro$
+}
+CALLREF {
+	CALL $assembleList_macro$
+}
+CALLREF {
+	CALL $Terminal_no_obj_print_macro$
+}
 NULL
 ;; decl: pubkey
 ;; Remote call IParticipant.addVotingCenter
 ;; push identifier m_participant
 GETGLOB 15
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -4462,20 +4365,21 @@ STUR 6
 ;; push identifier GRAMS_ADD
 GETGLOB 14
 ;; push identifier curVPIndexD
-PUSHINT 36
+PUSHINT 38
 GETGLOBVAR
 ;; push identifier curMBIndexD
-PUSHINT 33
+PUSHINT 35
 GETGLOBVAR
 ;; push identifier curDistrIndexD
-GETGLOB 30
+PUSHINT 32
+GETGLOBVAR
 ;; push identifier VClocation
 PUSH S6
 ;; push identifier VCname
-PUSHINT 37
+PUSHINT 39
 GETGLOBVAR
 ;; push identifier choosenDADaddress
-GETGLOB 17
+GETGLOB 16
 NEWC
 STSLICECONST 1
 PUSHINT 512
@@ -4517,11 +4421,67 @@ STBREFR
 ENDC
 PUSHINT 0
 SENDRAWMSG
-CALLREF {
-	CALL $editDeAudit_internal_macro$
-}
 ; end function setVCname
 BLKDROP 3
+
+.macro SCcall
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 8
+ENDS
+;; param: status
+CALLREF {
+	CALL $SCcall_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	SCcall_internal
+.type	SCcall_internal, @function
+CALL $SCcall_internal_macro$
+
+.macro SCcall_internal_macro
+;; param: status
+; function SCcall
+;; if
+;; push identifier status
+DUP
+EQINT 1
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x537563636573732c20796f7572206d6573736167652073656e64656420746f20626c6f636b636861696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $start_internal_macro$
+	}
+}
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x4572726f722c2074727920616761696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $start_internal_macro$
+	}
+}
+IFELSE
+;; end if
+; end function SCcall
+DROP
 
 .macro someError
 DROP
@@ -4768,7 +4728,7 @@ POP S2
 ;; push identifier m_icon
 ; colValue
 DROP
-GETGLOB 16
+GETGLOB 17
 ; end colValue
 ; end function getDebotInfo
 
@@ -5034,6 +4994,10 @@ SETGLOB 10
 SETGLOB 11
 
 .macro c7_to_c4
+PUSHINT 39
+GETGLOBVAR
+PUSHINT 38
+GETGLOBVAR
 PUSHINT 37
 GETGLOBVAR
 PUSHINT 36
@@ -5122,27 +5086,27 @@ PUSHCONT {
 }
 IFELSE
 STU 128
-PUSHINT 23
+PUSHINT 25
+PUSHINT 1
+BLKSWX
+NEWC
+STSLICE
+PUSHINT 24
 PUSHINT 1
 BLKSWX
 NEWC
 STSLICE
 STREF
-PUSHINT 21
+PUSHINT 22
 PUSHINT 1
 BLKSWX
 NEWC
 STSLICE
+STU 256
 PUSHINT 20
 PUSHINT 1
 BLKSWX
 NEWC
-STSLICE
-STU 256
-PUSHINT 18
-PUSHINT 1
-BLKSWX
-NEWC
 STU 256
 STDICT
 SWAP
@@ -5151,7 +5115,7 @@ XCHG s2
 STU 32
 STDICT
 STDICT
-BLKSWAP 14, 1
+BLKSWAP 16, 1
 NEWC
 SWAP
 UNPAIR
@@ -5164,11 +5128,7 @@ UNPAIR
 XCHG s2
 STU 32
 STDICT
-STU 32
-STU 32
-STU 32
-STU 256
-BLKSWAP 7, 1
+BLKSWAP 13, 1
 NEWC
 STDICT
 SWAP
@@ -5176,10 +5136,20 @@ UNPAIR
 XCHG s2
 STU 32
 STDICT
+STU 32
+STU 32
+STU 32
 STU 256
 STDICT
-BLKSWAP 3, 1
+BLKSWAP 6, 1
 NEWC
+SWAP
+UNPAIR
+XCHG s2
+STU 32
+STDICT
+STU 256
+STDICT
 SWAP
 UNPAIR
 XCHG s2
@@ -5241,17 +5211,17 @@ LDREF
 ENDS
 CTOS
 LDMSGADDR
+;; load next cell
+LDREF
+ENDS
+CTOS
+LDMSGADDR
 LDREF
 ;; load next cell
 LDREF
 ENDS
 CTOS
 LDMSGADDR
-;; load next cell
-LDREF
-ENDS
-CTOS
-LDMSGADDR
 LDU 256
 ;; load next cell
 LDREF
@@ -5280,10 +5250,6 @@ LDDICT
 ROTREV
 PAIR
 SWAP
-LDU 32
-LDU 32
-LDU 32
-LDU 256
 ;; load next cell
 LDREF
 ENDS
@@ -5294,6 +5260,9 @@ LDDICT
 ROTREV
 PAIR
 SWAP
+LDU 32
+LDU 32
+LDU 32
 LDU 256
 LDDICT
 ;; load next cell
@@ -5306,8 +5275,19 @@ ROTREV
 PAIR
 SWAP
 LDU 256
+LDDICT
+LDU 32
+LDDICT
+ROTREV
+PAIR
+SWAP
+LDU 256
 LDREF
 ENDS
+PUSHINT 39
+SETGLOBVAR
+PUSHINT 38
+SETGLOBVAR
 PUSHINT 37
 SETGLOBVAR
 PUSHINT 36
@@ -5397,17 +5377,17 @@ PUSHCONT {
 	ENDS
 	CTOS
 	LDMSGADDR
+	;; load next cell
+	LDREF
+	ENDS
+	CTOS
+	LDMSGADDR
 	LDREF
 	;; load next cell
 	LDREF
 	ENDS
 	CTOS
 	LDMSGADDR
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
 	LDU 256
 	;; load next cell
 	LDREF
@@ -5436,10 +5416,6 @@ PUSHCONT {
 	ROTREV
 	PAIR
 	SWAP
-	LDU 32
-	LDU 32
-	LDU 32
-	LDU 256
 	;; load next cell
 	LDREF
 	ENDS
@@ -5450,6 +5426,9 @@ PUSHCONT {
 	ROTREV
 	PAIR
 	SWAP
+	LDU 32
+	LDU 32
+	LDU 32
 	LDU 256
 	LDDICT
 	;; load next cell
@@ -5462,8 +5441,19 @@ PUSHCONT {
 	PAIR
 	SWAP
 	LDU 256
+	LDDICT
+	LDU 32
+	LDDICT
+	ROTREV
+	PAIR
+	SWAP
+	LDU 256
 	LDREF
 	ENDS
+	PUSHINT 39
+	SETGLOBVAR
+	PUSHINT 38
+	SETGLOBVAR
 	PUSHINT 37
 	SETGLOBVAR
 	PUSHINT 36
@@ -5525,12 +5515,12 @@ PUSHCONT {
 	; init m_participant
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	SETGLOB 15
+	; init choosenDADaddress
+	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
+	SETGLOB 16
 	; init m_icon
 	PUSHREF {
 	}
-	SETGLOB 16
-	; init choosenDADaddress
-	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
 	SETGLOB 17
 	; init m_ATdebotAddress
 	PUSHSLICE x8000000000000000000000000000000000000000000000000000000000000000001_
@@ -5565,49 +5555,59 @@ PUSHCONT {
 	NEWDICT
 	PAIR
 	SETGLOB 26
+	; init candidateD
+	NEWDICT
+	SETGLOB 27
+	; init candidateKeysD
+	PUSHINT 0
+	NEWDICT
+	PAIR
+	SETGLOB 28
 	; init toundDistrictsID
 	PUSHINT 0
-	SETGLOB 27
+	SETGLOB 29
 	; init toundMBID
 	PUSHINT 0
-	SETGLOB 28
+	SETGLOB 30
 	; init toundVPID
 	PUSHINT 0
-	SETGLOB 29
+	SETGLOB 31
 	; init curDistrIndexD
 	PUSHINT 0
-	SETGLOB 30
+	PUSHINT 32
+	SETGLOBVAR
 	; init MBforstruct
 	NEWDICT
-	SETGLOB 31
+	PUSHINT 33
+	SETGLOBVAR
 	; init MBarr
 	PUSHINT 0
 	NEWDICT
 	PAIR
-	PUSHINT 32
+	PUSHINT 34
 	SETGLOBVAR
 	; init curMBIndexD
 	PUSHINT 0
-	PUSHINT 33
+	PUSHINT 35
 	SETGLOBVAR
 	; init votpoolsMAP
 	NEWDICT
-	PUSHINT 34
+	PUSHINT 36
 	SETGLOBVAR
 	; init VParray
 	PUSHINT 0
 	NEWDICT
 	PAIR
-	PUSHINT 35
+	PUSHINT 37
 	SETGLOBVAR
 	; init curVPIndexD
 	PUSHINT 0
-	PUSHINT 36
+	PUSHINT 38
 	SETGLOBVAR
 	; init VCname
 	PUSHREF {
 	}
-	PUSHINT 37
+	PUSHINT 39
 	SETGLOBVAR
 	; set contract pubkey
 	PUSHINT 0
@@ -5626,14 +5626,6 @@ SETGLOB 8
 	;; init state var: GRAMS_ADD
 	PUSHINT 700000000
 	SETGLOB 14
-	;; init state var: m_participant
-	;; address.makeAddrStd()
-	PUSHSLICE x80127d4fcd60635f9a12005dc064b92166ec16867a703827440c35e723ddf607f57_
-	SETGLOB 15
-	;; init state var: choosenDADaddress
-	;; address.makeAddrStd()
-	PUSHSLICE x801474ef10733b5e8cb70706b857780db55e8795b6b99dc033625ac8412b419a673_
-	SETGLOB 17
 }
 IFELSE
 
@@ -5799,6 +5791,52 @@ GETGLOB 26
 PUSH S1
 PUSHCONT {
 	PUSHSLICE xc0000000000000000000000000a8215cf0
+	NEWC
+	STSLICE
+	SWAP
+	UNPAIR
+	XCHG s2
+	STU 32
+	STDICT
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+TRUE
+SETGLOB 7
+
+.macro candidateD
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 27
+PUSH S1
+PUSHCONT {
+	PUSHSLICE xc000000000000000000000000087d63bd7
+	NEWC
+	STSLICE
+	STDICT
+	ENDC
+	PUSHINT 0
+	SENDRAWMSG
+}
+IF
+TRUE
+SETGLOB 7
+
+.macro candidateKeysD
+DROP
+ENDS
+CALLREF {
+	CALL $c4_to_c7$
+}
+GETGLOB 28
+PUSH S1
+PUSHCONT {
+	PUSHSLICE xc0000000000000000000000000af9b4d37
 	NEWC
 	STSLICE
 	SWAP
@@ -6014,7 +6052,7 @@ BLKDROP 3
 
 .macro public_function_selector
 DUP
-PUSHINT 467924219
+PUSHINT 254412816
 LEQ
 IFJMPREF {
 	DUP
@@ -6069,7 +6107,7 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 133706552
+	PUSHINT 131480535
 	LEQ
 	IFJMPREF {
 		DUP
@@ -6091,16 +6129,22 @@ IFJMPREF {
 			CALL $SCfetchDistricts$
 		}
 		DUP
+		PUSHINT 131480535
+		EQUAL
+		IFJMPREF {
+			CALL $candidateD$
+		}
+	}
+	DUP
+	PUSHINT 254412816
+	LEQ
+	IFJMPREF {
+		DUP
 		PUSHINT 133706552
 		EQUAL
 		IFJMPREF {
 			CALL $startFetch$
 		}
-	}
-	DUP
-	PUSHINT 467924219
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 175867838
 		EQUAL
@@ -6114,10 +6158,32 @@ IFJMPREF {
 			CALL $onAddCandidateName$
 		}
 		DUP
+		PUSHINT 254412816
+		EQUAL
+		IFJMPREF {
+			CALL $getCData$
+		}
+	}
+}
+DUP
+PUSHINT 1078384788
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 576001571
+	LEQ
+	IFJMPREF {
+		DUP
 		PUSHINT 258836457
 		EQUAL
 		IFJMPREF {
 			CALL $setIcon$
+		}
+		DUP
+		PUSHINT 407002522
+		EQUAL
+		IFJMPREF {
+			CALL $fetchCD$
 		}
 		DUP
 		PUSHINT 467924219
@@ -6125,12 +6191,13 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $votingPoolD$
 		}
+		DUP
+		PUSHINT 576001571
+		EQUAL
+		IFJMPREF {
+			CALL $SCfetchCD$
+		}
 	}
-}
-DUP
-PUSHINT 1482960138
-LEQ
-IFJMPREF {
 	DUP
 	PUSHINT 760093089
 	LEQ
@@ -6161,9 +6228,15 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 923851209
+	PUSHINT 918258313
 	LEQ
 	IFJMPREF {
+		DUP
+		PUSHINT 798706999
+		EQUAL
+		IFJMPREF {
+			CALL $candidateKeysD$
+		}
 		DUP
 		PUSHINT 819461398
 		EQUAL
@@ -6177,6 +6250,17 @@ IFJMPREF {
 			CALL $SCgetVPData$
 		}
 		DUP
+		PUSHINT 918258313
+		EQUAL
+		IFJMPREF {
+			CALL $SCcall$
+		}
+	}
+	DUP
+	PUSHINT 1078384788
+	LEQ
+	IFJMPREF {
+		DUP
 		PUSHINT 923352339
 		EQUAL
 		IFJMPREF {
@@ -6188,11 +6272,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $startGlobal$
 		}
-	}
-	DUP
-	PUSHINT 1201659168
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1052559760
 		EQUAL
@@ -6205,6 +6284,16 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $SCchooseDistrict$
 		}
+	}
+}
+DUP
+PUSHINT 1882603493
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1388940621
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1184379414
 		EQUAL
@@ -6217,11 +6306,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $onAddDistrictSetName$
 		}
-	}
-	DUP
-	PUSHINT 1482960138
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1278822425
 		EQUAL
@@ -6234,6 +6318,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $setVCname$
 		}
+	}
+	DUP
+	PUSHINT 1525861414
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1450866814
 		EQUAL
@@ -6246,16 +6335,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $getRequiredInterfaces$
 		}
-	}
-}
-DUP
-PUSHINT 2112671963
-LEQ
-IFJMPREF {
-	DUP
-	PUSHINT 1620080949
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1510020160
 		EQUAL
@@ -6268,6 +6347,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $setTouchedVP$
 		}
+	}
+	DUP
+	PUSHINT 1711445358
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1568115769
 		EQUAL
@@ -6280,11 +6364,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $setTouchedMB$
 		}
-	}
-	DUP
-	PUSHINT 1814879214
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1699315533
 		EQUAL
@@ -6297,6 +6376,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $fetchDistricts$
 		}
+	}
+	DUP
+	PUSHINT 1882603493
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1756716863
 		EQUAL
@@ -6309,11 +6393,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $SCfetchVP$
 		}
-	}
-	DUP
-	PUSHINT 1955044948
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1881704472
 		EQUAL
@@ -6326,6 +6405,16 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $MBD$
 		}
+	}
+}
+DUP
+PUSHINT 2135267024
+LEQ
+IFJMPREF {
+	DUP
+	PUSHINT 1984114363
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1929308858
 		EQUAL
@@ -6338,11 +6427,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $devshow$
 		}
-	}
-	DUP
-	PUSHINT 2112671963
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1960582215
 		EQUAL
@@ -6355,6 +6439,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $fetchMB$
 		}
+	}
+	DUP
+	PUSHINT 2135267024
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 2079741131
 		EQUAL
@@ -6366,6 +6455,12 @@ IFJMPREF {
 		EQUAL
 		IFJMPREF {
 			CALL $getDebotOptions$
+		}
+		DUP
+		PUSHINT 2135267024
+		EQUAL
+		IFJMPREF {
+			CALL $SCgetCData$
 		}
 	}
 }

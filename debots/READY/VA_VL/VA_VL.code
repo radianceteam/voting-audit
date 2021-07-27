@@ -116,24 +116,6 @@ GETGLOB 9
 ; colValue
 SETGLOB 14
 ; end colValue
-PUSHINT 0
-NIL
-NEWC
-PUSHSLICE x6d5f56416465626f744143544d6d656e75416464726573733a
-CALLREF {
-	CALL $storeStringInBuilders_macro$
-}
-;; push identifier m_VAdebotACTMmenuAddress
-GETGLOB 14
-CALLREF {
-	CALL $convertAddressToHexString_macro$
-}
-CALLREF {
-	CALL $assembleList_macro$
-}
-CALLREF {
-	CALL $Terminal_no_obj_print_macro$
-}
 CALLREF {
 	CALL $start_internal_macro$
 }
@@ -195,6 +177,13 @@ CALL $start_internal_macro$
 
 .macro start_internal_macro
 ; function start
+PUSHINT 0
+PUSHREF {
+	.blob x4665746368696e6720646174612e2e2e
+}
+CALLREF {
+	CALL $Terminal_no_obj_print_macro$
+}
 NULL
 ;; decl: pubkey
 ;; Remote call IDeAuditRoot.voteKeys
@@ -302,6 +291,13 @@ PUSHCONT {
 WHILE
 DROP
 ; end for
+PUSHINT 0
+PUSHREF {
+	.blob x53756363657373
+}
+CALLREF {
+	CALL $Terminal_no_obj_print_macro$
+}
 CALLREF {
 	CALL $votingListMenu_internal_macro$
 }
@@ -787,15 +783,15 @@ CALL $votingListMenu_internal_macro$
 .macro votingListMenu_internal_macro
 ; function votingListMenu
 PUSHREF {
-	.blob x43686f6f736520766f74696e672074797065
+	.blob x566f74696e67206c697374206d656e753a
 }
 PUSHREF {
 	.blob x
 }
-PUSHINT 6
+PUSHINT 5
 NEWDICT
 PUSHREF {
-	.blob x66657463682064617461
+	.blob x526566726573682064617461
 }
 PUSHREF {
 	.blob x
@@ -815,27 +811,7 @@ ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x44455620736574204154206465626f742061646472657373
-}
-PUSHREF {
-	.blob x
-}
-PUSHINT 1496812763
-TUPLE 3
-CALLREF {
-	UNTUPLE 3
-	XCHG s2
-	NEWC
-	STREF
-	STREF
-	STU 32
-}
-PUSHINT 1
-ROT
-PUSHINT 32
-DICTUSETB
-PUSHREF {
-	.blob x6465762073686f7720616c6c2064617461
+	.blob x446973706c61792064617461
 }
 PUSHREF {
 	.blob x
@@ -850,12 +826,12 @@ CALLREF {
 	STREF
 	STU 32
 }
-PUSHINT 2
+PUSHINT 1
 ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x73686f7720616c6c20766f74696e6773
+	.blob x446973706c617920616c6c20766f74696e6773
 }
 PUSHREF {
 	.blob x
@@ -870,12 +846,12 @@ CALLREF {
 	STREF
 	STU 32
 }
-PUSHINT 3
+PUSHINT 2
 ROT
 PUSHINT 32
 DICTUSETB
 PUSHREF {
-	.blob x72657475726e20746f2070726576696f7573206d656e75
+	.blob x52657475726e20746f2070726576696f7573206d656e75
 }
 PUSHREF {
 	.blob x
@@ -890,7 +866,7 @@ CALLREF {
 	STREF
 	STU 32
 }
-PUSHINT 4
+PUSHINT 3
 ROT
 PUSHINT 32
 DICTUSETB
@@ -910,7 +886,7 @@ CALLREF {
 	STREF
 	STU 32
 }
-PUSHINT 5
+PUSHINT 4
 ROT
 PUSHINT 32
 DICTUSETB
@@ -1120,9 +1096,7 @@ PUSHCONT {
 	;; end if
 	NIL
 	NEWC
-	PUSHREFSLICE {
-		.blob x3d3d3d3d3d3d0a566f74696e6720666f72207468697320616464726573733a20
-	}
+	PUSHSLICE x202d20566f74696e6720666f7220616464726573733a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1131,7 +1105,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $convertAddressToHexString_macro$
 	}
-	PUSHSLICE x202d2d2d2d20737461747573203a
+	PUSHSLICE x20737461747573203a
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1141,7 +1115,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
-	PUSHSLICE x0a206375724b3a20
+	PUSHSLICE x20206375724b3a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1153,19 +1127,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $convertIntToDecStr_macro$
 	}
-	PUSHSLICE x0a766f74696e6749443a20
-	CALLREF {
-		CALL $storeStringInBuilders_macro$
-	}
-	;; push identifier votingID
-	GETGLOB 22
-	PUSHINT 0
-	FALSE
-	FALSE
-	CALLREF {
-		CALL $convertIntToDecStr_macro$
-	}
-	PUSHSLICE x0a696e69746961746f723a
+	PUSHSLICE x20696e69746961746f7220616464726573733a
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1176,7 +1138,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $convertAddressToHexString_macro$
 	}
-	PUSHSLICE x0a737461727454696d653a20
+	PUSHSLICE x20737461727454696d653a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1190,7 +1152,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $convertIntToDecStr_macro$
 	}
-	PUSHSLICE x0a6475726174696f6e3a20
+	PUSHSLICE x206475726174696f6e3a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1204,7 +1166,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $convertIntToDecStr_macro$
 	}
-	PUSHSLICE x0a796573436f756e743a20
+	PUSHSLICE x20796573436f756e743a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1218,7 +1180,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $convertIntToDecStr_macro$
 	}
-	PUSHSLICE x0a6e6f436f756e743a20
+	PUSHSLICE x206e6f436f756e743a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1232,7 +1194,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $convertIntToDecStr_macro$
 	}
-	PUSHSLICE x0a20616374696f6e547970653a
+	PUSHSLICE x20616374696f6e547970653a
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1245,6 +1207,10 @@ PUSHCONT {
 	FALSE
 	CALLREF {
 		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x202d200a
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
 	}
 	CALLREF {
 		CALL $assembleList_macro$
@@ -1296,7 +1262,7 @@ DROP
 DUP
 ; end expValue
 PUSHREF {
-	.blob x4261636b20746f20766f74696e67206c697374206d656e7520616464
+	.blob x4261636b20746f20766f74696e67206c697374206d656e75
 }
 PUSHREF {
 	.blob x
@@ -1325,7 +1291,7 @@ PAIR
 NIP
 ; end colValue
 PUSHREF {
-	.blob x43686f6f736520766f74696e673a
+	.blob x43686f6f736520766f74696e67206f72206261636b20746f206d656e753a
 }
 PUSHREF {
 	.blob x
@@ -1494,7 +1460,7 @@ INDEX 8
 PUSHCONT {
 	PUSHINT 0
 	PUSHREF {
-		.blob x2f6e2f6e2a2a2a5468697320566f74696e6720636f6d706c657465642c2063686f6f736520616e6f74686572206f6e652a2a2a2f6e2f6e
+		.blob x202d204572726f723a207468697320566f74696e6720636f6d706c657465642c2063686f6f736520616e6f74686572206f6e65202d200a
 	}
 	CALLREF {
 		CALL $Terminal_no_obj_print_macro$
@@ -1509,7 +1475,7 @@ PUSHCONT {
 	DUP
 	; end expValue
 	PUSHREF {
-		.blob x766f746520666f72
+		.blob x566f746520666f72
 	}
 	PUSHREF {
 		.blob x
@@ -1541,7 +1507,7 @@ PUSHCONT {
 	DUP
 	; end expValue
 	PUSHREF {
-		.blob x766f746520616761696e7374
+		.blob x566f746520616761696e7374
 	}
 	PUSHREF {
 		.blob x
@@ -1573,7 +1539,7 @@ PUSHCONT {
 	DUP
 	; end expValue
 	PUSHREF {
-		.blob x726573756c7420766f7465
+		.blob x526573756c7420766f746573
 	}
 	PUSHREF {
 		.blob x
@@ -1612,7 +1578,7 @@ PUSHCONT {
 		DUP
 		; end expValue
 		PUSHREF {
-			.blob x73686f77206465617564697444617461
+			.blob x446973706c617920446541756469742044617461
 		}
 		PUSHREF {
 			.blob x
@@ -1647,7 +1613,7 @@ PUSHCONT {
 	DUP
 	; end expValue
 	PUSHREF {
-		.blob x72657475726e20746f20766f74696e67206c697374206d656e75
+		.blob x4261636b20746f20766f74696e67206c697374206d656e75
 	}
 	PUSHREF {
 		.blob x
@@ -1709,7 +1675,7 @@ PUSHCONT {
 	; end colValue
 	NIL
 	NEWC
-	PUSHSLICE x696e69746961746f723a20
+	PUSHSLICE x202d20496e69746961746f723a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1720,7 +1686,7 @@ PUSHCONT {
 	CALLREF {
 		CALL $convertAddressToHexString_macro$
 	}
-	PUSHSLICE x20766f74696e672069643a20
+	PUSHSLICE x20566f74696e672069643a20
 	CALLREF {
 		CALL $storeStringInBuilders_macro$
 	}
@@ -1731,6 +1697,10 @@ PUSHCONT {
 	FALSE
 	CALLREF {
 		CALL $convertIntToDecStr_macro$
+	}
+	PUSHSLICE x202d200a
+	CALLREF {
+		CALL $storeStringInBuilders_macro$
 	}
 	CALLREF {
 		CALL $assembleList_macro$
@@ -1752,89 +1722,6 @@ IFELSE
 ;; end if
 ; end function toungAllV
 BLKDROP 3
-
-.macro setATaddress
-DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-LDU 32
-ENDS
-;; param: index
-CALLREF {
-	CALL $setATaddress_internal_macro$
-}
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.globl	setATaddress_internal
-.type	setATaddress_internal, @function
-CALL $setATaddress_internal_macro$
-
-.macro setATaddress_internal_macro
-;; param: index
-; function setATaddress
-PUSHINT 1377733005
-PUSHREF {
-	.blob x64657620736574206174206465622061646464726573733a20
-}
-CALLREF {
-	CALL $AddressInput_no_obj_get_macro$
-}
-; end function setATaddress
-DROP
-
-.macro onsetEditDebaddress
-DROP
-GETGLOB 8
-ISNULL
-IFREF {
-	CALL $c4_to_c7$
-}
-LDMSGADDRQ
-PUSHCONT {
-	;; load next cell
-	LDREF
-	ENDS
-	CTOS
-	LDMSGADDR
-}
-IFNOT
-ENDS
-;; param: value
-CALLREF {
-	CALL $onsetEditDebaddress_internal_macro$
-}
-CALLREF {
-	CALL $c7_to_c4$
-}
-TRUE
-SETGLOB 7
-
-.globl	onsetEditDebaddress_internal
-.type	onsetEditDebaddress_internal, @function
-CALL $onsetEditDebaddress_internal_macro$
-
-.macro onsetEditDebaddress_internal_macro
-;; param: value
-; function onsetEditDebaddress
-; expValue
-; end expValue
-;; push identifier value
-DUP
-; colValue
-SETGLOB 14
-; end colValue
-CALLREF {
-	CALL $votingListMenu_internal_macro$
-}
-; end function onsetEditDebaddress
-DROP
 
 .macro goToACTMdebot
 DROP
@@ -2504,7 +2391,7 @@ NULL
 ;; Remote call IParticipant.voteFor
 ;; push identifier m_participant
 GETGLOB 18
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -2537,7 +2424,7 @@ NOW
 STUR 64
 PUSHINT 291
 STUR 32
-STSLICECONST x31a3061b
+STSLICECONST x6c90b229
 ROTREV
 NEWC
 STU 256
@@ -2584,7 +2471,7 @@ NULL
 ;; Remote call IParticipant.voteAgainst
 ;; push identifier m_participant
 GETGLOB 18
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -2617,7 +2504,7 @@ NOW
 STUR 64
 PUSHINT 291
 STUR 32
-STSLICECONST x0dbfd1e7
+STSLICECONST x17fecdde
 ROTREV
 NEWC
 STU 256
@@ -2664,7 +2551,7 @@ NULL
 ;; Remote call IParticipant.resultVote
 ;; push identifier m_participant
 GETGLOB 18
-PUSHSLICE x92600000000234c190b0174_
+PUSHSLICE x9261b5dc144a34c190b0174_
 NEWC
 STSLICE
 STSLICE
@@ -2697,7 +2584,7 @@ NOW
 STUR 64
 PUSHINT 291
 STUR 32
-STSLICECONST x53787bbf
+STSLICECONST x77825084
 ROTREV
 NEWC
 STU 256
@@ -2712,6 +2599,65 @@ CALLREF {
 }
 ; end function resultVote
 DROP2
+
+.macro SCcall
+DROP
+GETGLOB 8
+ISNULL
+IFREF {
+	CALL $c4_to_c7$
+}
+LDU 8
+ENDS
+;; param: status
+CALLREF {
+	CALL $SCcall_internal_macro$
+}
+CALLREF {
+	CALL $c7_to_c4$
+}
+TRUE
+SETGLOB 7
+
+.globl	SCcall_internal
+.type	SCcall_internal, @function
+CALL $SCcall_internal_macro$
+
+.macro SCcall_internal_macro
+;; param: status
+; function SCcall
+;; if
+;; push identifier status
+DUP
+EQINT 1
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x537563636573732c20796f7572206d6573736167652073656e64656420746f20626c6f636b636861696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $start_internal_macro$
+	}
+}
+PUSHCONT {
+	PUSHINT 0
+	PUSHREF {
+		.blob x4572726f722c2074727920616761696e
+	}
+	CALLREF {
+		CALL $Terminal_no_obj_print_macro$
+	}
+	CALLREF {
+		CALL $start_internal_macro$
+	}
+}
+IFELSE
+;; end if
+; end function SCcall
+DROP
 
 .macro someError
 DROP
@@ -3553,10 +3499,6 @@ SETGLOB 8
 	;; address.makeAddrStd()
 	PUSHSLICE x801d652a83bbdf7c1a4ec85a063850636feae72a5e74005f6b6752611ee6c5844b9_
 	SETGLOB 17
-	;; init state var: m_participant
-	;; address.makeAddrStd()
-	PUSHSLICE x8009b0e448ff86fdb6beb3bbc2f3e78d314d645cb1593bdf9744f0301804d0894f7_
-	SETGLOB 18
 }
 IFELSE
 
@@ -3648,64 +3590,6 @@ CALLREF {
 GETGLOB 7
 ISNULL
 THROWIF 60
-
-.globl	AddressInput_with_obj_get
-.type	AddressInput_with_obj_get, @function
-CALL $AddressInput_with_obj_get_macro$
-
-.macro AddressInput_with_obj_get_macro
-;; param: answerId
-;; param: prompt
-; function get
-;; address.makeAddrStd()
-PUSHSLICE x9c3afda37b1cc4610e222de8a45cb1be15278aa418ade95bc47de7b12335308ca77_
-;; decl: addr
-;; Remote call IAddressInput.get
-;; push identifier prompt
-;; push identifier answerId
-;; push identifier addr
-PUSH3 S1, S2, S0
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000421b400b_
-STSLICER
-STU 32
-STREF
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function get
-DROP2
-
-.globl	AddressInput_no_obj_get
-.type	AddressInput_no_obj_get, @function
-CALL $AddressInput_no_obj_get_macro$
-
-.macro AddressInput_no_obj_get_macro
-;; param: answerId
-;; param: prompt
-; function get
-;; address.makeAddrStd()
-PUSHSLICE x9c3afda37b1cc4610e222de8a45cb1be15278aa418ade95bc47de7b12335308ca77_
-;; decl: addr
-;; Remote call IAddressInput.get
-;; push identifier prompt
-;; push identifier answerId
-;; push identifier addr
-PUSH3 S1, S2, S0
-NEWC
-STSLICECONST x62_
-STSLICE
-PUSHSLICE x3989680000000000000000000000000000421b400b_
-STSLICER
-STU 32
-STREF
-ENDC
-PUSHINT 0
-SENDRAWMSG
-; end function get
-BLKDROP 3
 
 .globl	Menu_with_obj_select
 .type	Menu_with_obj_select, @function
@@ -3841,7 +3725,7 @@ BLKDROP 3
 
 .macro public_function_selector
 DUP
-PUSHINT 1142181388
+PUSHINT 1138950279
 LEQ
 IFJMPREF {
 	DUP
@@ -3902,7 +3786,7 @@ IFJMPREF {
 		}
 	}
 	DUP
-	PUSHINT 1066399817
+	PUSHINT 963856191
 	LEQ
 	IFJMPREF {
 		DUP
@@ -3910,6 +3794,12 @@ IFJMPREF {
 		EQUAL
 		IFJMPREF {
 			CALL $preInd$
+		}
+		DUP
+		PUSHINT 918258313
+		EQUAL
+		IFJMPREF {
+			CALL $SCcall$
 		}
 		DUP
 		PUSHINT 925933973
@@ -3923,17 +3813,17 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $votingListMenu$
 		}
+	}
+	DUP
+	PUSHINT 1138950279
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1066399817
 		EQUAL
 		IFJMPREF {
 			CALL $showallV$
 		}
-	}
-	DUP
-	PUSHINT 1142181388
-	LEQ
-	IFJMPREF {
 		DUP
 		PUSHINT 1087701879
 		EQUAL
@@ -3952,12 +3842,6 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $premenu$
 		}
-		DUP
-		PUSHINT 1142181388
-		EQUAL
-		IFJMPREF {
-			CALL $votingListMenu_getVoteStuct$
-		}
 	}
 }
 DUP
@@ -3965,20 +3849,20 @@ PUSHINT 2112671963
 LEQ
 IFJMPREF {
 	DUP
-	PUSHINT 1496812763
+	PUSHINT 1535461694
 	LEQ
 	IFJMPREF {
+		DUP
+		PUSHINT 1142181388
+		EQUAL
+		IFJMPREF {
+			CALL $votingListMenu_getVoteStuct$
+		}
 		DUP
 		PUSHINT 1184379414
 		EQUAL
 		IFJMPREF {
 			CALL $someError$
-		}
-		DUP
-		PUSHINT 1377733005
-		EQUAL
-		IFJMPREF {
-			CALL $onsetEditDebaddress$
 		}
 		DUP
 		PUSHINT 1482960138
@@ -3987,22 +3871,16 @@ IFJMPREF {
 			CALL $getRequiredInterfaces$
 		}
 		DUP
-		PUSHINT 1496812763
-		EQUAL
-		IFJMPREF {
-			CALL $setATaddress$
-		}
-	}
-	DUP
-	PUSHINT 2032787862
-	LEQ
-	IFJMPREF {
-		DUP
 		PUSHINT 1535461694
 		EQUAL
 		IFJMPREF {
 			CALL $resultVote$
 		}
+	}
+	DUP
+	PUSHINT 2112671963
+	LEQ
+	IFJMPREF {
 		DUP
 		PUSHINT 1568115769
 		EQUAL
@@ -4021,11 +3899,11 @@ IFJMPREF {
 		IFJMPREF {
 			CALL $prestart$
 		}
-	}
-	DUP
-	PUSHINT 2112671963
-	EQUAL
-	IFJMPREF {
-		CALL $getDebotOptions$
+		DUP
+		PUSHINT 2112671963
+		EQUAL
+		IFJMPREF {
+			CALL $getDebotOptions$
+		}
 	}
 }

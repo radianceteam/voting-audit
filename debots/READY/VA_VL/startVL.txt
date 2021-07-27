@@ -19,7 +19,7 @@ tonos-cli --url https://gql.custler.net debot fetch 0:fd60032e79d0fe7cf02a07b27e
 
 
 
-tonos-cli --url https://gql.custler.net account 0:56823437d1458da6f96d183010d4ce5849c5d40a72ddbaf50b5a8deb6178325a
+tonos-cli --url https://gql.custler.net account 0:c4d6d61a204478b7ce6d74ab667abe67ffb5abb61201a77130737505da8bc4d2
 
 
 tondev js wrap VA_VL.abi.json -o VA_VL.js

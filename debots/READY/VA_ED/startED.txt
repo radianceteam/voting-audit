@@ -3,7 +3,7 @@ tvm_linker compile VA_ED.code --lib ../../../../../TVM/TON-Solidity-Compiler/lib
 tonos-cli genaddr VA_ED.tvc VA_ED.abi.json --genkey VA_ED.keys.json
 
 
-0:ef8ef10047277c33b3c4d51dc9f338f11a3aab096f57cbcfb0fe8eb95943c833
+0:f4d599a0cbe9f7d24f4e596f2fb0c395428652f42c213d831e14df3d3c613cec
 
 
 debot_abi=$(cat VA_ED.abi.json | xxd -ps -c 20000)
@@ -12,12 +12,12 @@ tonos-cli --url https://gql.custler.net deploy VA_ED.tvc {} --sign VA_ED.keys.js
 
 
 
-tonos-cli --url https://gql.custler.net call 0:ef8ef10047277c33b3c4d51dc9f338f11a3aab096f57cbcfb0fe8eb95943c833 setABI "{\"dabi\":\"$debot_abi\"}" --sign VA_ED.keys.json --abi VA_ED.abi.json
+tonos-cli --url https://gql.custler.net call 0:f4d599a0cbe9f7d24f4e596f2fb0c395428652f42c213d831e14df3d3c613cec setABI "{\"dabi\":\"$debot_abi\"}" --sign VA_ED.keys.json --abi VA_ED.abi.json
 
-tonos-cli --url https://gql.custler.net debot fetch 0:ef8ef10047277c33b3c4d51dc9f338f11a3aab096f57cbcfb0fe8eb95943c833
+tonos-cli --url https://gql.custler.net debot fetch 0:f4d599a0cbe9f7d24f4e596f2fb0c395428652f42c213d831e14df3d3c613cec
 
 
-tonos-cli --url https://gql.custler.net account 0:ef8ef10047277c33b3c4d51dc9f338f11a3aab096f57cbcfb0fe8eb95943c833
+tonos-cli --url https://gql.custler.net account 0:f4d599a0cbe9f7d24f4e596f2fb0c395428652f42c213d831e14df3d3c613cec
 
 
 tondev js wrap VA_ED.abi.json -o VA_ED.js
