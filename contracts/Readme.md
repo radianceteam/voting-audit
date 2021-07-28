@@ -223,19 +223,42 @@ functionality:
 
 functionality:
 
+* Receive TONs from Participant.sol, check that participant is this DeAuditData.sol creator and add candidate to `mapping (uint256 => Candidate) public candidate`. Returns change
+
 `function addCandidate(bytes nameCandidate) public override onlyInitiatorBeforeLaunch `
+
+* Receive TONs from Participant.sol, check that participant is this DeAuditData.sol creator and add district to `mapping (uint256 => District) public district;`. Returns change
 
 `function addDistrict(bytes nameDistrict) public override onlyInitiatorBeforeLaunch`
 
+* Receive TONs from Participant.sol,, check that `msg.sender` == `address initiator` Add/NotAdd new municipal body to `mapping (uint256 => MunicipalBody) public municipalBody;`. Returns change
+
 `function addMunicipalBody(bytes nameMunicipalBody, uint256 indexDistrict) public override onlyInitiatorBeforeLaunch `
+
+* Receive TONs from Participant.sol, check that `msg.sender` == `address initiator` Add/NotAdd new voting pool to `mapping (uint256 => MunicipalBody) public votingPool;`. Returns change
 
 `function addVotingPool(bytes nameVotingPool, uint256 indexDistrict, uint256 indexMunicipalBody) public override onlyInitiatorBeforeLaunch`
 
+* Receive TONs from Participant.sol, check that `msg.sender` == `address initiator` Add/NotAdd new voting center to `mapping (uint256 => VotingPool) public votingCenter`. Returns change
+
 `function addVotingCenter(bytes nameVotingCenter, bytes location, uint256 indexDistrict, uint256 indexMunicipalBody, uint256 indexVotingPool) public override onlyInitiatorBeforeLaunch `
+
+* Receive TONs from Participant.sol, check that `msg.sender` == `address launchedDeAudit` , deploy new Act4.sol with income params from collator
 
 `function setCollation(address collator, uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix, uint8 vcms) public override onlyDeAudit`
 
+* Receive TONs from Participant.sol, check that `msg.sender` == `address launchedDeAudit` , then repeate `qtyValidations` times proccess:
+
+      1) tvm.randomizer give number((0 ... queueAct.length) + 1) of shifts from current label to next in queue Act4 waiting vakidators
+      2) then do this and if next is after max go to min
+      3) check if destination Act4 have place for new validator and this validator is fist for this Act4 assign this validator to this Act4.sol
+      4) result complete array of Act4.sol
+      5) send set msg to Act4.sol about new validators
+      6) send set msg to Participant.sol with array of Act4 for validation work
+
 `function setValidationForParticipant(address participantAddr, uint128 qtyValidations) public onlyDeAudit `
+
+
 
 `function receivePositivResultFromAct4(uint256[] voteMatrix, address[] validatorsFBT, address gasPayeerAddr) public onlyAct4`
 
