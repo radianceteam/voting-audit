@@ -115,13 +115,13 @@ functionality:
   - `publishPhotoLink` photoLink
   - `publishDataLink` dataLink
 
-* Send TONs to DeAuditRoot.sol and Init voting.for Add/Remove Action Team Member. Only by Action Team Member
+* Send TONs to DeAuditRoot.sol and Init voting for Add/Remove Action Team Member. Only by Action Team Member
 
 `function initVoteAddActionTeamMember(address participantAddr, uint128 grams)  public checkOwnerAndAccept`
 
 `function initVoteRemoveActionTeamMember(address participantAddr, uint128 grams) public checkOwnerAndAccept`
 
-* Send TONs to DeAuditRoot.sol and for deploy DeAuditData.sol. Only by Action Team Member
+* Send TONs to DeAuditRoot.sol for deploy DeAuditData.sol. Only by Action Team Member
 
 `function createDeAuditData(
   bytes nameDeAuditData,
