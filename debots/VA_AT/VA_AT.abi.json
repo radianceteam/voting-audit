@@ -1,0 +1,437 @@
+{
+	"ABI version": 2,
+	"header": ["pubkey", "time", "expire"],
+	"functions": [
+		{
+			"name": "setIcon",
+			"inputs": [
+				{"name":"icon","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "preStartForCore",
+			"inputs": [
+				{"name":"partic","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "preStart",
+			"inputs": [
+				{"name":"partic","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "pstart",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "start",
+			"id": "0x1",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "fetchDA",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCfetchDA",
+			"inputs": [
+				{"name":"keysDeAudit","type":"address[]"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDAdata",
+			"inputs": [
+				{"name":"curDA","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCgetDAdata",
+			"inputs": [
+				{"name":"sequentialNumber4Debot","type":"uint32"},
+				{"name":"name4Debot","type":"bytes"},
+				{"name":"rootDeAudit4Debot","type":"address"},
+				{"name":"dataDeAudit4Debot","type":"address"},
+				{"name":"tokenDeAudit4Debot","type":"address"},
+				{"name":"timeStart4Debot","type":"uint256"},
+				{"name":"colPeriod4Debot","type":"uint256"},
+				{"name":"valPeriod4Debot","type":"uint256"},
+				{"name":"colStake4Debot","type":"uint128"},
+				{"name":"valStake4Debot","type":"uint128"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "fetchDAD",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCfetchDAD",
+			"inputs": [
+				{"name":"keysDeAuditData","type":"address[]"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDADid",
+			"inputs": [
+				{"name":"curDAD","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCgetDADid",
+			"inputs": [
+				{"name":"idDeAuditData","type":"uint256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDADinitiator",
+			"inputs": [
+				{"name":"curDAD","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCgetDADinitiator",
+			"inputs": [
+				{"name":"initiator","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDADname",
+			"inputs": [
+				{"name":"curDAD","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCgetDADname",
+			"inputs": [
+				{"name":"name","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "atmenu",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onSendTrigger",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onsetDaD",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onsetVC",
+			"inputs": [
+				{"name":"value","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "onToEDdebot",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setDAD",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCsetDAD",
+			"inputs": [
+				{"name":"initiator","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "goToEDdebot",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "goToCore",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "goToVLdebot",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "initAddVoting",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "InitRemoveVoting",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "removeMember_sendMSG",
+			"inputs": [
+				{"name":"value","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "addMember_sendMSG",
+			"inputs": [
+				{"name":"value","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "enterDeAuditDataNameInput",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "enterDeAuditDataName",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "enterDeAuditStartTime",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "enterDeAuditCollationPeriod",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "enterDeAuditValidationPeriod",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "enterDeAuditCollationStake",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "enterDeAuditValueStake",
+			"inputs": [
+				{"name":"value","type":"bytes"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "callCreateDeAuditData",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "initDeauditDataMenuInput",
+			"inputs": [
+				{"name":"index","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "initDeauditData",
+			"inputs": [
+				{"name":"value","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "SCcall",
+			"inputs": [
+				{"name":"status","type":"uint8"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "someError",
+			"inputs": [
+				{"name":"sdkError","type":"uint32"},
+				{"name":"exitCode","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getDebotInfo",
+			"id": "0xDEB",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"name","type":"bytes"},
+				{"name":"version","type":"bytes"},
+				{"name":"publisher","type":"bytes"},
+				{"name":"caption","type":"bytes"},
+				{"name":"author","type":"bytes"},
+				{"name":"support","type":"address"},
+				{"name":"hello","type":"bytes"},
+				{"name":"language","type":"bytes"},
+				{"name":"dabi","type":"bytes"},
+				{"name":"icon","type":"bytes"}
+			]
+		},
+		{
+			"name": "getRequiredInterfaces",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"interfaces","type":"uint256[]"}
+			]
+		},
+		{
+			"name": "getDebotOptions",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"options","type":"uint8"},
+				{"name":"debotAbi","type":"bytes"},
+				{"name":"targetAbi","type":"bytes"},
+				{"name":"targetAddr","type":"address"}
+			]
+		},
+		{
+			"name": "setABI",
+			"inputs": [
+				{"name":"dabi","type":"bytes"},
+				{"name":"m_VotingAuditDebotVLaddressD","type":"address"},
+				{"name":"m_EditDebotD","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "keysDeAuditDataD",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"keysDeAuditDataD","type":"address[]"}
+			]
+		},
+		{
+			"name": "paramDeAuditDeAudit",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"sequentialNumber","type":"uint32"},{"name":"name","type":"bytes"},{"name":"rootDeAudit","type":"address"},{"name":"dataDeAudit","type":"address"},{"name":"tokenDeAudit","type":"address"},{"name":"timeStart","type":"uint256"},{"name":"colPeriod","type":"uint256"},{"name":"valPeriod","type":"uint256"},{"name":"colStake","type":"uint256"},{"name":"valStake","type":"uint256"}],"name":"paramDeAuditDeAudit","type":"map(address,tuple)"}
+			]
+		},
+		{
+			"name": "keysDeAuditD",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"keysDeAuditD","type":"address[]"}
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	]
+}
