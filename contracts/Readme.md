@@ -1,4 +1,4 @@
-# Post-voting-audit-core smartcontracts
+# RT Voting Audit System 1.0 core smartcontracts
 
 ## Assignment
 
@@ -243,7 +243,7 @@ functionality:
 
 `function addVotingCenter(bytes nameVotingCenter, bytes location, uint256 indexDistrict, uint256 indexMunicipalBody, uint256 indexVotingPool) public override onlyInitiatorBeforeLaunch `
 
-* Receive TONs from Participant.sol, check that `msg.sender` == `address launchedDeAudit` , deploy new Act4.sol with income params from collator
+* Receive TONs from Participant.sol, check that `msg.sender` == `address launchedDeAudit` , deploy new Act4.sol with income params from collator. Returns change
 
 `function setCollation(address collator, uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix, uint8 vcms) public override onlyDeAudit`
 
@@ -255,6 +255,7 @@ functionality:
       4) result complete array of Act4.sol
       5) send set msg to Act4.sol about new validators
       6) send set msg to Participant.sol with array of Act4 for validation work
+      7) returns change
 
 `function setValidationForParticipant(address participantAddr, uint128 qtyValidations) public onlyDeAudit `
 
@@ -266,6 +267,8 @@ functionality:
       4) accumulate this votes to district
       5) accumulate this votes to each candidate
       6) burn tokens for validators voted against
+      7) returns change
+
 
 `function receivePositivResultFromAct4(uint256[] voteMatrix, address[] validatorsFBT, address gasPayeerAddr) public onlyAct4`
 
@@ -273,6 +276,7 @@ functionality:
 
       1) burn tokens for collator
       2) burn tokens for validators voted for
+      3) returns change
 
 `function receiveNegativeResultFromAct4(address collatorFBT, address[] validatorsFBT, address gasPayeerAddr) public onlyAct4`
 
@@ -281,15 +285,30 @@ functionality:
 
 functionality:
 
+* Receive TONs from Participant.sol, check that now is after collation period start, storage stake and send msg with collation params to DeAuditData.sol
+
 `function addCollation(uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix) public override onlyCollationPeriod`
+
+* Receive returned TONs from DeAuditData.sol, deploy wallet for collator, mint tokens and send msgDats[] to Participant.sol
 
 `function collationCallback(uint8 statusCollation, address addressCollator, address[] msgData) public override onlyDeAuditData`
 
+* Receive TONs from Partisipant.sol, calculate `uint128 qtyValidations` and send msg with TONs to DeAuditData.sol
+
 `function registrationForValidation() public override onlyValidationPeriod`
+
+* Receive TONs from DeAuditData.sol and:
+      1) `address addressValidator` validator
+      2) `address[] msgData` array with address Act4.sol this validator assigned
+      3) returns change
 
 `function regForValidationCallback(address addressValidator, address[] msgData) public override onlyDeAuditData`
 
+* Receive TONs from DeAuditData.sol after negative result from Act4.sol and burn tokens for particpnts from `address[] addressParticipantArr`
+
 `function burnTokens(address[] addressParticipantArr, address gasPayeerAddress, bool statusWithraw) public override onlyDeAuditData`
+
+* Receive TONs from Participant.sol. Check that participant have stake and base on it's value send back share of DeAudit balance. Participant tokens burned
 
 `function getRewardAndStakeBack() public override onlyStakeHolder `
 
@@ -298,11 +317,17 @@ functionality:
 
 functionality:
 
+* Trigger for force result Act4 after validation period. Only Action Team Members
+
 `function trigger(address member) public override onlyDeAuditData `
+
+* Validate For/Against. Only assigned validator
 
 `function voteFor() public override onlyValidatorOnce`
 
 `function voteAgainst() public override onlyValidatorOnce `
+
+* Set validator for this Act4. Only DeAuditData
 
 `function setValidator(address participant) public override onlyDeAuditData`
 
