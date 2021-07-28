@@ -379,3 +379,96 @@ tondev js wrap TONTokenWallet.abi.json -o TONTokenWallet.js`
 /home/yaroslav/.tondev/solidity/tvm_linker decode --tvc TONTokenWallet.tvc | grep code: | cut -c 8- > TONTokenWallet.txt`
 
 * Set results to DeAuditRootCode.js
+
+* Update code for ../test-fld and ../test-ntd
+
+* cd to ../test-ntd or ../test-fld
+
+## Test
+
+* For deploy DeAuditRoot.sol
+
+`node root-deploy`
+
+* For get info from DeAuditRoot.sol
+
+`node root-get`
+
+* For predeploy 32 Participants.sol
+
+`node parts-predeploy`
+
+* For deploy 32 Participants.sol
+
+`node parts-deploy`
+
+* For init voting for add action team member
+
+`node root-at-add`
+
+* For vote for vote #1
+
+`node root-at-vote1`
+
+* For result vote #1
+
+`node root-at-result1`
+
+  at the end Partisipants.json [0] became action team member
+
+* For create DeAuditData.sol
+
+`node dad1-at-create`
+
+* For add data to DeAuditData.sol
+
+`node dad1-at-edit`
+
+* For init voting for Launch DeAudit.sol base on DeAuditData.sol
+
+`node da1-at-init`
+
+* For vote for vote #2
+
+`node root-at-vote2`
+
+* For result vote #2
+
+`node root-at-result2`
+
+* For check launched DeAudit.sol after vote #2
+
+`node da1-get`
+
+* For add 16 collation for 16 Voting centers of launched DeAudit.sol after vote #2
+
+`node da1-collate`
+
+* For see queueAct4 after 16 collations for 16 Voting centers of launched DeAudit.sol after vote #2
+
+`node da1-queueAct4`
+
+* For see collators state after 16 collations for 16 Voting centers of launched DeAudit.sol after vote #2
+
+`node da1-collators`
+
+* For registration for validations for 16 collations for 16 Voting centers of launched DeAudit.sol after vote #2
+
+`node da1-validate`
+
+* Result of assigned validations for 16 collations for 16 Voting centers of launched DeAudit.sol after vote #2
+
+`node da1-queueAct4`
+`node da1-collators`
+
+* For make validation work by validators for 16 collations for 16 Voting centers of launched DeAudit.sol after vote #2
+
+`node da1-validate1`
+
+* Result of launched DeAudit.sol after vote #2
+
+`node da1-get`
+
+* Return stake back and reward of launched DeAudit.sol after vote #2
+
+`node da1-return`

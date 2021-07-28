@@ -1,8 +1,3 @@
-# DEX-core-voting-audit
+# RT Voting Audit System 1.0 core smartcontracts
 
-## before
-
-### `git@github.com:radianceteam/voting-audit.git`
-### `cd ~/voting-audit/contracts/`
-### `npm install`
-### `cat selector > .env`
+## fld.ton.dev test scripts
