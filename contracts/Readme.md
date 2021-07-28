@@ -5,84 +5,79 @@
 Postvoting DeAudit
 
 * DeAuditRoot.sol
+
 Component functionality:
-1) Select voteCountModel Majority, SoftMajority or SuperMajority. For votings after selector set. Only by first Action Team Member
 
-`function selectMajority() public checkOwnerAndAccept {
-  voteCountModel = VOTE_COUNT_MODEL_MAJORITY;
-}`
+1) Deploy Participant.sol. By any user with some TONs and Free TON keys and seed phrase
 
-`function selectSoftMajority() public checkOwnerAndAccept {
-  voteCountModel = VOTE_COUNT_MODEL_SOFT_MAJORITY;
-}`
+before deploy need:
+- send from any wallet some amount TONs to DeAuditRoot.sol
+- set address of this wallet as your giver by: 	`function setGiver(address giverAddr) public checkPubkeyAndAccept`
 
-`function selectSuperMajority() public checkOwnerAndAccept {
-  voteCountModel = VOTE_COUNT_MODEL_SUPER_MAJORITY;
-}`
+`function deployParticipant(uint256 pubkey) public alwaysAccept`
 
-2) Set limit Validations For Collation (limitVFC). For DeAudits.sol after value set. Only by first Action Team Member
+after deploy:
+- this amount - deployFee be on deployed Participant.sol
 
-`function setLimitVFC(uint128 settingLimitVFC) public checkOwnerAndAccept {
-  limitVFC = settingLimitVFC;
-}`
+2) Select voteCountModel Majority, SoftMajority or SuperMajority. For votings after selector set. Only by first Action Team Member
 
-3) Set Participant.sol deployFee. For Participant.sol after value set. Only by first Action Team Member
+`function selectMajority() public checkOwnerAndAccept `
 
-`function setDeployFee(uint128 settingDeployFee) public checkOwnerAndAccept {
-  deployFee = settingDeployFee;
-}`
+`function selectSoftMajority() public checkOwnerAndAccept`
 
-4) Set votingDuration for Action Team votings. For voting after value set. Only by first Action Team Member
+`function selectSuperMajority() public checkOwnerAndAccept`
 
-`function setVotingDuration(uint256 settingVotingDuration) public checkOwnerAndAccept {
-  votingDuration = settingVotingDuration;
-}`
+3) Set limit Validations For Collation (limitVFC). For DeAudits.sol after value set. Only by first Action Team Member
 
-5) Set codeParticipant. For Participant.sol after code set. Only by first Action Team Member
+`function setLimitVFC(uint128 settingLimitVFC) public checkOwnerAndAccept`
 
-`function setCodePaticipant(TvmCell code) public checkOwnerAndAccept {
-     codeParticipant = code;
-    }`
+4) Set Participant.sol deployFee. For Participant.sol after value set. Only by first Action Team Member
 
-6)Set setCodeDeAuditData. For DeAuditData.sol after code set. Only by first Action Team Member
+`function setDeployFee(uint128 settingDeployFee) public checkOwnerAndAccept`
 
-`function setCodeDeAuditData(TvmCell code) public checkOwnerAndAccept {
-  codeDeAuditData = code;
-}`
+5) Set votingDuration for Action Team votings. For voting after value set. Only by first Action Team Member
 
-7)Set setCodeDeAudit. For DeAudit.sol after code set. Only by first Action Team Member
+`function setVotingDuration(uint256 settingVotingDuration) public checkOwnerAndAccept`
 
-`function setCodeDeAudit(TvmCell code) public checkOwnerAndAccept {
-  codeDeAudit = code;
-}`
+6) Set codeParticipant. For Participant.sol after code set. Only by first Action Team Member
 
-8)Set setCodeAct4. For Act4.sol from DeAuditData.sol from DeAudit.sol after code set. Only by first Action Team Member
+`function setCodePaticipant(TvmCell code) public checkOwnerAndAccept`
 
-`function setCodeAct4(TvmCell code) public checkOwnerAndAccept {
-  codeAct4 = code;
-}`
+7) Set setCodeDeAuditData. For DeAuditData.sol after code set. Only by first Action Team Member
 
-9)Set setCodeRootTokenContract. For RootTokenContract.sol for DeAudit.sol after code set. Only by first Action Team Member
+`function setCodeDeAuditData(TvmCell code) public checkOwnerAndAccept`
 
-`function setCodeRootTokenContract(TvmCell code) public checkOwnerAndAccept {
-  codeRootTokenContract = code;
-}`
+8) Set setCodeDeAudit. For DeAudit.sol after code set. Only by first Action Team Member
 
-10)Set setCodeTONTokenWallet. For TONTokenWallet.sol for RootTokenContract.sol after code set. Only by first Action Team Member
+`function setCodeDeAudit(TvmCell code) public checkOwnerAndAccept`
 
-`function setCodeTONTokenWallet(TvmCell code) public checkOwnerAndAccept {
-  codeTONTokenWallet = code;
-}`
+9) Set setCodeAct4. For Act4.sol from DeAuditData.sol from DeAudit.sol after code set. Only by first Action Team Member
 
-11) Init voting for Add/Remove Action Team Member. By any Action Team Member
-12) VoteFor/VoteAganst for Add/Remove Action Team Member. By any Action Team Member
-13) Result voting for Add/Remove Action Team Member. By any Action Team Member after voting duration ended
+`function setCodeAct4(TvmCell code) public checkOwnerAndAccept`
 
-14) Create DeAuditData.sol. By any Action Team Member
-15) Edit DeAuditData.sol. By DeAuditData.sol creator before associated Launch DeAudit.sol
-16) Init voting for Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
-17) VoteFor/VoteAganst for Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
-18) Result voting and Launch/NotLaunch DeAuditData.sol associated DeAudit.sol. By any Action Team Member after voting duration ended
+10) Set setCodeRootTokenContract. For RootTokenContract.sol for DeAudit.sol after code set. Only by first Action Team Member
+
+`function setCodeRootTokenContract(TvmCell code) public checkOwnerAndAccept`
+
+11) Set setCodeTONTokenWallet. For TONTokenWallet.sol for RootTokenContract.sol after code set. Only by first Action Team Member
+
+`function setCodeTONTokenWallet(TvmCell code) public checkOwnerAndAccept`
+
+12) Init voting for Add/Remove Action Team Member. By any Action Team Member
+
+
+13) VoteFor/VoteAganst for Add/Remove Action Team Member. By any Action Team Member
+
+
+14) Result voting for Add/Remove Action Team Member. By any Action Team Member after voting duration ended
+
+
+
+15) Create DeAuditData.sol. By any Action Team Member
+16) Edit DeAuditData.sol. By DeAuditData.sol creator before associated Launch DeAudit.sol
+17) Init voting for Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
+18) VoteFor/VoteAganst for Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
+19) Result voting and Launch/NotLaunch DeAuditData.sol associated DeAudit.sol. By any Action Team Member after voting duration ended
 
 
 2) Launch DeAudit.sol
