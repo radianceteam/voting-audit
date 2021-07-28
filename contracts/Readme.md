@@ -1,8 +1,8 @@
-# DEX-core-voting-audit
+# Post-voting-audit-core smartcontracts
 
 ## Assignment
 
-Post voting DeAudit components
+Post-voting-audit-core components
 
 ### DeAuditRoot.sol
 
@@ -78,11 +78,19 @@ functionality:
   uint256 valPeriod,
   uint128 colStake,
   uint128 valStake
-) public override OnlyActionTeamMember`
+) public OnlyActionTeamMember`
+ set params of created DeAudit:
+ - `nameDeAudit` name
+ - `timeStart` time start
+ - `colPeriod` collation period
+ - `valPeriod` validation period
+ - `colStake` collation stake
+ - `valStake` validtion stake
+
 
 * Init voting for Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
 
-`function initVoteDeAudut(address addrDeAuditData) public override OnlyActionTeamMember`
+`function initVoteDeAudut(address addrDeAuditData) public OnlyActionTeamMember`
 
 * VoteFor/VoteAganst for Add/Remove Action Team Member or Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
 
@@ -91,9 +99,27 @@ functionality:
 
 * Result voting and Add/Remove Action Team Member or Launch/NotLaunch DeAuditData.sol associated DeAudit.sol. By any Action Team Member after voting duration ended
 
-`function resultVote(uint256 voteId) public override OnlyActionTeamMember`
+`function resultVote(uint256 voteId) public OnlyActionTeamMember`
 
-# Implementation
+### Participant.sol
+
+functionality:
+
+
+### DeAuditData.sol
+
+functionality:
+
+### DeAudit.sol
+
+functionality:
+
+### Act4.sol
+
+functionality:
+
+
+## Implementation
 
 * Prerequisites
 
