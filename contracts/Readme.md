@@ -223,13 +223,55 @@ functionality:
 
 functionality:
 
+`function addCandidate(bytes nameCandidate) public override onlyInitiatorBeforeLaunch `
+
+`function addDistrict(bytes nameDistrict) public override onlyInitiatorBeforeLaunch`
+
+`function addMunicipalBody(bytes nameMunicipalBody, uint256 indexDistrict) public override onlyInitiatorBeforeLaunch `
+
+`function addVotingPool(bytes nameVotingPool, uint256 indexDistrict, uint256 indexMunicipalBody) public override onlyInitiatorBeforeLaunch`
+
+`function addVotingCenter(bytes nameVotingCenter, bytes location, uint256 indexDistrict, uint256 indexMunicipalBody, uint256 indexVotingPool) public override onlyInitiatorBeforeLaunch `
+
+`function setCollation(address collator, uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix, uint8 vcms) public override onlyDeAudit`
+
+`function setValidationForParticipant(address participantAddr, uint128 qtyValidations) public onlyDeAudit `
+
+`function receivePositivResultFromAct4(uint256[] voteMatrix, address[] validatorsFBT, address gasPayeerAddr) public onlyAct4`
+
+`function addVotesToAccumulatingArray(uint256[] arrAccumulating, uint256[] arrAdding) private view inline returns`
+
+`function receiveNegativeResultFromAct4(address collatorFBT, address[] validatorsFBT, address gasPayeerAddr) public onlyAct4`
+
+
 ### DeAudit.sol
 
 functionality:
 
+`function addCollation(uint256 indexVotingCenter, bytes linkToCollationPhoto, uint256[] voteMatrix) public override onlyCollationPeriod`
+
+`function collationCallback(uint8 statusCollation, address addressCollator, address[] msgData) public override onlyDeAuditData`
+
+`function registrationForValidation() public override onlyValidationPeriod`
+
+`function regForValidationCallback(address addressValidator, address[] msgData) public override onlyDeAuditData`
+
+`function burnTokens(address[] addressParticipantArr, address gasPayeerAddress, bool statusWithraw) public override onlyDeAuditData`
+
+`function getRewardAndStakeBack() public override onlyStakeHolder `
+
+
 ### Act4.sol
 
 functionality:
+
+`function trigger(address member) public override onlyDeAuditData `
+
+`function voteFor() public override onlyValidatorOnce`
+
+`function voteAgainst() public override onlyValidatorOnce `
+
+`function setValidator(address participant) public override onlyDeAuditData`
 
 ### RootTokenContract.sol
 
