@@ -1,6 +1,6 @@
-# RT Debot Voting System 1.0
+# RT Voting Audit System 1.0 / DeBots
 
-## Deploy DeBots
+### Deploy DeBots
 
 First install dependencies:
 
@@ -23,12 +23,27 @@ Example address in `net.ton.dev`:
 ```shell
 tonos-cli debot fetch 0:fca49c6cf57f1654988f944f2e9874cb3c86a33dabbc7c3948326fb912dedefa
 ```
+![](./qr-code.png)
 
 Example address in `gql.custler.net`
 ```shell
-tonos-cli --url https://gql.custler.net debot fetch 0:69fa78c6ff07aa8ad074627e9910e3e5955826f97f6e833e09628223ec4d30c7
+tonos-cli --url https://gql.custler.net debot fetch 0:cf1dfd0b87492bb30bbbd70db84665ee3c383465e7c297df23704bcd9ddb9fd6
 ```
 
-### RT DeVot Voting System scheme
+### Keys for testing
 
-You can see the structure of RT DeBot Voting System 1.0 in [image](https://github.com/radianceteam/voting-audit/blob/master/debots/DeBot_menu_structure.png).
+Action Team Member:
+
+```
+taxi once course van differ only clutch gossip text gaze giant egg
+```
+
+Member:
+
+```
+genius glance surge document blur object flash shine tourist disorder kiwi immense
+```
+
+### Structure of RT Voting Audit System 1.0 / DeBots
+
+You can see the structure of RT Voting Audit System 1.0 / DeBots in [image](https://github.com/radianceteam/voting-audit/blob/master/debots/DeBot_menu_structure.png).
