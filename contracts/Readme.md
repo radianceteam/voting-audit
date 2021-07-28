@@ -10,15 +10,15 @@ functionality:
 
 * Deploy Participant.sol. By any user with some TONs and Free TON keys and seed phrase
 
-before deploy:
-- send from any wallet some amount TONs to DeAuditRoot.sol
-- set address of this wallet as your giver by: 	`function setGiver(address giverAddr) public checkPubkeyAndAccept`
+  before deploy:
+  - send from any wallet some amount TONs to DeAuditRoot.sol
+  - set address of this wallet as your giver by: 	`function setGiver(address giverAddr) public checkPubkeyAndAccept`
 
-deploy:
-`function deployParticipant(uint256 pubkey) public alwaysAccept`
+  deploy:
+  `function deployParticipant(uint256 pubkey) public alwaysAccept`
 
-after deploy:
-- this amount - deployFee be on deployed Participant.sol
+  after deploy:
+  - this amount - deployFee be on deployed Participant.sol
 
 * Select voteCountModel Majority, SoftMajority or SuperMajority. For votings after selector set. Only by first Action Team Member
 
@@ -80,16 +80,16 @@ after deploy:
   uint128 valStake
 ) public override OnlyActionTeamMember`
 
-#### Init voting for Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
+* Init voting for Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
 
 `function initVoteDeAudut(address addrDeAuditData) public override OnlyActionTeamMember`
 
-###@ VoteFor/VoteAganst for Add/Remove Action Team Member or Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
+* VoteFor/VoteAganst for Add/Remove Action Team Member or Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
 
 `function voteFor(uint256 voteId) public override OnlyActionTeamMember`
 `function voteAgainst(uint256 voteId) public override OnlyActionTeamMember`
 
-#### Result voting and Add/Remove Action Team Member or Launch/NotLaunch DeAuditData.sol associated DeAudit.sol. By any Action Team Member after voting duration ended
+* Result voting and Add/Remove Action Team Member or Launch/NotLaunch DeAuditData.sol associated DeAudit.sol. By any Action Team Member after voting duration ended
 
 `function resultVote(uint256 voteId) public override OnlyActionTeamMember`
 
@@ -98,7 +98,7 @@ after deploy:
 * Prerequisites
 
 `lsb_release -a`
-* Ubuntu 20.04.2 LTS
+Ubuntu 20.04.2 LTS
 
 `node -v`
 v14.16.0
@@ -107,9 +107,7 @@ v14.16.0
 TONDev Version: 0.8.1
 
 `tondev sol version`
-compiler   0.47.0  
-linker     0.11.87  
-stdlib     0.47.0  
+compiler: 0.47.0,  linker: 0.11.87,  stdlib: 0.47.0  
 
 * Compile
 
