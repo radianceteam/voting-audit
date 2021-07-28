@@ -258,11 +258,21 @@ functionality:
 
 `function setValidationForParticipant(address participantAddr, uint128 qtyValidations) public onlyDeAudit `
 
+* Receive data msg with TONs from resulted Act4.sol after calculateVotes == true:
 
+      1) confirmed by validators votes for candidates `uint256[] voteMatrix`
+      2) send and accumulate this votes to voting pool
+      3) send and accumulate this votes to municipal body
+      4) send and accumulate this votes to district
+      5) send and accumulate this votes to each candidate
+      6) burn tokens for validators voted against
 
 `function receivePositivResultFromAct4(uint256[] voteMatrix, address[] validatorsFBT, address gasPayeerAddr) public onlyAct4`
 
-`function addVotesToAccumulatingArray(uint256[] arrAccumulating, uint256[] arrAdding) private view inline returns`
+* Receive data msg with TONs from resulted Act4.sol after calculateVotes == false:
+
+      6) burn tokens for collator
+      6) burn tokens for validators voted for
 
 `function receiveNegativeResultFromAct4(address collatorFBT, address[] validatorsFBT, address gasPayeerAddr) public onlyAct4`
 
