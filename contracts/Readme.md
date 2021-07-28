@@ -106,6 +106,118 @@ functionality:
 
 functionality:
 
+* Publish data of participant. Only by owner
+
+`function publishData(bytes publishName, bytes publishPhotoLink, bytes publishDataLink)  public checkOwnerAndAccept `
+
+  set params of published data:
+  - `publishName` name
+  - `publishPhotoLink` photoLink
+  - `publishDataLink` dataLink
+
+* Send TONs to DeAuditRoot.sol and Init voting.for Add/Remove Action Team Member. Only by Action Team Member
+
+`function initVoteAddActionTeamMember(address participantAddr, uint128 grams)  public checkOwnerAndAccept`
+
+`function initVoteRemoveActionTeamMember(address participantAddr, uint128 grams) public checkOwnerAndAccept`
+
+* Send TONs to DeAuditRoot.sol and for deploy DeAuditData.sol. Only by Action Team Member
+
+`function createDeAuditData(
+  bytes nameDeAuditData,
+  uint256 timeStart,
+  uint256 colPeriod,
+  uint256 valPeriod,
+  uint128 colStake,
+  uint128 valStake,
+  uint128 grams
+) public checkOwnerAndAccept `
+
+* Send TONs to DeAuditRoot.sol and Init voting for Launch/NotLaunch DeAuditData.sol associated DeAudit.sol. Only by Action Team Member
+
+`function initVoteDeAudut(address addrDeAuditData, uint128 grams)  public  checkOwnerAndAccept `
+
+* Send TONs to DeAuditRoot.sol and voteFor/voteAgainst any Actiom Team Members voting. Only by Action Team Member
+
+`function voteFor(uint256 voteId, uint128 grams)  public  checkOwnerAndAccept`
+
+`function voteAgainst(uint256 voteId, uint128 grams) public checkOwnerAndAccept`
+
+* Send TONs to DeAuditRoot.sol and result any Actiom Team Members voting. Only by Action Team Member
+
+`function resultVote(uint256 voteId, uint128 grams)  public  checkOwnerAndAccept`
+
+* Send TONs to DeAuditRoot.sol and sendTrigger to any Act4.sol of any DeAudit.sol for result it's validators voting after validation period ended. Only by Action Team Member
+
+`function sendTrigger(address addrDeAudit, address addrAct4, uint128 grams)  public view checkOwnerAndAccept`
+
+* Send TONs to DeAuditData.sol and add voting district. Only by DeAuditData.sol creator
+
+`function addDistrict(address addressDeAuditData, bytes nameDistrict, uint128 grams)  public view checkOwnerAndAccept`
+
+* Send TONs to DeAuditData.sol and add voting municipal body into any added earlier districts. Only by DeAuditData.sol creator
+
+`function addMunicipalBody(
+  address addressDeAuditData,
+  bytes nameMunicipalBody,
+  uint256 indexDistrict,
+  uint128 grams
+)  public  checkOwnerAndAccept `
+
+* Send TONs to DeAuditData.sol and add  voting pool into any added earlier districts and municipal bodies. Only by DeAuditData.sol creator
+
+`function addVotingPool(
+  address addressDeAuditData,
+  bytes nameVotingPool,
+  uint256 indexDistrict,
+  uint256 indexMunicipalBody,
+  uint128 grams
+)  public   checkOwnerAndAccept `
+
+* Send TONs to DeAuditData.sol and add voting center into any added earlier districts, municipal bodies, voting pools. Only by DeAuditData.sol creator
+
+`function addVotingCenter(
+  address addressDeAuditData,
+  bytes nameVotingCenter,
+  bytes location,
+  uint256 indexDistrict,
+  uint256 indexMunicipalBody,
+  uint256 indexVotingPool,
+  uint128 grams
+)   public  checkOwnerAndAccept `
+
+* Send TONs to DeAuditData.sol and add candidate of voting. Only by DeAuditData.sol creator
+
+`function addCandidate(
+  address addressDeAuditData,
+  bytes nameCandidate,
+  uint128 grams
+) public checkOwnerAndAccept `
+
+* Send TONs to DeAudit.sol and add stake and collation from any voting center. Any participant
+
+`function addCollation(
+  address addressDeAudit,
+  uint256 indexVotingCenter,
+  bytes linkToCollationPhoto,
+  uint256[] voteMatrix,
+  uint128 grams
+) public checkOwnerAndAccept `
+
+* Send TONs to DeAudit.sol and reg for validations. Any participant. Qty of validation compute base on msg.value. Validation assign randomly. One validator can not validate more then one time into any collation. Qty of validation of one validator can not be more then current qty Act4.sol in queue for validators.
+
+`function registrationForValidation(address addressDeAudit, uint128 grams) public checkOwnerAndAccept `
+
+* Send TONs to Act4.sol and validateFor/validateAgainst. Only assigned validators
+
+`function validateFor(address addrAct4, uint128 grams)  public checkOwnerAndAccept `
+
+`function validateAgainst(address addrAct4, uint128 grams)  public checkOwnerAndAccept `
+
+* Send TONs to DeAudit.sol and receive back stake and reward. Only token holder after withdraw opened
+
+`function getRewardAndStakeBack(address addressDeAudit, uint128 grams) public checkOwnerAndAccept`
+
 
 ### DeAuditData.sol
 
@@ -119,6 +231,13 @@ functionality:
 
 functionality:
 
+### RootTokenContract.sol
+
+https://github.com/broxus/ton-eth-bridge-token-contracts
+
+### TONTokenWallet.sol
+
+https://github.com/broxus/ton-eth-bridge-token-contracts
 
 ## Implementation
 
