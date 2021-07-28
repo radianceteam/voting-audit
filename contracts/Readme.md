@@ -1,4 +1,4 @@
-# Post-voting-audit-core smartcontracts
+# RT Voting Audit System 1.0 core smartcontracts
 
 ## Assignment
 
