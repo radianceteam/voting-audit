@@ -1,7 +1,7 @@
 {
     "name": "radiance-voting-audit",
     "version": "0.1.0",
-    "description": "Radiance voting-audit core smartcontracts",
+    "description": "Radiance team postvoting-audit core smartcontracts",
     "main": "",
     "scripts": {
         "start": "index.js"

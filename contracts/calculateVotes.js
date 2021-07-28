@@ -1,6 +1,6 @@
-let y = 2;
-let n = 0
-let t = 4;
+let y = 3;
+let n = 2;
+let t = 5;
 
 // Vote count model selector
 // Majority = 0;
@@ -18,6 +18,6 @@ function calculateVotes(yes, no, total, selector)  {
   return passed;
 }
 
-console.log(calculateVotes(y, n, t, 0));
-console.log(calculateVotes(y, n, t, 1));
-console.log(calculateVotes(y, n, t, 2));
+console.log('Majority vcm result: ', calculateVotes(y, n, t, 0));
+console.log('SoftMajority vcm result: ', calculateVotes(y, n, t, 1));
+console.log('SuperMajority vcm result: ', calculateVotes(y, n, t, 2));

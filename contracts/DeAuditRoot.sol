@@ -173,7 +173,7 @@ contract DeAuditRoot is IDeAuditRoot {
 		codeTONTokenWallet = code;
 	}
 
-	function setMaxQtyAct4Links(uint128 settingLimitVFC) public checkOwnerAndAccept {
+	function setLimitVFC(uint128 settingLimitVFC) public checkOwnerAndAccept {
 		limitVFC = settingLimitVFC;
 	}
 
