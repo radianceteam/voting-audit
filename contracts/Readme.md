@@ -8,7 +8,7 @@ Post voting DeAudit components
 
 functionality:
 
-#### Deploy Participant.sol. By any user with some TONs and Free TON keys and seed phrase
+* Deploy Participant.sol. By any user with some TONs and Free TON keys and seed phrase
 
 before deploy:
 - send from any wallet some amount TONs to DeAuditRoot.sol
@@ -20,7 +20,7 @@ deploy:
 after deploy:
 - this amount - deployFee be on deployed Participant.sol
 
-#### Select voteCountModel Majority, SoftMajority or SuperMajority. For votings after selector set. Only by first Action Team Member
+* Select voteCountModel Majority, SoftMajority or SuperMajority. For votings after selector set. Only by first Action Team Member
 
 `function selectMajority() public checkOwnerAndAccept `
 
@@ -28,7 +28,7 @@ after deploy:
 
 `function selectSuperMajority() public checkOwnerAndAccept`
 
-#### Set limit Validations For Collation (limitVFC). For DeAudits.sol after value set. Only by first Action Team Member
+* Set limit Validations For Collation (limitVFC). For DeAudits.sol after value set. Only by first Action Team Member
 
 `function setLimitVFC(uint128 settingLimitVFC) public checkOwnerAndAccept`
 
@@ -36,40 +36,40 @@ after deploy:
 
 `function setDeployFee(uint128 settingDeployFee) public checkOwnerAndAccept`
 
-#### Set votingDuration for Action Team votings. For voting after value set. Only by first Action Team Member
+* Set votingDuration for Action Team votings. For voting after value set. Only by first Action Team Member
 
 `function setVotingDuration(uint256 settingVotingDuration) public checkOwnerAndAccept`
 
-#### Set codeParticipant. For Participant.sol after code set. Only by first Action Team Member
+* Set codeParticipant. For Participant.sol after code set. Only by first Action Team Member
 
 `function setCodePaticipant(TvmCell code) public checkOwnerAndAccept`
 
-#### Set setCodeDeAuditData. For DeAuditData.sol after code set. Only by first Action Team Member
+* Set codeDeAuditData. For DeAuditData.sol after code set. Only by first Action Team Member
 
 `function setCodeDeAuditData(TvmCell code) public checkOwnerAndAccept`
 
-#### Set setCodeDeAudit. For DeAudit.sol after code set. Only by first Action Team Member
+* Set codeDeAudit. For DeAudit.sol after code set. Only by first Action Team Member
 
 `function setCodeDeAudit(TvmCell code) public checkOwnerAndAccept`
 
-#### Set setCodeAct4. For Act4.sol from DeAuditData.sol from DeAudit.sol after code set. Only by first Action Team Member
+* Set codeAct4. For Act4.sol from DeAuditData.sol from DeAudit.sol after code set. Only by first Action Team Member
 
 `function setCodeAct4(TvmCell code) public checkOwnerAndAccept`
 
-#### Set setCodeRootTokenContract. For RootTokenContract.sol for DeAudit.sol after code set. Only by first Action Team Member
+* Set codeRootTokenContract. For RootTokenContract.sol for DeAudit.sol after code set. Only by first Action Team Member
 
 `function setCodeRootTokenContract(TvmCell code) public checkOwnerAndAccept`
 
-#### Set setCodeTONTokenWallet. For TONTokenWallet.sol for RootTokenContract.sol after code set. Only by first Action Team Member
+* Set codeTONTokenWallet. For TONTokenWallet.sol for RootTokenContract.sol after code set. Only by first Action Team Member
 
 `function setCodeTONTokenWallet(TvmCell code) public checkOwnerAndAccept`
 
-#### Init voting for Add/Remove Action Team Member. By any Action Team Member
+* Init voting for Add/Remove Action Team Member. By any Action Team Member
 
 `	function initVoteAddActionTeamMember(address addressParticipant) public OnlyActionTeamMember`
 ` function initVoteRemoveActionTeamMember(address addressParticipant) public OnlyActionTeamMember`
 
-#### Create DeAuditData.sol. By any Action Team Member
+* Create DeAuditData.sol. By any Action Team Member
 
 `function createDeAuditData(
   bytes nameDeAudit,
@@ -95,27 +95,27 @@ after deploy:
 
 # Implementation
 
-## Prerequisites
+* Prerequisites
 
 `lsb_release -a`
 * Ubuntu 20.04.2 LTS
 
 `node -v`
-* v14.16.0
+v14.16.0
 
 `tondev -h`
-* TONDev Version: 0.8.1
+TONDev Version: 0.8.1
 
 `tondev sol version`
-* compiler   0.47.0  
-* linker     0.11.87  
-* stdlib     0.47.0  
+compiler   0.47.0  
+linker     0.11.87  
+stdlib     0.47.0  
 
-### Compile
+* Compile
 
 `tondev sol compile DeAuditRoot.sol && tondev sol compile DeAudit.sol && tondev sol compile DeAuditData.sol && tondev sol compile Act4.sol && tondev sol compile Participant.sol && tondev sol compile RootTokenContract.sol && tondev sol compile TONTokenWallet.sol`
 
-### Wrap *.abi.json to *.js
+* Wrap *.abi.json to *.js
 
 `tondev js wrap DeAuditRoot.abi.json -o DeAuditRoot.js &&
 tondev js wrap DeAudit.abi.json -o DeAudit.js &&
@@ -125,7 +125,7 @@ tondev js wrap Participant.abi.json -o Participant.js &&
 tondev js wrap RootTokenContract.abi.json -o RootTokenContract.js &&
 tondev js wrap TONTokenWallet.abi.json -o TONTokenWallet.js`
 
-### Convert *.tvc to *.txt
+* Convert *.tvc to *.txt
 
 `/home/yaroslav/.tondev/solidity/tvm_linker decode --tvc DeAudit.tvc | grep code: | cut -c 8- > DeAudit.txt &&
 /home/yaroslav/.tondev/solidity/tvm_linker decode --tvc DeAuditData.tvc | grep code: | cut -c 8- > DeAuditData.txt &&
@@ -134,4 +134,4 @@ tondev js wrap TONTokenWallet.abi.json -o TONTokenWallet.js`
 /home/yaroslav/.tondev/solidity/tvm_linker decode --tvc RootTokenContract.tvc | grep code: | cut -c 8- > RootTokenContract.txt &&
 /home/yaroslav/.tondev/solidity/tvm_linker decode --tvc TONTokenWallet.tvc | grep code: | cut -c 8- > TONTokenWallet.txt`
 
-### Set results to DeAuditRootCode.js
+* Set results to DeAuditRootCode.js
