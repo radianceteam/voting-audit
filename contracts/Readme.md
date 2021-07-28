@@ -80,15 +80,13 @@ functionality:
   uint128 valStake
 ) public OnlyActionTeamMember`
 
-set params of created DeAudit:
-- send from any wallet some amount TONs to DeAuditRoot.sol
-- set address of this wallet as your giver by: 	`function setGiver(address giverAddr) public checkPubkeyAndAccept`
-- `nameDeAudit` name
-- `timeStart` time start
-- `colPeriod` collation period
-- `valPeriod` validation period
-- `colStake` collation stake
-- `valStake` validtion stake
+    set params of created DeAudit:
+    - `nameDeAudit` name
+    - `timeStart` time start
+    - `colPeriod` collation period
+    - `valPeriod` validation period
+    - `colStake` collation stake
+    - `valStake` validtion stake
 
 
 * Init voting for Launch DeAuditData.sol associated DeAudit.sol. By any Action Team Member
