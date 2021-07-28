@@ -384,7 +384,7 @@ tondev js wrap TONTokenWallet.abi.json -o TONTokenWallet.js`
 
 * cd to ../test-ntd or ../test-fld
 
-## Test
+## Tests
 
 * For deploy DeAuditRoot.sol
 
