@@ -380,9 +380,9 @@ tondev js wrap TONTokenWallet.abi.json -o TONTokenWallet.js`
 
 * Set results to DeAuditRootCode.js
 
-* Update code for ../test-fld and ../test-ntd
+* Update code for ../tests-fld and ../tests-ntd
 
-* cd to ../test-ntd or ../test-fld
+* cd to ../tests-ntd or ../tests-fld
 
 ## Tests
 
